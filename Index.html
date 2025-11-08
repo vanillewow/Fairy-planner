@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Fairy 10-Skill Planner – HWDE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-soft: #0d1020;
+      --accent: #4fd1c5;
+      --accent-soft: rgba(79, 209, 197, 0.12);
+      --accent-alt: #f6e05e;
+      --text: #f7fafc;
+      --muted: #a0aec0;
+      --danger: #f56565;
+      --radius: 16px;
+      --shadow-soft: 0 14px 32px rgba(0, 0, 0, 0.6);
+      --font: system-ui, -apple-system, BlinkMacSystemFont, -sans-serif;
+      --transition: 0.2s ease;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      background: radial-gradient(circle at top, #1a202c 0, #050816 55%);
+      color: var(--text);
+      padding: 14px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 1100px;
+      display: grid;
+      grid-template-columns: 1.6fr 2.4fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 900px) {
+      body { padding: 10px; }
+      .app {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      letter-spacing: 0.03em;
+    }
+    h1 span {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: var(--accent-alt);
+      margin-top: 1px;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.8rem;
+      margin-bottom: 8px;
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 4px;
+      float: right;
+    }
+    .lang-btn {
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      border: 1px solid rgba(148,163,253,0.5);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: var(--transition);
+      touch-action: manipulation;
+    }
+    .lang-btn.active {
+      background: var(--accent);
+      color: #050816;
+      border-color: var(--accent-alt);
+      box-shadow: 0 0 12px rgba(79,209,197,0.7);
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(79,209,197,0.08), transparent 55%) var(--bg-soft);
+      border-radius: var(--radius);
+      padding: 10px 10px 9px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(148,163,253,0.12);
+      backdrop-filter: blur(12px);
+    }
+    .card + .card { margin-top: 6px; }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .card-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .card-subtitle {
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .hint {
+      font-size: 0.65rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    select, input[type="number"], textarea {
+      width: 100%;
+      padding: 7px 8px;
+      border-radius: 9px;
+      border: 1px solid rgba(148,163,253,0.2);
+      background: rgba(7,10,22,0.98);
+      color: var(--text);
+      font-size: 0.78rem;
+      outline: none;
+      transition: var(--transition);
+      -webkit-tap-highlight-color: transparent;
+    }
+    select:focus, input:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(79,209,197,0.18);
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+      font-family: var(--font);
+      line-height: 1.35;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    @media (max-width: 600px) {
+      .row { grid-template-columns: 1fr; }
+    }
+
+    .traits-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 4px;
+      margin-top: 3px;
+    }
+    @media (max-width: 600px) {
+      .traits-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    .trait-input {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .trait-input span {
+      font-size: 0.62rem;
+      color: var(--muted);
+    }
+    .trait-input input {
+      font-size: 0.74rem;
+      padding: 5px 4px;
+      text-align: center;
+    }
+
+    .skills-list, .foods-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      margin-top: 4px;
+      max-height: 220px;
+      overflow-y: auto;
+      padding-right: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .skill-item, .food-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 7px;
+      border-radius: 10px;
+      background: rgba(9,12,24,0.98);
+      border: 1px solid rgba(79,209,197,0.06);
+      font-size: 0.7rem;
+      gap: 6px;
+    }
+
+    .skill-item-left { display: flex; flex-direction: column; gap: 0; }
+
+    .skill-name {
+      font-weight: 500;
+      color: var(--accent-alt);
+      margin-bottom: 1px;
+    }
+    .skill-reqs {
+      color: var(--muted);
+      font-size: 0.62rem;
+    }
+
+    .food-name {
+      font-weight: 500;
+      color: var(--accent);
+      margin-bottom: 1px;
+    }
+    .food-tags {
+      font-size: 0.6rem;
+      color: var(--muted);
+    }
+
+    .checkbox {
+      width: 18px;
+      height: 18px;
+      border-radius: 6px;
+      border: 1px solid rgba(148,163,253,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: var(--transition);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .checkbox[data-checked="true"] {
+      background: var(--accent);
+      border-color: var(--accent-alt);
+      box-shadow: 0 0 8px rgba(79,209,197,0.9);
+    }
+    .checkbox[data-checked="true"]::after {
+      content: "✓";
+      font-size: 0.8rem;
+      color: #0f172a;
+    }
+
+    .btn {
+      border: none;
+      outline: none;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(to right, var(--accent), #9f7aea);
+      color: #050816;
+      box-shadow: 0 10px 24px rgba(79,209,197,0.4);
+      transition: var(--transition);
+      margin-top: 4px;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    .btn span.icon { font-size: 0.95rem; }
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 34px rgba(79,209,197,0.45);
+    }
+    .btn.secondary {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid rgba(79,209,197,0.6);
+      box-shadow: none;
+      padding-inline: 10px;
+    }
+    .btn.secondary:hover {
+      background: var(--accent-soft);
+      transform: none;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+    }
+
+    .output {
+      margin-top: 6px;
+      font-size: 0.72rem;
+      max-height: 310px;
+      overflow-y: auto;
+      padding-right: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .output h3 {
+      font-size: 0.8rem;
+      margin-bottom: 3px;
+      color: var(--accent-alt);
+      font-weight: 600;
+    }
+    .output p {
+      margin-bottom: 4px;
+      color: var(--muted);
+    }
+
+    .step {
+      padding: 5px 7px;
+      margin-bottom: 3px;
+      border-radius: 9px;
+      background: rgba(7,10,22,0.98);
+      border: 1px solid rgba(79,209,197,0.1);
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+      align-items: baseline;
+    }
+    .step strong {
+      color: var(--accent);
+      font-weight: 500;
+    }
+    .step span.meta {
+      font-size: 0.6rem;
+      color: var(--muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .tag-warn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.64rem;
+      color: var(--danger);
+      margin-top: 3px;
+    }
+    .tag-warn .icon { font-size: 0.8rem; }
+
+    .badge-soft {
+      display: inline-flex;
+      padding: 2px 6px;
+      font-size: 0.6rem;
+      border-radius: 999px;
+      background: rgba(79,209,197,0.1);
+      color: var(--accent);
+      margin-left: 4px;
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <!-- LEFT -->
+  <div>
+    <div>
+      <div class="lang-switch">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="fr">FR</button>
+      </div>
+      <h1>
+        <span id="title-main"></span>
+        <span id="title-suffix"></span>
+      </h1>
+      <div class="subtitle" id="subtitle-main"></div>
+    </div>
+
+    <!-- Fairy setup -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title" id="card1-title"></div>
+          <div class="card-subtitle" id="card1-subtitle"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label for="fairy-element" id="label-element"></label>
+          <select id="fairy-element">
+            <option value="Fire"></option>
+            <option value="Water"></option>
+            <option value="Lightning"></option>
+            <option value="Light"></option>
+            <option value="Darkness"></option>
+          </select>
+        </div>
+        <div>
+          <label for="fairy-level" id="label-level"></label>
+          <input id="fairy-level" type="number" min="1" max="99" value="1">
+        </div>
+      </div>
+      <label id="label-traits"></label>
+      <div class="traits-grid" id="traits-grid"></div>
+      <div class="hint" id="hint-traits"></div>
+    </div>
+
+    <!-- Core 10-skill set -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title" id="card2-title"></div>
+          <div class="card-subtitle" id="card2-subtitle"></div>
+        </div>
+        <button class="btn secondary" id="edit-skills-toggle">
+          <span class="icon">✏️</span><span id="btn-edit-skills-label"></span>
+        </button>
+      </div>
+      <div class="hint" id="hint-skills"></div>
+      <div class="skills-list" id="skills-list"></div>
+
+      <div id="skills-editor" style="display:none; margin-top:5px;">
+        <label for="skills-json" id="label-skills-json"></label>
+        <textarea id="skills-json"></textarea>
+        <button class="btn secondary" id="skills-apply">
+          <span class="icon">✅</span><span id="btn-apply-skills-label"></span>
+        </button>
+        <div class="hint" id="hint-skills-json"></div>
+      </div>
+    </div>
+
+    <!-- Foods -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title" id="card3-title"></div>
+          <div class="card-subtitle" id="card3-subtitle"></div>
+        </div>
+        <button class="btn secondary" id="edit-foods-toggle">
+          <span class="icon">🍰</span><span id="btn-edit-foods-label"></span>
+        </button>
+      </div>
+      <div class="foods-list" id="foods-list"></div>
+
+      <div id="foods-editor" style="display:none; margin-top:5px;">
+        <label for="foods-json" id="label-foods-json"></label>
+        <textarea id="foods-json"></textarea>
+        <button class="btn secondary" id="foods-apply">
+          <span class="icon">✅</span><span id="btn-apply-foods-label"></span>
+        </button>
+        <div class="hint" id="hint-foods-json"></div>
+        <div class="tag-warn" id="warn-foods"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div>
+    <!-- Plan -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title" id="card4-title"></div>
+          <div class="card-subtitle" id="card4-subtitle"></div>
+        </div>
+        <button class="btn" id="generate-plan">
+          <span class="icon">✨</span><span id="btn-generate-label"></span>
+        </button>
+      </div>
+      <div class="hint" id="hint-plan"></div>
+      <div class="output" id="plan-output"></div>
+    </div>
+
+    <!-- Notes -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title" id="notes-title"></div>
+          <div class="card-subtitle" id="notes-subtitle"></div>
+        </div>
+      </div>
+      <ul id="notes-list"
+          style="font-size:0.7rem; color:var(--muted); margin-left:12px; display:flex; flex-direction:column; gap:3px; margin-top:4px;">
+      </ul>
+      <div class="tag-warn" id="notes-warning"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const I18N = {
+    en: {
+      title_main: "My Fairy 10-Skill Planner",
+      title_suffix: "Hyrule Warriors: Definitive Edition",
+      subtitle_main: "Plan feeds to hit the 10 core skills that unlock everything else.",
+      card1_title: "1 · Fairy Setup",
+      card1_subtitle: "Use your actual element & traits from My Fairy.",
+      label_element: "Element",
+      label_level: "Starting Level (info only)",
+      label_traits: "Current personality values",
+      hint_traits: "Copy the numbers from the My Fairy screen. Traits you don't have can stay at 0.",
+      card2_title: "2 · Core Skills (10-skill route)",
+      card2_subtitle: "These 10 cover all other Rental Skills while you refresh.",
+      btn_edit_skills: "Edit",
+      hint_skills: "Defaults follow the common Magic/Special/Drop+ route. You can customize if your route differs.",
+      label_skills_json: "Edit skills (JSON)",
+      btn_apply_skills: "Apply Skills",
+      hint_skills_json: "Use official thresholds; only modify if you know what you're doing.",
+      card3_title: "3 · Food Used for Planning",
+      card3_subtitle: "Sample foods that work well for trait pushing.",
+      btn_edit_foods: "Edit",
+      label_foods_json: "Edit foods (JSON)",
+      btn_apply_foods: "Apply Foods",
+      hint_foods_json: "Values stack. Add/remove foods to match what you actually farm.",
+      warn_foods: "These values are approximate. If you use a detailed guide, paste its numbers here.",
+      card4_title: "4 · Generate Feeding Plan",
+      card4_subtitle: "Greedy planner to reach all selected skill requirements.",
+      btn_generate: "Build Plan",
+      hint_plan: "Checks your traits vs. the 10-skill targets and suggests a low-waste food sequence.",
+      plan_initial: "Enter traits, keep all 10 skills checked, then tap Build Plan.",
+      err_select_skill: "Select at least one skill.",
+      err_no_path: "Couldn't find a good route with current foods. Add stronger foods or tweak values.",
+      plan_targets_title: "Trait targets for selected skills",
+      plan_feed_title: "Feeding sequence",
+      plan_all_met: "You already meet all selected skill requirements.",
+      plan_still_need: "Still need",
+      plan_done: "All targets reached. Learn the skills at the School. 🎉",
+      plan_partial_warn: "Stopped early: likely missing/incorrect food data.",
+      plan_tip: "After each refresh, update your starting traits and rerun with the same 10 skills selected.",
+      notes_title: "Notes & usage",
+      notes_subtitle: "Based on the standard 10-skill completion route.",
+      notes_lines: [
+        "These 10 skills (Magic/Special/Wall+/XP+/Rupee+/Food+/Mat+/Weap+/Extreme Crush+/Glass Cannon) are enough to cover all others over refreshes.",
+        "Always read the in-game requirements in the School to confirm thresholds.",
+        "Adjust the food list to match what you actually have; better food = fewer steps.",
+        "You can temporarily uncheck skills if you want a lighter goal for one cycle.",
+        "French names here follow in-game style; if your version differs slightly, just edit the labels."
+      ],
+      notes_warning: "This planner is a helper, not a replacement for checking the My Fairy screen."
+    },
+    fr: {
+      title_main: "Planificateur 10 compétences – Jardin des fées",
+      title_suffix: "Hyrule Warriors: Definitive Edition",
+      subtitle_main: "Plan de repas pour viser les 10 compétences clés et débloquer le reste.",
+      card1_title: "1 · Configuration de la fée",
+      card1_subtitle: "Utilisez l’élément et les valeurs affichés en jeu.",
+      label_element: "Élément",
+      label_level: "Niveau de départ (info)",
+      label_traits: "Valeurs de personnalité actuelles",
+      hint_traits: "Recopiez exactement les valeurs du Jardin des fées. Laissez 0 pour les traits absents.",
+      card2_title: "2 · Compétences du noyau (route 10 compétences)",
+      card2_subtitle: "Ce set permet de couvrir toutes les autres Compétences de location.",
+      btn_edit_skills: "Modifier",
+      hint_skills: "Configuration basée sur la route classique Magic/Special/Wall+/Drops+. Ajustez si besoin.",
+      label_skills_json: "Modifier les compétences (JSON)",
+      btn_apply_skills: "Valider les compétences",
+      hint_skills_json: "Gardez les seuils officiels du jeu. Ne modifiez que si vous les connaissez.",
+      card3_title: "3 · Nourriture utilisée",
+      card3_subtitle: "Exemples de plats efficaces pour monter les traits.",
+      btn_edit_foods: "Modifier",
+      label_foods_json: "Modifier les plats (JSON)",
+      btn_apply_foods: "Valider les plats",
+      hint_foods_json: "Les bonus se cumulent à chaque repas. Ajoutez vos propres plats si besoin.",
+      warn_foods: "Valeurs indicatives. Remplacez par les chiffres de votre guide ou de la liste officielle.",
+      card4_title: "4 · Générer le plan",
+      card4_subtitle: "Séquence de plats pour atteindre les prérequis choisis.",
+      btn_generate: "Générer le plan",
+      hint_plan: "Compare vos traits aux objectifs et propose une séquence de repas peu gaspilleuse.",
+      plan_initial: "Saisissez vos traits, gardez les 10 cochés, touchez Générer le plan.",
+      err_select_skill: "Sélectionnez au moins une compétence.",
+      err_no_path: "Aucun plan correct avec ces plats. Ajoutez des plats plus forts ou corrigez les valeurs.",
+      plan_targets_title: "Objectifs de personnalité des compétences choisies",
+      plan_feed_title: "Séquence de repas",
+      plan_all_met: "Vous atteignez déjà tous les prérequis choisis.",
+      plan_still_need: "Il manque encore",
+      plan_done: "Objectifs atteints. Apprenez les compétences à l’École. 🎉",
+      plan_partial_warn: "Arrêt anticipé : données de plats manquantes ou imprécises.",
+      plan_tip: "Après chaque rafraîchissement, mettez à jour vos traits et relancez avec les mêmes 10 compétences.",
+      notes_title: "Remarques",
+      notes_subtitle: "Fondé sur la route classique 10 compétences.",
+      notes_lines: [
+        "Les 10 compétences listées suffisent pour tout débloquer à force de rafraîchir.",
+        "Vérifiez toujours les seuils dans l’École pour confirmer.",
+        "Remplacez la liste de plats par ceux que vous farmez réellement.",
+        "Décochez temporairement une compétence si vous visez un objectif partiel.",
+        "Les noms FR ici suivent le style du jeu; adaptez si votre version affiche un libellé différent."
+      ],
+      notes_warning: "Outil d’aide uniquement : la référence reste l’écran du Jardin des fées."
+    }
+  };
+
+  let currentLang = "en";
+  const TRAITS = [
+    "Sparkly","Relaxed","Valiant","Dizzy","Friendly",
+    "Aspiring","Resolute","Shrewd","Eager","Smiley"
+  ];
+
+  // 10-skill core route (EN/FR names + thresholds)
+  // Thresholds from community / wiki info for HWDE.
+  let CORE_SKILLS = [
+    {
+      id: "magic_fountain_plus",
+      name_en: "Magic Fountain+",
+      name_fr: "Fontaine magique+",
+      requirements: { Aspiring: 200, Relaxed: 225, Valiant: 225, Eager: 225, Shrewd: 255 }
+    },
+    {
+      id: "special_fountain_plus",
+      name_en: "Special Fountain+",
+      name_fr: "Fontaine spéciale+",
+      requirements: { Aspiring: 200, Valiant: 225, Resolute: 225, Eager: 225, Sparkly: 255 }
+    },
+    {
+      id: "wall_of_water_plus",
+      name_en: "Wall of Water+",
+      name_fr: "Mur d’eau+",
+      requirements: { Valiant: 200, Aspiring: 200, Sparkly: 225, Smiley: 225 }
+    },
+    {
+      id: "xp_master_plus",
+      name_en: "XP Master+",
+      name_fr: "Maître d'EXP+",
+      requirements: { Sparkly: 200, Eager: 200, Dizzy: 225, Resolute: 225 }
+    },
+    {
+      id: "rupee_master_plus",
+      name_en: "Rupee Master+",
+      name_fr: "Maître des rubis+",
+      requirements: { Dizzy: 200, Friendly: 200, Shrewd: 200, Relaxed: 225 }
+    },
+    {
+      id: "food_master_plus",
+      name_en: "Food Master+",
+      name_fr: "Maître des plats+",
+      requirements: { Valiant: 200, Relaxed: 225, Aspiring: 225, Resolute: 225, Eager: 255 }
+    },
+    {
+      id: "material_master_plus",
+      name_en: "Material Master+",
+      name_fr: "Maître des matériaux+",
+      requirements: { Smiley: 200, Relaxed: 225, Valiant: 225, Aspiring: 225, Resolute: 255 }
+    },
+    {
+      id: "weapon_master_plus",
+      name_en: "Weapon Master+",
+      name_fr: "Maître des armes+",
+      requirements: { Dizzy: 200, Relaxed: 225, Shrewd: 225, Eager: 225, Friendly: 255 }
+    },
+    {
+      id: "extreme_crush_plus",
+      name_en: "Extreme Crush+",
+      name_fr: "Écrasement extrême+",
+      requirements: { Resolute: 200, Sparkly: 225, Valiant: 225, Friendly: 225, Smiley: 255 }
+    },
+    {
+      id: "glass_cannon",
+      name_en: "Glass Cannon",
+      name_fr: "Canon de verre",
+      requirements: { Sparkly: 200, Resolute: 200, Friendly: 225, Dizzy: 225 }
+    }
+  ];
+
+  // Sample foods: not exhaustive, tuned to be useful.
+  // Adjust numbers if you have a precise table.
+  let FOODS = [
+    {
+      name_en: "Delicious Pumpkin Soup",
+      name_fr: "Délicieuse soupe à la citrouille",
+      element: "Fire",
+      levelGain: 3,
+      traits: { Smiley: 12, Aspiring: 4, Friendly: 4 }
+    },
+    {
+      name_en: "Delicious Elixir Soup",
+      name_fr: "Délicieuse soupe d’élixir",
+      element: "Fire",
+      levelGain: 3,
+      traits: { Valiant: 6, Friendly: 6, Smiley: 8 }
+    },
+    {
+      name_en: "Delicious Life Tree Fruit",
+      name_fr: "Délicieux fruit de l’Arbre de vie",
+      element: "Light",
+      levelGain: 3,
+      traits: { Aspiring: 6, Smiley: 8, Sparkly: 4 }
+    },
+    {
+      name_en: "Delicious Deku Nut",
+      name_fr: "Délicieuse noix Mojo",
+      element: "Lightning",
+      levelGain: 3,
+      traits: { Valiant: 10, Resolute: 4 }
+    },
+    {
+      name_en: "Delicious Odd Mushroom",
+      name_fr: "Délicieux champignon étrange",
+      element: "Darkness",
+      levelGain: 3,
+      traits: { Valiant: 6, Aspiring: 4, Smiley: 6 }
+    },
+    {
+      name_en: "Delicious Fish Pie",
+      name_fr: "Délicieux pâté de poisson",
+      element: "Water",
+      levelGain: 3,
+      traits: { Friendly: 8, Relaxed: 6 }
+    },
+    {
+      name_en: "Delicious Fruit Pie",
+      name_fr: "Délicieux pâté de fruits",
+      element: "Light",
+      levelGain: 3,
+      traits: { Sparkly: 8, Eager: 6 }
+    },
+    {
+      name_en: "Delicious Mushroom Omelette",
+      name_fr: "Délicieuse omelette aux champignons",
+      element: "Any",
+      levelGain: 3,
+      traits: { Shrewd: 8, Eager: 6 }
+    },
+    {
+      name_en: "Gold Gratitude Crystal",
+      name_fr: "Cristal de gratitude doré",
+      element: "Any",
+      levelGain: 0,
+      traits: {
+        Sparkly: 8, Relaxed: 8, Valiant: 8, Dizzy: 8, Friendly: 8,
+        Aspiring: 8, Resolute: 8, Shrewd: 8, Eager: 8, Smiley: 8
+      }
+    }
+  ];
+
+  const traitsGrid = document.getElementById("traits-grid");
+  const skillsList = document.getElementById("skills-list");
+  const foodsList = document.getElementById("foods-list");
+  const planOutput = document.getElementById("plan-output");
+
+  function initTraitsInputs() {
+    traitsGrid.innerHTML = "";
+    TRAITS.forEach(tr => {
+      const wrap = document.createElement("div");
+      wrap.className = "trait-input";
+      const label = document.createElement("span");
+      label.textContent = tr;
+      const input = document.createElement("input");
+      input.type = "number";
+      input.min = "0";
+      input.max = "255";
+      input.value = "0";
+      input.dataset.trait = tr;
+      wrap.appendChild(label);
+      wrap.appendChild(input);
+      traitsGrid.appendChild(wrap);
+    });
+  }
+
+  function localizeElementLabel(el) {
+    const map = {
+      Fire: { en: "Fire", fr: "Feu" },
+      Water: { en: "Water", fr: "Eau" },
+      Lightning: { en: "Lightning", fr: "Foudre" },
+      Light: { en: "Light", fr: "Lumière" },
+      Darkness: { en: "Darkness", fr: "Ténèbres" },
+      Any: { en: "Any", fr: "Tous" }
+    };
+    return (map[el] || { en: el, fr: el })[currentLang] || el;
+  }
+
+  function renderSkills() {
+    skillsList.innerHTML = "";
+    CORE_SKILLS.forEach((s, idx) => {
+      const row = document.createElement("div");
+      row.className = "skill-item";
+
+      const left = document.createElement("div");
+      left.className = "skill-item-left";
+
+      const name = document.createElement("div");
+      name.className = "skill-name";
+      name.textContent =
+        currentLang === "fr"
+          ? (s.name_fr || s.name_en || s.id)
+          : (s.name_en || s.name_fr || s.id);
+
+      const reqs = document.createElement("div");
+      reqs.className = "skill-reqs";
+      const parts = [];
+      Object.entries(s.requirements || {}).forEach(([trait, val]) => {
+        parts.push(`${trait.slice(0,3)} ≥ ${val}`);
+      });
+      reqs.textContent = parts.join("  •  ");
+
+      left.appendChild(name);
+      left.appendChild(reqs);
+
+      const cb = document.createElement("div");
+      cb.className = "checkbox";
+      cb.dataset.index = idx;
+      cb.dataset.checked = "true";
+      cb.addEventListener("click", () => {
+        cb.dataset.checked =
+          cb.dataset.checked === "true" ? "false" : "true";
+      });
+
+      row.appendChild(left);
+      row.appendChild(cb);
+      skillsList.appendChild(row);
+    });
+
+    document.getElementById("skills-json").value =
+      JSON.stringify(CORE_SKILLS, null, 2);
+  }
+
+  function renderFoods() {
+    foodsList.innerHTML = "";
+    FOODS.forEach(f => {
+      const row = document.createElement("div");
+      row.className = "food-item";
+
+      const left = document.createElement("div");
+      const nm = document.createElement("div");
+      nm.className = "food-name";
+      nm.textContent =
+        currentLang === "fr"
+          ? (f.name_fr || f.name_en)
+          : (f.name_en || f.name_fr);
+
+      const tags = document.createElement("div");
+      tags.className = "food-tags";
+      const tParts = [];
+      tParts.push(localizeElementLabel(f.element));
+      tParts.push(`+${f.levelGain} Lv`);
+      const boosts = Object.entries(f.traits || {})
+        .filter(([_, v]) => v > 0)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3)
+        .map(([k, v]) => `${k.slice(0,3)}+${v}`);
+      if (boosts.length) tParts.push(boosts.join(" · "));
+      tags.textContent = tParts.join("  •  ");
+
+      left.appendChild(nm);
+      left.appendChild(tags);
+      row.appendChild(left);
+      foodsList.appendChild(row);
+    });
+
+    document.getElementById("foods-json").value =
+      JSON.stringify(FOODS, null, 2);
+  }
+
+  function getCurrentTraits() {
+    const res = {};
+    traitsGrid.querySelectorAll("input[data-trait]").forEach(inp => {
+      res[inp.dataset.trait] = Number(inp.value) || 0;
+    });
+    return res;
+  }
+
+  function getSelectedSkills() {
+    const arr = [];
+    skillsList.querySelectorAll(".checkbox").forEach(cb => {
+      if (cb.dataset.checked === "true") {
+        const i = Number(cb.dataset.index);
+        if (!isNaN(i) && CORE_SKILLS[i]) arr.push(CORE_SKILLS[i]);
+      }
+    });
+    return arr;
+  }
+
+  function mergeRequirements(skills) {
+    const t = {};
+    skills.forEach(s => {
+      Object.entries(s.requirements || {}).forEach(([trait, val]) => {
+        if (!t[trait] || val > t[trait]) t[trait] = val;
+      });
+    });
+    return t;
+  }
+
+  function allMet(current, targets) {
+    return Object.keys(targets).every(
+      tr => (current[tr] || 0) >= targets[tr]
+    );
+  }
+
+  function computePlan() {
+    const fairyElement = document.getElementById("fairy-element").value;
+    const current = getCurrentTraits();
+    const selected = getSelectedSkills();
+    const t = I18N[currentLang];
+
+    if (!selected.length) return { error: t.err_select_skill };
+
+    const targets = mergeRequirements(selected);
+    if (allMet(current, targets)) {
+      return { steps: [], targets, alreadyMet: true };
+    }
+
+    const steps = [];
+    const live = { ...current };
+    const safety = 400;
+    let it = 0;
+
+    while (!allMet(live, targets) && it < safety) {
+      it++;
+      let bestFood = null;
+      let bestScore = 0;
+
+      FOODS.forEach(food => {
+        let score = 0;
+        let penalty = 0;
+        const match =
+          (food.element === fairyElement || food.element === "Any")
+            ? 1.08 : 1.0;
+
+        for (const [trait, delta] of Object.entries(food.traits || {})) {
+          const need = (targets[trait] || 0) - (live[trait] || 0);
+          if (need > 0 && delta > 0) {
+            score += Math.min(delta, need);
+          } else if (delta < 0 && need > 0) {
+            penalty += Math.abs(delta) * 1.5;
+          } else if (delta > 0 && need <= 0) {
+            penalty += delta * 0.25;
+          }
+        }
+
+        score = score * match - penalty;
+        if (score > bestScore + 0.0001) {
+          bestScore = score;
+          bestFood = food;
+        }
+      });
+
+      if (!bestFood || bestScore <= 0) break;
+
+      Object.entries(bestFood.traits || {}).forEach(([trait, delta]) => {
+        live[trait] = (live[trait] || 0) + delta;
+      });
+
+      steps.push({ food: bestFood, traitsAfter: { ...live } });
+      if (allMet(live, targets)) break;
+    }
+
+    if (!steps.length) return { error: t.err_no_path };
+
+    if (!allMet(live, targets)) {
+      return {
+        partial: true,
+        steps,
+        targets,
+        currentEnd: live,
+        warning: t.plan_partial_warn
+      };
+    }
+
+    return { steps, targets, currentEnd: live };
+  }
+
+  function renderPlan(initialOnly = false) {
+    const t = I18N[currentLang];
+    if (initialOnly) {
+      planOutput.innerHTML = `<p>${t.plan_initial}</p>`;
+      return;
+    }
+
+    const res = computePlan();
+    planOutput.innerHTML = "";
+
+    if (res.error) {
+      const p = document.createElement("p");
+      p.style.color = "var(--danger)";
+      p.textContent = res.error;
+      planOutput.appendChild(p);
+      return;
+    }
+
+    const targets = res.targets || {};
+
+    const head = document.createElement("div");
+    head.innerHTML = `<h3>${t.plan_targets_title}</h3>`;
+    const p = document.createElement("p");
+    p.innerHTML = Object.entries(targets)
+      .map(([tr, v]) => `<strong>${tr}</strong> ≥ ${v}`)
+      .join(" &nbsp;•&nbsp; ");
+    head.appendChild(p);
+    planOutput.appendChild(head);
+
+    if (res.alreadyMet) {
+      const msg = document.createElement("p");
+      msg.style.color = "var(--accent)";
+      msg.textContent = t.plan_all_met;
+      planOutput.appendChild(msg);
+      return;
+    }
+
+    const title = document.createElement("h3");
+    title.textContent = t.plan_feed_title;
+    planOutput.appendChild(title);
+
+    res.steps.forEach((step, i) => {
+      const div = document.createElement("div");
+      div.className = "step";
+
+      const left = document.createElement("div");
+      const fname =
+        currentLang === "fr"
+          ? (step.food.name_fr || step.food.name_en)
+          : (step.food.name_en || step.food.name_fr);
+
+      left.innerHTML =
+        `<strong>${i + 1}.</strong> ` +
+        `${currentLang === "fr" ? "Donnez" : "Feed"} ` +
+        `<strong>${fname}</strong>` +
+        ` <span class="badge-soft">${localizeElementLabel(step.food.element)}</span>`;
+
+      const meta = document.createElement("span");
+      meta.className = "meta";
+
+      const deficits = Object.entries(targets)
+        .map(([tr, v]) => {
+          const need = v - (step.traitsAfter[tr] || 0);
+          return need > 0 ? `${tr.slice(0,3)}: -${need}` : null;
+        })
+        .filter(Boolean);
+
+      if (deficits.length) {
+        meta.textContent =
+          `${t.plan_still_need}: ${deficits.slice(0, 3).join(" • ")}`;
+      } else {
+        meta.textContent = t.plan_done;
+      }
+
+      div.appendChild(left);
+      div.appendChild(meta);
+      planOutput.appendChild(div);
+    });
+
+    if (res.partial) {
+      const warn = document.createElement("div");
+      warn.className = "tag-warn";
+      warn.innerHTML = `<span class="icon">⚠</span>${res.warning}`;
+      planOutput.appendChild(warn);
+    } else {
+      const done = document.createElement("p");
+      done.style.marginTop = "3px";
+      done.style.color = "var(--accent)";
+      done.textContent = t.plan_done;
+      planOutput.appendChild(done);
+    }
+
+    const tip = document.createElement("p");
+    tip.className = "hint";
+    tip.style.marginTop = "3px";
+    tip.textContent = t.plan_tip;
+    planOutput.appendChild(tip);
+  }
+
+  function applyLanguage() {
+    const t = I18N[currentLang];
+    document.documentElement.lang = currentLang;
+
+    document.getElementById("title-main").textContent = t.title_main;
+    document.getElementById("title-suffix").textContent = t.title_suffix;
+    document.getElementById("subtitle-main").textContent = t.subtitle_main;
+
+    document.getElementById("card1-title").textContent = t.card1_title;
+    document.getElementById("card1-subtitle").textContent = t.card1_subtitle;
+    document.getElementById("label-element").textContent = t.label_element;
+    document.getElementById("label-level").textContent = t.label_level;
+    document.getElementById("label-traits").textContent = t.label_traits;
+    document.getElementById("hint-traits").textContent = t.hint_traits;
+
+    document.getElementById("card2-title").textContent = t.card2_title;
+    document.getElementById("card2-subtitle").textContent = t.card2_subtitle;
+    document.getElementById("btn-edit-skills-label").textContent = t.btn_edit_skills;
+    document.getElementById("hint-skills").textContent = t.hint_skills;
+    document.getElementById("label-skills-json").textContent = t.label_skills_json;
+    document.getElementById("btn-apply-skills-label").textContent = t.btn_apply_skills;
+    document.getElementById("hint-skills-json").textContent = t.hint_skills_json;
+
+    document.getElementById("card3-title").textContent = t.card3_title;
+    document.getElementById("card3-subtitle").textContent = t.card3_subtitle;
+    document.getElementById("btn-edit-foods-label").textContent = t.btn_edit_foods;
+    document.getElementById("label-foods-json").textContent = t.label_foods_json;
+    document.getElementById("btn-apply-foods-label").textContent = t.btn_apply_foods;
+    document.getElementById("hint-foods-json").textContent = t.hint_foods_json;
+    document.getElementById("warn-foods").innerHTML =
+      `<span class="icon">⚠</span>${t.warn_foods}`;
+
+    document.getElementById("card4-title").textContent = t.card4_title;
+    document.getElementById("card4-subtitle").textContent = t.card4_subtitle;
+    document.getElementById("btn-generate-label").textContent = t.btn_generate;
+    document.getElementById("hint-plan").textContent = t.hint_plan;
+
+    document.getElementById("notes-title").textContent = t.notes_title;
+    document.getElementById("notes-subtitle").textContent = t.notes_subtitle;
+    const nl = document.getElementById("notes-list");
+    nl.innerHTML = "";
+    t.notes_lines.forEach(line => {
+      const li = document.createElement("li");
+      li.textContent = line;
+      nl.appendChild(li);
+    });
+    document.getElementById("notes-warning").innerHTML =
+      `<span class="icon">📌</span>${t.notes_warning}`;
+
+    const elSel = document.getElementById("fairy-element");
+    Array.from(elSel.options).forEach(opt => {
+      opt.textContent = localizeElementLabel(opt.value);
+    });
+
+    renderSkills();
+    renderFoods();
+    renderPlan(true);
+  }
+
+  document.getElementById("edit-skills-toggle").onclick = () => {
+    const ed = document.getElementById("skills-editor");
+    ed.style.display = ed.style.display === "none" ? "block" : "none";
+  };
+  document.getElementById("skills-apply").onclick = () => {
+    try {
+      const parsed = JSON.parse(
+        document.getElementById("skills-json").value
+      );
+      if (!Array.isArray(parsed)) throw new Error("Skills JSON must be an array.");
+      CORE_SKILLS = parsed;
+      renderSkills();
+    } catch (e) {
+      alert("Skill JSON error: " + e.message);
+    }
+  };
+
+  document.getElementById("edit-foods-toggle").onclick = () => {
+    const ed = document.getElementById("foods-editor");
+    ed.style.display = ed.style.display === "none" ? "block" : "none";
+  };
+  document.getElementById("foods-apply").onclick = () => {
+    try {
+      const parsed = JSON.parse(
+        document.getElementById("foods-json").value
+      );
+      if (!Array.isArray(parsed)) throw new Error("Foods JSON must be an array.");
+      FOODS = parsed;
+      renderFoods();
+    } catch (e) {
+      alert("Food JSON error: " + e.message);
+    }
+  };
+
+  document.getElementById("generate-plan").onclick = () => {
+    renderPlan(false);
+  };
+
+  document.querySelectorAll(".lang-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const lang = btn.dataset.lang;
+      if (lang && lang !== currentLang) {
+        currentLang = lang;
+        document.querySelectorAll(".lang-btn")
+          .forEach(b => b.classList.toggle("active", b === btn));
+        applyLanguage();
+      }
+    });
+  });
+
+  initTraitsInputs();
+  applyLanguage();
+</script>
+</body>
+</html>
