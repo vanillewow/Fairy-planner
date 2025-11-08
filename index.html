@@ -210,38 +210,17 @@
 </div>
 
 <script>
-/*
-  DATA MODEL
+// =======================
+// Core configuration
+// =======================
 
-  - Traits are fixed 10:
-    Sparkly, Relaxed, Valiant, Dizzy, Friendly,
-    Aspiring, Resolute, Shrewd, Eager, Smiley
-
-  - Each food entry:
-    {
-      key: "weird-egg-bronze",
-      base: "Weird Egg",
-      name_en: "Weird Egg",
-      name_fr: "Œuf étrange",
-      rarity: "bronze" | "silver" | "gold",
-      rarity_label_en: "bronze" / "Tasty (silver)" / "Delicious (gold)",
-      rarity_label_fr: "bronze" / "Savoureux (argent)" / "Délicieux (or)",
-      type: "Feast" | "Drink" | "Plant" | "Fish" | "Weird",
-      element: "Fire" | "Water" | "Lightning" | "Light" | "Darkness" | "Neutral" | "Earth" | "Wind",
-      traits: { Sparkly: +/-, ..., Smiley: +/- }
-    }
-
-  - Values are transcribed from the GameFAQs "My Fairy Unlockables → Dining Room" table
-    (1st row = bronze, 2nd = silver/Tasty, 3rd = gold/Delicious). Gratitude Crystals are intentionally excluded.
-*/
-
-// base helpers
+// Trait order used by the table & this planner
 const TRAITS = [
   "Sparkly","Relaxed","Valiant","Dizzy","Friendly",
   "Aspiring","Resolute","Shrewd","Eager","Smiley"
 ];
 
-// Personality labels = official-ish localized names mapping onto traits (not literal translations).
+// Personality labels mapped to traits
 const PERSONALITY_DEF = [
   { trait: "Sparkly",  en: "Sparkly",   fr: "Étincelante" },
   { trait: "Relaxed",  en: "Soft",      fr: "Douce" },
@@ -252,243 +231,56 @@ const PERSONALITY_DEF = [
   { trait: "Resolute", en: "Staunch",   fr: "Résolue" },
   { trait: "Shrewd",   en: "Fleet",     fr: "Rapide" },
   { trait: "Eager",    en: "Eager",     fr: "Impatiente" },
-  { trait: "Smiley",   en: "Cheerful",  fr: "Joyeuse" },
+  { trait: "Smiley",   en: "Cheerful",  fr: "Joyeuse" }
 ];
 
-// Build FOODS from table (main + weird foods, without Gratitude Crystals).
-// Note: if any single entry looks off vs your reference, adjust that one line.
-const FOODS = [
-  // ===== FEASTS =====
-  // Weird Egg
-  f("Weird Egg","Œuf étrange","Feast","Neutral",
-    [2,0,2,0,-1,0,2,0,0,0],
-    [5,-2,2,0,0,0,5,0,2,0],
-    [10,-5,5,-2,2,0,5,0,2,0]),
-  // All-purpose Bait
-  f("All-purpose Bait","Appât universel","Feast","Light",
-    [0,0,-1,0,2,0,2,0,0,2],
-    [2,0,0,0,5,0,2,0,-2,5],
-    [2,0,2,0,5,-2,5,-2,-5,10]),
-  // Ordon Goat Cheese
-  f("Ordon Goat Cheese","Fromage de chèvre d’Ordon","Feast","Darkness",
-    [0,2,2,0,0,0,2,0,-1,0],
-    [0,2,5,-2,0,2,5,0,0,0],
-    [-2,5,10,-5,0,2,5,-2,2,0]),
-  // Meat
-  f("Meat","Viande","Feast","Fire",
-    [0,-1,2,0,0,0,2,2,0,0],
-    [0,0,5,-2,2,0,0,5,2,0],
-    [0,2,10,-5,2,0,-2,5,5,-2]),
-
-  // ===== DRINKS =====
-  // Lon Lon Milk
-  f("Lon Lon Milk","Lait de Lon Lon","Drink","Light",
-    [2,0,-1,0,0,2,0,2,0,0],
-    [2,0,0,0,2,0,5,-2,5,0],
-    [5,-2,2,0,2,0,10,-5,5,-2]),
-  // Pumpkin Soup
-  f("Pumpkin Soup","Soupe à la citrouille","Drink","Fire",
-    [0,0,0,-1,2,0,2,0,2,0],
-    [2,0,0,0,2,0,5,-2,5,0],
-    [2,0,0,2,5,-2,10,-5,5,-2]),
-  // Sacred Water
-  f("Sacred Water","Eau sacrée","Drink","Light",
-    [2,0,0,-1,2,0,2,0,0,0],
-    [5,-2,0,0,5,0,2,0,2,0],
-    [10,-5,0,2,5,-2,5,-2,2,0]),
-  // Elixir Soup
-  f("Elixir Soup","Soupe Élixir","Drink","Fire",
-    [0,0,-1,0,2,0,2,0,0,2],
-    [2,0,0,0,2,0,2,0,-2,5],
-    [2,0,2,0,5,2,5,-2,-5,10]),
-  // Great Fairy's Tears
-  f("Great Fairy's Tears","Larmes de la grande fée","Drink","Light",
-    [0,2,0,0,0,2,2,0,-1,0],
-    [0,5,2,0,-2,5,2,0,0,0],
-    [-2,5,2,0,-5,10,5,-2,2,0]),
-  // Chateau Romani
-  f("Chateau Romani","Château Romani","Drink","Light",
-    [0,0,2,0,2,0,0,2,-1,0],
-    [0,2,5,-2,5,0,0,2,0,0],
-    [0,2,10,-5,5,-2,-2,5,2,0]),
-  // Bottled Water
-  f("Bottled Water","Eau en bouteille","Drink","Water",
-    [0,2,-1,0,2,0,0,2,0,0],
-    [0,5,0,0,5,-2,0,2,2,0],
-    [-2,5,2,0,10,-5,-2,5,2,0]),
-  // Hot Spring Water
-  f("Hot Spring Water","Eau thermale","Drink","Fire",
-    [0,2,0,0,-1,0,0,2,2,0],
-    [2,5,2,0,0,0,0,2,5,0],
-    [-5,10,2,0,2,0,-2,5,5,-2]),
-
-  // ===== PLANTS / SEEDS =====
-  // Odd Mushroom
-  f("Odd Mushroom","Champignon étrange","Plant","Darkness",
-    [0,0,2,0,2,0,2,0,-1,0],
-    [2,0,5,-2,2,0,5,0,0,0],
-    [2,0,10,-5,5,-2,5,-2,2,0]),
-  // Deku Nut
-  f("Deku Nut","Noix Mojo","Plant","Light",
-    [1,0,2,0,2,0,2,0,0,0],
-    [0,0,5,0,5,-2,2,0,2,0],
-    [2,0,5,-2,10,-5,5,-2,2,0]),
-  // Magic Beans
-  f("Magic Beans","Haricots magiques","Plant","Light",
-    [2,0,-1,0,2,0,0,0,2,0],
-    [5,0,0,0,5,-2,2,0,2,0],
-    [5,-2,2,0,10,-5,2,0,5,-2]),
-  // Life Tree Fruit
-  f("Life Tree Fruit","Fruit de l’Arbre de vie","Plant","Light",
-    [0,0,0,-1,2,0,2,0,2,0],
-    [2,0,0,0,5,-2,5,0,2,0],
-    [2,0,0,2,10,-5,5,-2,5,-2]),
-  // Light Fruit
-  f("Light Fruit","Fruit de lumière","Plant","Light",
-    [2,0,0,-1,2,0,0,0,2,0],
-    [5,-2,0,0,5,0,2,0,2,0],
-    [10,-5,0,2,5,-2,2,0,5,-2]),
-  // Stamina Fruit
-  f("Stamina Fruit","Fruit d’endurance","Plant","Lightning",
-    [2,0,0,0,-1,0,2,0,2,0],
-    [5,0,0,2,0,0,5,-2,2,0],
-    [5,-2,0,2,2,0,10,-5,5,-2]),
-  // Water Fruit
-  f("Water Fruit","Fruit d’eau","Plant","Water",
-    [-1,0,0,2,2,0,2,0,0,0],
-    [0,0,0,5,2,0,5,-2,2,0],
-    [2,0,-2,5,5,-2,10,-5,2,0]),
-  // Hyoi Pear
-  f("Hyoi Pear","Poire mojo","Plant","Wind",
-    [-1,0,2,0,2,0,0,0,0,2],
-    [0,0,5,0,2,0,2,0,-2,5],
-    [2,0,5,-2,5,-2,2,0,-5,10]),
-  // Carrot
-  f("Carrot","Carotte","Plant","Lightning",
-    [-1,0,2,0,0,0,0,2,0,2],
-    [0,0,2,0,2,0,-2,5,0,5],
-    [2,0,5,-2,2,0,-5,10,-2,5]),
-  // Ember Seeds
-  f("Ember Seeds","Graines braise","Plant","Fire",
-    [0,0,2,0,-1,0,0,2,2,0],
-    [0,2,5,-2,0,0,2,5,0,0],
-    [0,2,10,-5,2,0,-2,5,5,-2]),
-  // Scent Seeds
-  f("Scent Seeds","Graines parfumées","Plant","Darkness",
-    [0,0,2,0,2,0,0,2,-1,0],
-    [0,2,5,0,2,0,-2,5,0,0],
-    [0,2,5,-2,5,-2,-5,10,2,0]),
-  // Pegasus Seeds
-  f("Pegasus Seeds","Graines Pégase","Plant","Lightning",
-    [0,-1,0,0,2,0,0,2,2,0],
-    [0,0,2,0,2,0,-2,5,5,0],
-    [0,2,2,0,5,-2,-5,10,5,-2]),
-  // Gale Seeds
-  f("Gale Seeds","Graines ouragan","Plant","Wind",
-    [0,2,2,0,2,0,0,0,-1,0],
-    [0,2,5,-2,5,0,0,2,0,0],
-    [-2,5,10,-5,5,-2,0,2,2,0]),
-  // Mystery Seeds
-  f("Mystery Seeds","Graines mystère","Plant","Light",
-    [0,2,2,0,2,0,0,-1,0,0],
-    [0,5,2,0,5,-2,0,0,2,0],
-    [-2,5,5,-2,10,-5,0,2,2,0]),
-  // Pumpkin
-  f("Pumpkin","Citrouille","Plant","Earth",
-    [-1,0,0,0,2,0,2,0,2,0],
-    [0,0,0,2,2,0,2,0,5,-2],
-    [2,0,0,2,5,-2,5,-2,10,-5]),
-
-  // ===== FISH =====
-  // Greengill
-  f("Greengill","Vertelette","Fish","Water",
-    [0,0,-1,0,0,2,2,0,2,0],
-    [0,2,0,0,-2,5,2,0,5,0],
-    [0,2,2,0,-5,10,5,-2,5,-2]),
-  // Ordon Catfish
-  f("Ordon Catfish","Silure d’Ordon","Fish","Water",
-    [0,2,2,0,0,2,-1,0,0,0],
-    [-2,5,5,0,0,2,0,0,2,0],
-    [-5,10,5,-2,-2,5,2,0,2,0]),
-  // Hyrule Bass
-  f("Hyrule Bass","Perche d’Hyrule","Fish","Water",
-    [0,2,2,0,0,0,2,0,-1,0],
-    [-2,5,2,0,0,2,5,0,0,0],
-    [-5,10,5,-2,0,2,5,-2,2,0]),
-  // Hylian Pike
-  f("Hylian Pike","Brochet d’Hyrule","Fish","Water",
-    [0,2,0,0,0,-1,2,0,2,0],
-    [0,2,2,0,0,0,5,-2,5,0],
-    [-2,5,2,0,0,2,10,-5,5,-2]),
-  // Reekfish
-  f("Reekfish","Poisson-puant","Fish","Water",
-    [0,2,2,0,0,-1,2,0,0,0],
-    [0,2,5,-2,0,0,5,0,2,0],
-    [-2,5,10,-5,0,2,5,-2,2,0]),
-  // Hylian Loach
-  f("Hylian Loach","Loche d’Hyrule","Fish","Water",
-    [0,2,-1,0,0,2,0,0,2,0],
-    [0,2,0,0,0,5,2,0,5,-2],
-    [-2,5,2,0,-2,5,2,0,10,-5]),
-
-  // ===== WEIRD (no Gratitude Crystals) =====
-  // Mushroom Spores
-  f("Mushroom Spores","Spores de champignon","Weird","Darkness",
-    [2,0,0,2,2,0,-1,0,0,0],
-    [5,-2,0,2,5,0,0,0,2,0],
-    [10,-5,-2,5,5,-2,2,0,2,0]),
-  // Skullfish
-  f("Skullfish","Poisson-squelette","Weird","Darkness",
-    [0,-1,2,0,0,2,2,0,0,0],
-    [0,0,5,-2,0,2,5,0,2,0],
-    [0,2,10,-5,-2,5,5,-2,2,0]),
-  // Bombfish
-  f("Bombfish","Poisson-bombe","Weird","Fire",
-    [0,-1,2,0,0,2,0,2,0,0],
-    [0,0,5,0,0,2,2,0,5,-2],
-    [0,2,5,-2,0,2,5,-2,10,-5]),
-  // Chu Jelly
-  f("Chu Jelly","Gelée Chu","Weird","Darkness",
-    [0,2,2,0,0,-1,2,0,0,0],
-    [0,5,2,0,0,0,5,-2,2,0],
-    [-2,5,5,-2,0,2,10,-5,2,0]),
-  // Bee Larvae
-  f("Bee Larvae","Larves d’abeille","Weird","Earth",
-    [0,0,2,0,0,-1,2,0,2,0],
-    [0,2,5,0,0,0,2,0,5,-2],
-    [0,2,5,-2,0,2,5,-2,10,-5]),
-  // Rock Sirloin
-  f("Rock Sirloin","Viande de roc","Weird","Earth",
-    [0,-1,2,0,0,0,2,2,0,0],
-    [0,0,5,0,2,0,-2,5,2,0],
-    [0,2,5,-2,2,0,-5,10,5,-2]),
-];
-
-// helper to expand three rarity rows into three entries
-function f(baseEN, baseFR, type, element, bronze, silver, gold) {
-  return [
-    mk(baseEN, baseFR, type, element, "bronze", bronze),
-    mk("Tasty " + baseEN, tastyFR(baseFR), type, element, "silver", silver),
-    mk("Delicious " + baseEN, deliciousFR(baseFR), type, element, "gold", gold),
-  ];
+// Helpers to create localized “Tasty/Delicious”
+function tastyFR(base) {
+  // quick guess; individual items can be corrected if needed
+  if (/\b(Soupe|Eau|Gelée|Larves?|Viande|Perche|Loche|Citrouille)\b/i.test(base)) return base + " savoureuse";
+  if (/[aeiouyéèêëîïôöùûü]$/i.test(base)) return base + " savoureuse";
+  return base + " savoureux";
 }
-function mk(nameEN, nameFR, type, element, rarity, arr) {
-  const key = nameEN.toLowerCase().replace(/[^a-z0-9]+/g,"-")+"-"+rarity;
+function deliciousFR(base) {
+  if (/\b(Soupe|Eau|Gelée|Larves?|Viande|Perche|Loche|Citrouille)\b/i.test(base)) return base + " exquise";
+  if (/[aeiouyéèêëîïôöùûü]$/i.test(base)) return base + " exquise";
+  return base + " exquis";
+}
+
+// Make one food object from one row
+function mkFood(baseEN, baseFR, type, element, rarity, row) {
   const traits = {};
-  TRAITS.forEach((t,i)=>traits[t] = arr[i] || 0);
+  TRAITS.forEach((t, i) => { traits[t] = row[i] || 0; });
+
+  let name_en = baseEN;
+  let name_fr = baseFR;
+  if (rarity === "silver") {
+    name_en = "Tasty " + baseEN;
+    name_fr = tastyFR(baseFR);
+  } else if (rarity === "gold") {
+    name_en = "Delicious " + baseEN;
+    name_fr = deliciousFR(baseFR);
+  }
+
+  const key = (name_en + "-" + rarity)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-");
+
   const rarity_label_en =
-    rarity === "bronze" ? "bronze" :
-    rarity === "silver" ? "Tasty (silver)" :
-    "Delicious (gold)";
+    rarity === "bronze" ? "bronze"
+    : rarity === "silver" ? "Tasty (silver)"
+    : "Delicious (gold)";
+
   const rarity_label_fr =
-    rarity === "bronze" ? "bronze" :
-    rarity === "silver" ? "Savoureux (argent)" :
-    "Délicieux (or)";
+    rarity === "bronze" ? "bronze"
+    : rarity === "silver" ? "Savoureux (argent)"
+    : "Délicieux (or)";
+
   return {
     key,
-    base: nameEN.replace(/^Tasty |^Delicious /,""),
-    name_en: nameEN,
-    name_fr: nameFR,
+    base: baseEN,
+    name_en,
+    name_fr,
     rarity,
     rarity_label_en,
     rarity_label_fr,
@@ -497,30 +289,227 @@ function mk(nameEN, nameFR, type, element, rarity, arr) {
     traits
   };
 }
-function tastyFR(baseFR) {
-  // very lightweight gender handling; tweak manually where needed
-  if (baseFR.match(/euse$|ice$|ette$|ille$|ion$|ée$|ie$|ure$|ouffe$/i)) {
-    return baseFR + " savoureuse";
-  }
-  if (baseFR.match(/e$|ue$|ille$|une$|soupe$/i)) {
-    return baseFR + " savoureuse";
-  }
-  return baseFR + " savoureux";
-}
-function deliciousFR(baseFR) {
-  if (baseFR.match(/euse$|ice$|ette$|ille$|ion$|ée$|ie$|ure$|ouffe$/i)) {
-    return baseFR + " exquise";
-  }
-  if (baseFR.match(/e$|ue$|ille$|une$|soupe$/i)) {
-    return baseFR + " exquise";
-  }
-  return baseFR + " exquis";
+
+// Add 3-tier food from the table: bronze/silver/gold rows
+function addFood(list, baseEN, baseFR, type, element, b, s, g) {
+  list.push(
+    mkFood(baseEN, baseFR, type, element, "bronze", b),
+    mkFood(baseEN, baseFR, type, element, "silver", s),
+    mkFood(baseEN, baseFR, type, element, "gold",   g)
+  );
 }
 
-// flatten FOODS helper
-const ALL_FOODS = FOODS.flat();
+// =======================
+// Foods (from Dining Room table, NO Gratitude Crystals)
+// Numbers are parsed from the GameFAQs My Fairy Unlockables guide.
+// If any one item looks off vs your reference, we can adjust that line.
+// =======================
 
-// --- UI wiring ---
+const FOODS = [];
+
+// --- Feasts ---
+addFood(FOODS, "Weird Egg", "Œuf étrange", "Feast", "Neutral",
+  [ 2,  0,  2,  0, -1,  0,  2,  0,  0,  0],
+  [ 5, -2,  2,  0,  0,  0,  5,  0,  2,  0],
+  [10, -5,  5, -2,  2,  0,  5,  0,  2,  0]);
+
+addFood(FOODS, "All-purpose Bait", "Appât universel", "Feast", "Light",
+  [ 0,  0, -1,  0,  2,  0,  2,  0,  0,  2],
+  [ 2,  0,  0,  0,  5,  0,  2,  0, -2,  5],
+  [ 2,  0,  2,  0,  5, -2,  5, -2, -5, 10]);
+
+addFood(FOODS, "Ordon Goat Cheese", "Fromage de chèvre d’Ordon", "Feast", "Darkness",
+  [ 0,  2,  2,  0,  0,  0,  2,  0, -1,  0],
+  [ 0,  2,  5, -2,  2,  5,  0,  0,  0,  0],
+  [-2,  5, 10, -5,  0,  2,  5, -2,  2,  0]);
+
+addFood(FOODS, "Meat", "Viande", "Feast", "Fire",
+  [ 0, -1,  2,  0,  0,  0,  2,  2,  0,  0],
+  [ 0,  0,  5, -2,  2,  0,  5,  2,  0,  0],
+  [ 0,  2, 10, -5,  2, -2,  5,  5, -2,  0]);
+
+// --- Drinks ---
+addFood(FOODS, "Lon Lon Milk", "Lait de Lon Lon", "Drink", "Light",
+  [ 2,  0, -1,  0,  0,  2,  0,  2,  0,  0],
+  [ 2,  0,  0,  0,  2,  0,  5, -2,  5,  0],
+  [ 5, -2,  2,  0,  2, 10, -5,  5, -2,  0]);
+
+addFood(FOODS, "Pumpkin Soup", "Soupe à la citrouille", "Drink", "Fire",
+  [ 0,  0,  0, -1,  2,  0,  2,  0,  2,  0],
+  [ 2,  0,  0,  0,  2,  0,  5, -2,  5,  0],
+  [ 2,  0,  0,  2,  5, -2, 10, -5,  5, -2]);
+
+addFood(FOODS, "Sacred Water", "Eau sacrée", "Drink", "Light",
+  [ 2,  0,  0, -1,  2,  0,  2,  0,  0,  0],
+  [ 5, -2,  0,  0,  5,  0,  2,  0,  2,  0],
+  [10, -5,  0,  2,  5, -2,  5, -2,  2,  0]);
+
+addFood(FOODS, "Elixir Soup", "Soupe Élixir", "Drink", "Fire",
+  [ 0,  0, -1,  0,  2,  0,  2,  0,  0,  2],
+  [ 2,  0,  0,  0,  2,  0,  2,  0, -2,  5],
+  [ 2,  0,  2,  0,  5,  2,  5, -2, -5, 10]);
+
+addFood(FOODS, "Great Fairy's Tears", "Larmes de la grande fée", "Drink", "Light",
+  [ 0,  2,  0,  0,  0,  2,  2,  0, -1,  0],
+  [ 0,  5,  2,  0, -2,  5,  2,  0,  0,  0],
+  [-2,  5,  2,  0, -5, 10,  5, -2,  2,  0]);
+
+addFood(FOODS, "Chateau Romani", "Château Romani", "Drink", "Light",
+  [ 0,  0,  2,  0,  2,  0,  0,  2, -1,  0],
+  [ 0,  2,  5, -2,  5,  0,  0,  2,  0,  0],
+  [ 0,  2, 10, -5,  5, -2, -2,  5,  2,  0]);
+
+addFood(FOODS, "Bottled Water", "Eau en bouteille", "Drink", "Water",
+  [ 0,  2, -1,  0,  2,  0,  0,  2,  0,  0],
+  [ 0,  5,  0,  0,  5, -2,  0,  2,  2,  0],
+  [-2,  5,  2,  0, 10, -5,  5,  2,  2,  0]);
+
+addFood(FOODS, "Hot Spring Water", "Eau thermale", "Drink", "Fire",
+  [ 0,  2,  0,  0, -1,  0,  0,  2,  2,  0],
+  [ 2,  5,  2,  0,  0,  0,  0,  2,  5,  0],
+  [-5, 10,  2,  0,  2,  0, -2,  5,  5, -2]);
+
+// --- Plants & Seeds ---
+addFood(FOODS, "Odd Mushroom", "Champignon étrange", "Plant", "Darkness",
+  [ 0,  0,  2,  0,  2,  0,  2,  0, -1,  0],
+  [ 2,  0,  5, -2,  2,  0,  5,  0,  0,  0],
+  [ 2,  0, 10, -5,  5, -2,  5, -2,  2,  0]);
+
+addFood(FOODS, "Deku Nut", "Noix Mojo", "Plant", "Light",
+  [ 1,  0,  2,  0,  2,  0,  2,  0,  0,  0],
+  [ 0,  0,  5,  0,  5, -2,  2,  0,  2,  0],
+  [ 2,  0,  5, -2, 10, -5,  2,  0,  2,  0]);
+
+addFood(FOODS, "Magic Beans", "Haricots magiques", "Plant", "Light",
+  [ 2,  0, -1,  0,  2,  0,  0,  0,  2,  0],
+  [ 5,  0,  0,  0,  5, -2,  2,  0,  2,  0],
+  [ 5, -2,  2,  0, 10, -5,  2,  0,  5, -2]);
+
+addFood(FOODS, "Life Tree Fruit", "Fruit de l’Arbre de vie", "Plant", "Light",
+  [ 0,  0,  0, -1,  2,  0,  2,  0,  2,  0],
+  [ 2,  0,  0,  0,  5, -2,  5,  0,  2,  0],
+  [ 2,  0,  0,  2, 10, -5,  5, -2,  5, -2]);
+
+addFood(FOODS, "Light Fruit", "Fruit de lumière", "Plant", "Light",
+  [ 2,  0,  0, -1,  2,  0,  0,  0,  2,  0],
+  [ 5, -2,  0,  0,  5,  0,  2,  0,  2,  0],
+  [10, -5,  0,  2,  5, -2,  2,  0,  5, -2]);
+
+addFood(FOODS, "Stamina Fruit", "Fruit d’endurance", "Plant", "Lightning",
+  [ 2,  0,  0,  0, -1,  0,  2,  0,  2,  0],
+  [ 5,  0,  0,  2,  0,  0,  5, -2,  2,  0],
+  [ 5, -2,  0,  2,  2,  0, 10, -5,  5, -2]);
+
+addFood(FOODS, "Water Fruit", "Fruit d’eau", "Plant", "Water",
+  [-1,  0,  0,  2,  2,  0,  2,  0,  0,  0],
+  [ 0,  0,  0,  5,  2,  0,  5, -2,  2,  0],
+  [ 2,  0, -2,  5,  5, -2, 10, -5,  2,  0]);
+
+addFood(FOODS, "Hyoi Pear", "Poire mojo", "Plant", "Wind",
+  [-1,  0,  2,  0,  2,  0,  0,  0,  0,  2],
+  [ 0,  0,  5,  0,  2,  0,  2,  0, -2,  5],
+  [ 2,  0,  5, -2,  5, -2,  2,  0, -5, 10]);
+
+addFood(FOODS, "Carrot", "Carotte", "Plant", "Lightning",
+  [-1,  0,  2,  0,  0,  0,  0,  2,  0,  2],
+  [ 0,  0,  2,  0,  2,  0, -2,  5,  0,  5],
+  [ 2,  0,  5, -2,  2,  0, -5, 10, -2,  5]);
+
+addFood(FOODS, "Ember Seeds", "Graines braise", "Plant", "Fire",
+  [ 0,  0,  2,  0, -1,  0,  0,  2,  2,  0],
+  [ 0,  2,  5, -2,  0,  0,  2,  5,  0,  0],
+  [ 0,  2, 10, -5,  2,  0, -2,  5,  5, -2]);
+
+addFood(FOODS, "Scent Seeds", "Graines parfumées", "Plant", "Darkness",
+  [ 0,  0,  2,  0,  2,  0,  0,  2, -1,  0],
+  [ 0,  2,  5,  0,  2,  0, -2,  5,  0,  0],
+  [ 0,  2,  5, -2,  5, -2, -5, 10,  2,  0]);
+
+addFood(FOODS, "Pegasus Seeds", "Graines Pégase", "Plant", "Lightning",
+  [ 0, -1,  0,  0,  2,  0,  0,  2,  2,  0],
+  [ 0,  0,  2,  0,  2,  0, -2,  5,  5,  0],
+  [ 0,  2,  2,  0,  5, -2, -5, 10,  5, -2]);
+
+addFood(FOODS, "Gale Seeds", "Graines ouragan", "Plant", "Wind",
+  [ 0,  2,  2,  0,  2,  0,  0,  0, -1,  0],
+  [ 0,  2,  5, -2,  5,  0,  0,  2,  0,  0],
+  [-2,  5, 10, -5,  5, -2,  0,  2,  2,  0]);
+
+addFood(FOODS, "Mystery Seeds", "Graines mystère", "Plant", "Light",
+  [ 0,  2,  2,  0,  2,  0,  0, -1,  0,  0],
+  [ 0,  5,  2,  0,  5, -2,  0,  0,  2,  0],
+  [-2,  5,  5, -2, 10, -5,  0,  2,  2,  0]);
+
+addFood(FOODS, "Pumpkin", "Citrouille", "Plant", "Earth",
+  [-1,  0,  0,  0,  2,  0,  2,  0,  2,  0],
+  [ 0,  0,  0,  2,  2,  0,  2,  0,  5, -2],
+  [ 2,  0,  0,  2,  5, -2,  5, -2, 10, -5]);
+
+// --- Fish ---
+addFood(FOODS, "Greengill", "Vertelette", "Fish", "Water",
+  [ 0, -1,  0,  0,  2,  2,  0,  2,  0,  0],
+  [ 0,  2,  0,  0, -2,  5,  2,  0,  5,  0],
+  [ 0,  2,  2,  0, -5, 10,  5, -2,  5, -2]);
+
+addFood(FOODS, "Ordon Catfish", "Silure d’Ordon", "Fish", "Water",
+  [ 0,  2,  2,  0,  0,  2, -1,  0,  0,  0],
+  [-2,  5,  5,  0,  0,  2,  0,  0,  2,  0],
+  [-5, 10,  5, -2, -2,  5,  2,  0,  2,  0]);
+
+addFood(FOODS, "Hyrule Bass", "Perche d’Hyrule", "Fish", "Water",
+  [ 0,  2,  2,  0,  0,  0,  2,  0, -1,  0],
+  [-2,  5,  2,  0,  0,  2,  5,  0,  0,  0],
+  [-5, 10,  5, -2,  0,  2,  5, -2,  2,  0]);
+
+addFood(FOODS, "Hylian Pike", "Brochet d’Hyrule", "Fish", "Water",
+  [ 0,  2,  0,  0,  0, -1,  2,  0,  2,  0],
+  [ 0,  2,  2,  0,  0,  0,  5, -2,  5,  0],
+  [-2,  5,  2,  0,  0,  2, 10, -5,  5, -2]);
+
+addFood(FOODS, "Reekfish", "Poisson-puant", "Fish", "Water",
+  [ 0,  2,  2,  0,  0, -1,  2,  0,  0,  0],
+  [ 0,  2,  5, -2,  0,  0,  5,  0,  2,  0],
+  [-2,  5, 10, -5,  0,  2,  5, -2,  2,  0]);
+
+addFood(FOODS, "Hylian Loach", "Loche d’Hyrule", "Fish", "Water",
+  [ 0,  2, -1,  0,  0,  2,  0,  0,  2,  0],
+  [ 0,  2,  0,  0,  0,  5,  2,  0,  5, -2],
+  [-2,  5,  2,  0, -2,  5,  2,  0, 10, -5]);
+
+// --- Weird / Special (no Gratitude Crystals) ---
+addFood(FOODS, "Mushroom Spores", "Spores de champignon", "Weird", "Darkness",
+  [ 2,  0,  0,  2,  2,  0, -1,  0,  0,  0],
+  [ 5, -2,  0,  2,  5,  0,  0,  0,  2,  0],
+  [10, -5, -2,  5,  5, -2,  2,  0,  2,  0]);
+
+addFood(FOODS, "Skullfish", "Poisson-squelette", "Weird", "Darkness",
+  [ 0, -1,  2,  0,  0,  2,  2,  0,  0,  0],
+  [ 0,  0,  5, -2,  0,  2,  5,  0,  2,  0],
+  [ 0,  2, 10, -5, -2,  5,  5, -2,  2,  0]);
+
+addFood(FOODS, "Bombfish", "Poisson-bombe", "Weird", "Fire",
+  [ 0, -1,  2,  0,  0,  2,  0,  2,  0,  0],
+  [ 0,  0,  5,  0,  0,  2,  2,  0,  5, -2],
+  [ 0,  2,  5, -2,  0,  2,  5, -2, 10, -5]);
+
+addFood(FOODS, "Chu Jelly", "Gelée Chu", "Weird", "Darkness",
+  [ 0,  2,  2,  0,  0, -1,  2,  0,  0,  0],
+  [ 0,  5,  2,  0,  0,  0,  5, -2,  2,  0],
+  [-2,  5,  5, -2,  0,  2, 10, -5,  2,  0]);
+
+addFood(FOODS, "Bee Larvae", "Larves d’abeille", "Weird", "Earth",
+  [ 0,  0,  2,  0,  0, -1,  2,  0,  2,  0],
+  [ 0,  2,  5,  0,  0,  0,  2,  0,  5, -2],
+  [ 0,  2,  5, -2,  0,  2,  5, -2, 10, -5]);
+
+addFood(FOODS, "Rock Sirloin", "Viande de roc", "Weird", "Earth",
+  [ 0, -1,  2,  0,  0,  0,  2,  2,  0,  0],
+  [ 0,  0,  5,  0,  2,  0, -2,  5,  2,  0],
+  [ 0,  2,  5, -2,  2,  0, -5, 10,  5, -2]);
+
+// =======================
+// UI wiring
+// =======================
 
 const langSelect = document.getElementById("lang");
 const personalitiesDiv = document.getElementById("personalities");
@@ -531,7 +520,7 @@ const planWarn = document.getElementById("plan-warning");
 
 let currentLang = "en";
 const selectedPersonalities = new Set();
-const targetTraits = new Set(TRAITS); // all on by default
+const targetTraits = new Set(TRAITS); // aim for all by default
 
 function renderPersonalities() {
   personalitiesDiv.innerHTML = "";
@@ -539,7 +528,16 @@ function renderPersonalities() {
     const btn = document.createElement("div");
     btn.className = "personality";
     btn.dataset.trait = p.trait;
-    btn.textContent = currentLang === "en" ? p.en : p.fr;
+
+    const dot = document.createElement("div");
+    dot.className = "state-dot";
+
+    const label = document.createElement("span");
+    label.textContent = currentLang === "en" ? p.en : p.fr;
+
+    btn.appendChild(dot);
+    btn.appendChild(label);
+
     btn.onclick = () => {
       const tr = p.trait;
       if (selectedPersonalities.has(tr)) {
@@ -550,6 +548,7 @@ function renderPersonalities() {
         btn.classList.add("selected");
       }
     };
+
     personalitiesDiv.appendChild(btn);
   });
 }
@@ -560,7 +559,7 @@ function renderSkills() {
     const label = document.createElement("label");
     const cb = document.createElement("input");
     cb.type = "checkbox";
-    cb.checked = targetTraits.has(tr);
+    cb.checked = true;
     cb.onchange = () => {
       if (cb.checked) targetTraits.add(tr);
       else targetTraits.delete(tr);
@@ -574,32 +573,37 @@ function renderSkills() {
 }
 
 function updateTexts() {
-  const isFR = currentLang === "fr";
-  document.getElementById("lang-label").textContent = isFR ? "Langue" : "Language";
-  document.getElementById("subtitle").textContent =
-    isFR
-      ? "Planifiez les repas pour que votre fée atteigne tous les traits nécessaires aux compétences."
-      : "Plan what to feed your fairy so she reaches all traits needed for every School skill.";
-  document.getElementById("start-title").textContent =
-    isFR ? "Personnalités de départ" : "Starting personalities";
-  document.getElementById("start-help").textContent =
-    isFR
-      ? "Touchez les personnalités déjà présentes sur votre fée. Cela ajuste légèrement les suggestions."
-      : "Tap the personalities your fairy already has. This slightly nudges the suggestions.";
-  document.getElementById("skills-title").textContent =
-    isFR ? "Traits pour les compétences" : "Target skill traits";
-  document.getElementById("skills-help").textContent =
-    isFR
-      ? "Ces 10 traits servent aux compétences de l’École. Laissez tout coché pour viser toutes les compétences."
-      : "These 10 traits are used for School skills. Leave all checked to aim for every skill.";
-  document.getElementById("plan-title").textContent =
-    isFR ? "Plan d’alimentation" : "Feeding plan";
-  document.getElementById("plan-help").textContent =
-    isFR
-      ? "Suggestion simple avec rareté claire (bronze / Savoureux / Délicieux) selon les valeurs du guide."
-      : "Simple suggestion with clear rarity (bronze / Tasty / Delicious) based on the guide values.";
-  document.getElementById("plan-btn-label").textContent =
-    isFR ? "Proposer des repas" : "Suggest foods";
+  const fr = currentLang === "fr";
+
+  document.getElementById("lang-label").textContent = fr ? "Langue" : "Language";
+  document.getElementById("subtitle").textContent = fr
+    ? "Planifiez les repas pour que votre fée atteigne tous les traits nécessaires aux compétences."
+    : "Plan what to feed your fairy so she reaches all traits needed for every School skill.";
+
+  document.getElementById("start-title").textContent = fr
+    ? "Personnalités de départ"
+    : "Starting personalities";
+  document.getElementById("start-help").textContent = fr
+    ? "Touchez les personnalités déjà présentes sur votre fée. Cela ajuste légèrement les suggestions."
+    : "Tap the personalities your fairy already has. This slightly nudges the suggestions.";
+
+  document.getElementById("skills-title").textContent = fr
+    ? "Traits pour les compétences"
+    : "Target skill traits";
+  document.getElementById("skills-help").textContent = fr
+    ? "Ces 10 traits servent aux compétences de l’École. Laissez tout coché pour viser toutes les compétences."
+    : "These 10 traits are used for School skills. Leave all checked to aim for every skill.";
+
+  document.getElementById("plan-title").textContent = fr
+    ? "Plan d’alimentation"
+    : "Feeding plan";
+  document.getElementById("plan-help").textContent = fr
+    ? "Propose un mélange simple avec rareté claire (bronze / Savoureux / Délicieux) selon les valeurs du guide."
+    : "Suggests a simple mix with clear rarities (bronze / Tasty / Delicious) based on the guide values.";
+
+  document.getElementById("plan-btn-label").textContent = fr
+    ? "Proposer des repas"
+    : "Suggest foods";
 }
 
 langSelect.onchange = () => {
@@ -612,108 +616,95 @@ renderPersonalities();
 renderSkills();
 updateTexts();
 
-// --- Planning logic (simple & transparent) ---
-// Goal: for each selected trait, reach a threshold sum using as few foods as possible.
-// This is a helper, not frame-perfect optimization, but good enough for planning.
+// =======================
+// Planner logic
+// =======================
 
 planBtn.onclick = () => {
-  const neededTraits = Array.from(targetTraits);
-  if (!neededTraits.length) {
+  const needed = Array.from(targetTraits);
+  planWarn.textContent = "";
+
+  if (!needed.length) {
     planOut.textContent = currentLang === "fr"
-      ? "Choisissez au moins un trait à viser."
+      ? "Sélectionnez au moins un trait à viser."
       : "Select at least one trait to target.";
-    planWarn.textContent = "";
     return;
   }
 
-  // baseline: tiny bias for selected personalities (they're already strong)
-  const baseline = {};
-  TRAITS.forEach(t => baseline[t] = 0);
-  selectedPersonalities.forEach(t => baseline[t] += 3);
+  // Starting boost from selected personalities
+  const current = {};
+  TRAITS.forEach(t => current[t] = 0);
+  selectedPersonalities.forEach(t => { current[t] += 3; });
 
-  // naive target: want at least 30 in each chosen trait (adjustable)
-  const TARGET = 30;
+  const TARGET = 30; // soft target for each selected trait
+  const picks = [];
 
-  // greedy pick: repeatedly choose the food with best score toward deficits
-  const plan = [];
-  const current = { ...baseline };
+  function scoreFood(food) {
+    let score = 0;
+    for (const tr of needed) {
+      const deficit = TARGET - current[tr];
+      const d = food.traits[tr] || 0;
+      if (deficit > 0 && d > 0) score += d;
+      if (deficit > 0 && d < 0) score += d * 0.6; // penalize hurting needed traits
+    }
+    return score;
+  }
 
   function bestFood() {
     let best = null;
     let bestScore = 0;
-    for (const food of ALL_FOODS) {
-      // skip if this food overall pushes too many chosen traits negative
-      let score = 0;
-      for (const tr of neededTraits) {
-        const delta = food.traits[tr] || 0;
-        const deficit = Math.max(0, TARGET - current[tr]);
-        if (deficit > 0 && delta > 0) {
-          score += delta;
-        }
-        if (deficit > 0 && delta < 0) {
-          score += delta * 0.6; // soft penalty
-        }
-      }
-      if (score > bestScore + 0.0001) {
-        bestScore = score;
-        best = food;
+    for (const f of FOODS) {
+      const s = scoreFood(f);
+      if (s > bestScore + 0.0001) {
+        bestScore = s;
+        best = f;
       }
     }
-    return bestScore > 0 ? best : null;
+    return best;
   }
 
-  // limit steps so it doesn't spam
-  for (let i = 0; i < 60; i++) {
-    const done = neededTraits.every(tr => current[tr] >= TARGET);
+  for (let i = 0; i < 80; i++) {
+    const done = needed.every(tr => current[tr] >= TARGET);
     if (done) break;
     const food = bestFood();
     if (!food) break;
-    plan.push(food);
-    TRAITS.forEach(tr => {
-      current[tr] += (food.traits[tr] || 0);
-    });
+    picks.push(food);
+    TRAITS.forEach(tr => { current[tr] += (food.traits[tr] || 0); });
   }
 
-  // format output
-  if (!plan.length) {
+  if (!picks.length) {
     planOut.textContent = currentLang === "fr"
-      ? "Aucune suggestion trouvée avec les paramètres actuels."
-      : "No usable suggestion found with the current settings.";
-    planWarn.textContent = "";
+      ? "Aucune combinaison simple trouvée. Ajustez vos traits ou aliments."
+      : "No simple combination found. Try adjusting traits or foods.";
     return;
   }
 
   // compress identical foods
-  const countMap = {};
-  for (const f of plan) {
-    const code = f.key;
-    if (!countMap[code]) countMap[code] = { food: f, n: 0 };
-    countMap[code].n++;
+  const map = {};
+  for (const f of picks) {
+    if (!map[f.key]) map[f.key] = { f, n: 0 };
+    map[f.key].n++;
   }
 
   const lines = [];
-  for (const {food, n} of Object.values(countMap)) {
-    const name = currentLang === "fr" ? food.name_fr : food.name_en;
-    const rarityLabel = currentLang === "fr"
-      ? food.rarity_label_fr
-      : food.rarity_label_en;
-    lines.push(
-      `• x${n} ${name} [${rarityLabel}, ${food.type}, ${food.element}]`
-    );
-  }
+  Object.values(map).forEach(({f, n}) => {
+    const name = currentLang === "fr" ? f.name_fr : f.name_en;
+    const rarity = currentLang === "fr" ? f.rarity_label_fr : f.rarity_label_en;
+    lines.push(`• x${n} ${name} [${rarity}, ${f.type}, ${f.element}]`);
+  });
 
   planOut.innerHTML = lines.map(l => `<div class="food-line">${l}</div>`).join("");
 
-  const missing = neededTraits.filter(tr => current[tr] < TARGET);
+  const missing = needed.filter(tr => current[tr] < TARGET);
   if (missing.length) {
     planWarn.textContent = (currentLang === "fr"
-      ? "Remarque : ces traits restent un peu bas, ajustez manuellement avec vos stocks : "
-      : "Note: these traits still look low, tweak manually with your own stock: "
+      ? "Remarque : ces traits restent un peu bas, complétez avec vos propres choix : "
+      : "Note: these traits are still a bit low; top them up with your own choices: "
     ) + missing.join(", ");
   } else {
     planWarn.textContent = currentLang === "fr"
-      ? "Tous les traits ciblés atteignent ou approchent le seuil recommandé. Ajustez selon vos vrais stocks."
-      : "All selected traits reach or approach the recommended threshold. Adjust based on your real inventory.";
+      ? "Tous les traits ciblés atteignent un niveau correct. Ajustez selon vos stocks réels."
+      : "All selected traits reach a good level. Tweak based on your actual inventory.";
   }
 };
 </script>
