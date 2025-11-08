@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>My Fairy 10-Skill Planner – HWDE</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
       --bg: #050816;
@@ -40,10 +40,7 @@
 
     @media (max-width: 900px) {
       body { padding: 10px; }
-      .app {
-        grid-template-columns: 1fr;
-        gap: 10px;
-      }
+      .app { grid-template-columns: 1fr; gap: 10px; }
     }
 
     h1 {
@@ -158,7 +155,7 @@
 
     .row {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0,1fr));
       gap: 8px;
       margin-bottom: 6px;
     }
@@ -168,12 +165,12 @@
 
     .traits-grid {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0,1fr));
       gap: 4px;
       margin-top: 3px;
     }
     @media (max-width: 600px) {
-      .traits-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .traits-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
     }
 
     .trait-input {
@@ -184,6 +181,10 @@
     .trait-input span {
       font-size: 0.62rem;
       color: var(--muted);
+    }
+    .trait-input small {
+      font-size: 0.55rem;
+      color: #718096;
     }
     .trait-input input {
       font-size: 0.74rem;
@@ -396,7 +397,7 @@
         </div>
         <div>
           <label for="fairy-level" id="label-level"></label>
-          <input id="fairy-level" type="number" min="1" max="99" value="1">
+          <input id="fairy-level" type="number" min="1" max="99" value="1" />
         </div>
       </div>
       <label id="label-traits"></label>
@@ -487,115 +488,134 @@
 </div>
 
 <script>
-  const I18N = {
-    en: {
-      title_main: "My Fairy 10-Skill Planner",
-      title_suffix: "Hyrule Warriors: Definitive Edition",
-      subtitle_main: "Plan feeds to hit the 10 core skills that unlock everything else.",
-      card1_title: "1 · Fairy Setup",
-      card1_subtitle: "Use your actual element & traits from My Fairy.",
-      label_element: "Element",
-      label_level: "Starting Level (info only)",
-      label_traits: "Current personality values",
-      hint_traits: "Copy the numbers from the My Fairy screen. Traits you don't have can stay at 0.",
-      card2_title: "2 · Core Skills (10-skill route)",
-      card2_subtitle: "These 10 cover all other Rental Skills while you refresh.",
-      btn_edit_skills: "Edit",
-      hint_skills: "Defaults follow the common Magic/Special/Drop+ route. You can customize if your route differs.",
-      label_skills_json: "Edit skills (JSON)",
-      btn_apply_skills: "Apply Skills",
-      hint_skills_json: "Use official thresholds; only modify if you know what you're doing.",
-      card3_title: "3 · Food Used for Planning",
-      card3_subtitle: "Sample foods that work well for trait pushing.",
-      btn_edit_foods: "Edit",
-      label_foods_json: "Edit foods (JSON)",
-      btn_apply_foods: "Apply Foods",
-      hint_foods_json: "Values stack. Add/remove foods to match what you actually farm.",
-      warn_foods: "These values are approximate. If you use a detailed guide, paste its numbers here.",
-      card4_title: "4 · Generate Feeding Plan",
-      card4_subtitle: "Greedy planner to reach all selected skill requirements.",
-      btn_generate: "Build Plan",
-      hint_plan: "Checks your traits vs. the 10-skill targets and suggests a low-waste food sequence.",
-      plan_initial: "Enter traits, keep all 10 skills checked, then tap Build Plan.",
-      err_select_skill: "Select at least one skill.",
-      err_no_path: "Couldn't find a good route with current foods. Add stronger foods or tweak values.",
-      plan_targets_title: "Trait targets for selected skills",
-      plan_feed_title: "Feeding sequence",
-      plan_all_met: "You already meet all selected skill requirements.",
-      plan_still_need: "Still need",
-      plan_done: "All targets reached. Learn the skills at the School. 🎉",
-      plan_partial_warn: "Stopped early: likely missing/incorrect food data.",
-      plan_tip: "After each refresh, update your starting traits and rerun with the same 10 skills selected.",
-      notes_title: "Notes & usage",
-      notes_subtitle: "Based on the standard 10-skill completion route.",
-      notes_lines: [
-        "These 10 skills (Magic/Special/Wall+/XP+/Rupee+/Food+/Mat+/Weap+/Extreme Crush+/Glass Cannon) are enough to cover all others over refreshes.",
-        "Always read the in-game requirements in the School to confirm thresholds.",
-        "Adjust the food list to match what you actually have; better food = fewer steps.",
-        "You can temporarily uncheck skills if you want a lighter goal for one cycle.",
-        "French names here follow in-game style; if your version differs slightly, just edit the labels."
-      ],
-      notes_warning: "This planner is a helper, not a replacement for checking the My Fairy screen."
-    },
-    fr: {
-      title_main: "Planificateur 10 compétences – Jardin des fées",
-      title_suffix: "Hyrule Warriors: Definitive Edition",
-      subtitle_main: "Plan de repas pour viser les 10 compétences clés et débloquer le reste.",
-      card1_title: "1 · Configuration de la fée",
-      card1_subtitle: "Utilisez l’élément et les valeurs affichés en jeu.",
-      label_element: "Élément",
-      label_level: "Niveau de départ (info)",
-      label_traits: "Valeurs de personnalité actuelles",
-      hint_traits: "Recopiez exactement les valeurs du Jardin des fées. Laissez 0 pour les traits absents.",
-      card2_title: "2 · Compétences du noyau (route 10 compétences)",
-      card2_subtitle: "Ce set permet de couvrir toutes les autres Compétences de location.",
-      btn_edit_skills: "Modifier",
-      hint_skills: "Configuration basée sur la route classique Magic/Special/Wall+/Drops+. Ajustez si besoin.",
-      label_skills_json: "Modifier les compétences (JSON)",
-      btn_apply_skills: "Valider les compétences",
-      hint_skills_json: "Gardez les seuils officiels du jeu. Ne modifiez que si vous les connaissez.",
-      card3_title: "3 · Nourriture utilisée",
-      card3_subtitle: "Exemples de plats efficaces pour monter les traits.",
-      btn_edit_foods: "Modifier",
-      label_foods_json: "Modifier les plats (JSON)",
-      btn_apply_foods: "Valider les plats",
-      hint_foods_json: "Les bonus se cumulent à chaque repas. Ajoutez vos propres plats si besoin.",
-      warn_foods: "Valeurs indicatives. Remplacez par les chiffres de votre guide ou de la liste officielle.",
-      card4_title: "4 · Générer le plan",
-      card4_subtitle: "Séquence de plats pour atteindre les prérequis choisis.",
-      btn_generate: "Générer le plan",
-      hint_plan: "Compare vos traits aux objectifs et propose une séquence de repas peu gaspilleuse.",
-      plan_initial: "Saisissez vos traits, gardez les 10 cochés, touchez Générer le plan.",
-      err_select_skill: "Sélectionnez au moins une compétence.",
-      err_no_path: "Aucun plan correct avec ces plats. Ajoutez des plats plus forts ou corrigez les valeurs.",
-      plan_targets_title: "Objectifs de personnalité des compétences choisies",
-      plan_feed_title: "Séquence de repas",
-      plan_all_met: "Vous atteignez déjà tous les prérequis choisis.",
-      plan_still_need: "Il manque encore",
-      plan_done: "Objectifs atteints. Apprenez les compétences à l’École. 🎉",
-      plan_partial_warn: "Arrêt anticipé : données de plats manquantes ou imprécises.",
-      plan_tip: "Après chaque rafraîchissement, mettez à jour vos traits et relancez avec les mêmes 10 compétences.",
-      notes_title: "Remarques",
-      notes_subtitle: "Fondé sur la route classique 10 compétences.",
-      notes_lines: [
-        "Les 10 compétences listées suffisent pour tout débloquer à force de rafraîchir.",
-        "Vérifiez toujours les seuils dans l’École pour confirmer.",
-        "Remplacez la liste de plats par ceux que vous farmez réellement.",
-        "Décochez temporairement une compétence si vous visez un objectif partiel.",
-        "Les noms FR ici suivent le style du jeu; adaptez si votre version affiche un libellé différent."
-      ],
-      notes_warning: "Outil d’aide uniquement : la référence reste l’écran du Jardin des fées."
-    }
+  // Trait labels: EN/FR in-game names
+  const TRAIT_LABELS = {
+    Sparkly:  { en: "Sparkly",  fr: "Vivacité" },
+    Relaxed:  { en: "Relaxed",  fr: "Esquive" },
+    Valiant:  { en: "Valiant",  fr: "Classe" },
+    Dizzy:    { en: "Dizzy",    fr: "Volupté" },
+    Friendly: { en: "Friendly", fr: "Franchise" },
+    Aspiring: { en: "Aspiring", fr: "Admiration" },
+    Resolute: { en: "Resolute", fr: "Endurance" },
+    Shrewd:   { en: "Shrewd",   fr: "Acrobatie" },
+    Eager:    { en: "Eager",    fr: "Passion" },
+    Smiley:   { en: "Smiley",   fr: "Gaieté" }
   };
 
-  let currentLang = "en";
   const TRAITS = [
     "Sparkly","Relaxed","Valiant","Dizzy","Friendly",
     "Aspiring","Resolute","Shrewd","Eager","Smiley"
   ];
 
-  // 10-skill core route (EN/FR names + thresholds)
-  // Thresholds from community / wiki info for HWDE.
+  function getTraitLabel(key) {
+    const t = TRAIT_LABELS[key];
+    if (!t) return key;
+    return currentLang === "fr" ? t.fr : t.en;
+  }
+
+  // i18n
+  const I18N = {
+    en: {
+      title_main: "My Fairy 10-Skill Planner",
+      title_suffix: "Hyrule Warriors: Definitive Edition",
+      subtitle_main: "Use proper in-game traits & food to reach the core skills.",
+      card1_title: "1 · Fairy Setup",
+      card1_subtitle: "Use values from your My Fairy screen.",
+      label_element: "Element",
+      label_level: "Starting Level (info only)",
+      label_traits: "Current personality values",
+      hint_traits: "Enter the exact numbers. Traits you haven't unlocked can stay at 0.",
+      card2_title: "2 · Core Skills (10-skill route)",
+      card2_subtitle: "Standard completion route – adjust only if you know your thresholds.",
+      btn_edit_skills: "Edit",
+      hint_skills: "Names follow in-game style (EN/FR). Requirements are an example route; tune if needed.",
+      label_skills_json: "Edit skills JSON",
+      btn_apply_skills: "Apply Skills",
+      hint_skills_json: "Only change if you have accurate data.",
+      card3_title: "3 · Food (EN / FR in-game)",
+      card3_subtitle: "Sample foods using real French names and trait tendencies.",
+      btn_edit_foods: "Edit",
+      label_foods_json: "Edit foods JSON",
+      btn_apply_foods: "Apply Foods",
+      hint_foods_json: "Plus signs from guides are mapped to numbers (e.g. + = 4, ++ = 8, +++ = 12). Adjust if you prefer.",
+      warn_foods: "These values approximate in-game behavior. If you have a precise table, paste it here.",
+      card4_title: "4 · Generate Feeding Plan",
+      card4_subtitle: "Greedy plan based on your selected skills and foods.",
+      btn_generate: "Build Plan",
+      hint_plan: "Merges all selected skill requirements, then picks foods that best fill remaining gaps.",
+      plan_initial: "Fill traits, keep desired skills checked, then tap Build Plan.",
+      err_select_skill: "Select at least one skill.",
+      err_no_path: "No good route with current foods. Add stronger foods or adjust values.",
+      plan_targets_title: "Trait targets for selected skills",
+      plan_feed_title: "Feeding sequence",
+      plan_all_met: "You already meet all selected skill requirements.",
+      plan_still_need: "Still need",
+      plan_done: "All targets reached. Learn the skills at the School. 🎉",
+      plan_partial_warn: "Stopped early: likely missing or inaccurate food data.",
+      plan_tip: "After each refresh, update traits and rerun with the same core skill set.",
+      notes_title: "Notes",
+      notes_subtitle: "Trait & food names match in-game EN / FR terminology.",
+      notes_lines: [
+        "Trait labels switch between English and French in-game names; numbers are the same.",
+        "Food names use official French labels (Œuf étrange, Appât universel, etc.).",
+        "Planner logic is approximate; always trust your My Fairy / School screens first.",
+        "You can extend the food list with your full table for perfect routing."
+      ],
+      notes_warning: "If something differs from your version, edit the JSON blocks to match."
+    },
+    fr: {
+      title_main: "Planificateur 10 Compétences – Jardin des fées",
+      title_suffix: "Hyrule Warriors: Definitive Edition",
+      subtitle_main: "Utilise les vrais noms FR (traits & plats) pour viser tes compétences clés.",
+      card1_title: "1 · Configuration de la fée",
+      card1_subtitle: "Reprends exactement les valeurs du Jardin des fées.",
+      label_element: "Élément",
+      label_level: "Niveau de départ (info)",
+      label_traits: "Valeurs de personnalité (FR en jeu)",
+      hint_traits: "Vivacité, Esquive, Classe, Volupté, Franchise, Admiration, Endurance, Acrobatie, Passion, Gaieté.",
+      card2_title: "2 · Compétences (route 10 compétences)",
+      card2_subtitle: "Basé sur les compétences clés pour tout débloquer.",
+      btn_edit_skills: "Modifier",
+      hint_skills: "Les noms suivent le jeu FR. Adapte les prérequis si tu disposes des valeurs exactes.",
+      label_skills_json: "Modifier le JSON des compétences",
+      btn_apply_skills: "Valider les compétences",
+      hint_skills_json: "Ne change que si tu connais précisément les seuils.",
+      card3_title: "3 · Nourriture (noms FR officiels)",
+      card3_subtitle: "Exemples : Œuf étrange, Fromage d’Ordon, Soupe Élixir, etc.",
+      btn_edit_foods: "Modifier",
+      label_foods_json: "Modifier le JSON des plats",
+      btn_apply_foods: "Valider les plats",
+      hint_foods_json: "Les + / ++ / +++ sont convertis en valeurs numériques. Ajuste selon ton tableau.",
+      warn_foods: "Ces valeurs sont indicatives. Remplace-les par ton tableau exact pour un routage précis.",
+      card4_title: "4 · Générer le plan de repas",
+      card4_subtitle: "Séquence proposée pour atteindre les prérequis.",
+      btn_generate: "Générer le plan",
+      hint_plan: "Fusionne les objectifs, puis choisit les plats qui comblent le mieux les manques.",
+      plan_initial: "Renseigne tes traits, coche les compétences, puis touche Générer le plan.",
+      err_select_skill: "Sélectionne au moins une compétence.",
+      err_no_path: "Aucun plan valable avec ces plats. Ajoute des plats ou ajuste les valeurs.",
+      plan_targets_title: "Objectifs de traits",
+      plan_feed_title: "Séquence de repas",
+      plan_all_met: "Tu atteins déjà tous les prérequis choisis.",
+      plan_still_need: "Il manque encore",
+      plan_done: "Objectifs atteints. Apprends les compétences à l’École. 🎉",
+      plan_partial_warn: "Arrêt anticipé : données de plats manquantes ou imprécises.",
+      plan_tip: "Après chaque rafraîchissement, mets à jour tes traits et relance avec les mêmes compétences.",
+      notes_title: "Remarques",
+      notes_subtitle: "Correspondance directe aux libellés du jeu (FR / EN).",
+      notes_lines: [
+        "Les traits affichent les noms FR (Vivacité, Esquive, etc.) avec l’équivalent EN en petit.",
+        "Les plats utilisent les noms FR connus et des effets cohérents (+ / ++ / +++).",
+        "Vérifie toujours l’écran du Jardin des fées et de l’École pour confirmer.",
+        "Tu peux coller ton tableau complet de nourritures pour que le plan soit au plus juste."
+      ],
+      notes_warning: "En cas d’écart avec ta version, modifie les blocs JSON (traits ou plats)."
+    }
+  };
+
+  let currentLang = "en";
+
+  // 10-skill core route (same keys; labels localised via TRAIT_LABELS)
   let CORE_SKILLS = [
     {
       id: "magic_fountain_plus",
@@ -659,74 +679,84 @@
     }
   ];
 
-  // Sample foods: not exhaustive, tuned to be useful.
-  // Adjust numbers if you have a precise table.
+  // Foods with FR names & trait tendencies (approximate numeric mapping)
   let FOODS = [
     {
-      name_en: "Delicious Pumpkin Soup",
-      name_fr: "Délicieuse soupe à la citrouille",
-      element: "Fire",
-      levelGain: 3,
-      traits: { Smiley: 12, Aspiring: 4, Friendly: 4 }
+      name_en: "Strange Egg",
+      name_fr: "Œuf étrange",
+      element: "Any",
+      levelGain: 1,
+      traits: { Sparkly: 4, Valiant: 4, Friendly: -2 }
     },
     {
-      name_en: "Delicious Elixir Soup",
-      name_fr: "Délicieuse soupe d’élixir",
-      element: "Fire",
-      levelGain: 3,
-      traits: { Valiant: 6, Friendly: 6, Smiley: 8 }
+      name_en: "Tasty Strange Egg",
+      name_fr: "Œuf étrange savoureux",
+      element: "Any",
+      levelGain: 2,
+      traits: { Sparkly: 8, Valiant: -4 }
     },
     {
-      name_en: "Delicious Life Tree Fruit",
-      name_fr: "Délicieux fruit de l’Arbre de vie",
-      element: "Light",
-      levelGain: 3,
-      traits: { Aspiring: 6, Smiley: 8, Sparkly: 4 }
-    },
-    {
-      name_en: "Delicious Deku Nut",
-      name_fr: "Délicieuse noix Mojo",
-      element: "Lightning",
-      levelGain: 3,
-      traits: { Valiant: 10, Resolute: 4 }
-    },
-    {
-      name_en: "Delicious Odd Mushroom",
-      name_fr: "Délicieux champignon étrange",
-      element: "Darkness",
-      levelGain: 3,
-      traits: { Valiant: 6, Aspiring: 4, Smiley: 6 }
-    },
-    {
-      name_en: "Delicious Fish Pie",
-      name_fr: "Délicieux pâté de poisson",
-      element: "Water",
-      levelGain: 3,
-      traits: { Friendly: 8, Relaxed: 6 }
-    },
-    {
-      name_en: "Delicious Fruit Pie",
-      name_fr: "Délicieux pâté de fruits",
-      element: "Light",
-      levelGain: 3,
-      traits: { Sparkly: 8, Eager: 6 }
-    },
-    {
-      name_en: "Delicious Mushroom Omelette",
-      name_fr: "Délicieuse omelette aux champignons",
+      name_en: "Supreme Strange Egg",
+      name_fr: "Œuf étrange exquis",
       element: "Any",
       levelGain: 3,
-      traits: { Shrewd: 8, Eager: 6 }
+      traits: { Sparkly: 12, Valiant: 8, Friendly: -4 }
     },
     {
-      name_en: "Gold Gratitude Crystal",
-      name_fr: "Cristal de gratitude doré",
+      name_en: "Universal Bait",
+      name_fr: "Appât universel",
       element: "Any",
-      levelGain: 0,
-      traits: {
-        Sparkly: 8, Relaxed: 8, Valiant: 8, Dizzy: 8, Friendly: 8,
-        Aspiring: 8, Resolute: 8, Shrewd: 8, Eager: 8, Smiley: 8
-      }
+      levelGain: 1,
+      traits: { Friendly: 4, Resolute: 4, Valiant: -2 }
+    },
+    {
+      name_en: "Ordon Goat Cheese",
+      name_fr: "Fromage de chèvre d’Ordon",
+      element: "Any",
+      levelGain: 1,
+      traits: { Friendly: 4, Resolute: 4 }
+    },
+    {
+      name_en: "Supreme Ordon Goat Cheese",
+      name_fr: "Fromage de chèvre d’Ordon exquis",
+      element: "Any",
+      levelGain: 3,
+      traits: { Resolute: 12, Friendly: 8, Dizzy: -4 }
+    },
+    {
+      name_en: "Lon Lon Milk",
+      name_fr: "Lait de Lon Lon",
+      element: "Any",
+      levelGain: 1,
+      traits: { Sparkly: 4, Friendly: 4, Valiant: -2 }
+    },
+    {
+      name_en: "Supreme Lon Lon Milk",
+      name_fr: "Lait de Lon Lon exquis",
+      element: "Any",
+      levelGain: 3,
+      traits: { Friendly: 12, Sparkly: -4 }
+    },
+    {
+      name_en: "Elixir Soup",
+      name_fr: "Soupe Élixir",
+      element: "Any",
+      levelGain: 3,
+      traits: { Smiley: 12, Friendly: 8, Resolute: 8 }
+    },
+    {
+      name_en: "Great Fairy's Tears",
+      name_fr: "Larmes de la grande fée",
+      element: "Any",
+      levelGain: 3,
+      traits: { Aspiring: 8, Friendly: 8, Shrewd: 8 }
+    },
+    {
+      name_en: "Chateau Romani",
+      name_fr: "Château Romani",
+      element: "Any",
+      levelGain: 3,
+      traits: { Valiant: 12, Friendly: 8 }
     }
   ];
 
@@ -741,7 +771,12 @@
       const wrap = document.createElement("div");
       wrap.className = "trait-input";
       const label = document.createElement("span");
-      label.textContent = tr;
+      label.textContent = getTraitLabel(tr);
+      const small = document.createElement("small");
+      const other = TRAIT_LABELS[tr]
+        ? (currentLang === "fr" ? TRAIT_LABELS[tr].en : TRAIT_LABELS[tr].fr)
+        : "";
+      small.textContent = other ? other : "";
       const input = document.createElement("input");
       input.type = "number";
       input.min = "0";
@@ -749,6 +784,7 @@
       input.value = "0";
       input.dataset.trait = tr;
       wrap.appendChild(label);
+      wrap.appendChild(small);
       wrap.appendChild(input);
       traitsGrid.appendChild(wrap);
     });
@@ -786,7 +822,8 @@
       reqs.className = "skill-reqs";
       const parts = [];
       Object.entries(s.requirements || {}).forEach(([trait, val]) => {
-        parts.push(`${trait.slice(0,3)} ≥ ${val}`);
+        const label = getTraitLabel(trait);
+        parts.push(`${label.slice(0,3)} ≥ ${val}`);
       });
       reqs.textContent = parts.join("  •  ");
 
@@ -827,16 +864,21 @@
 
       const tags = document.createElement("div");
       tags.className = "food-tags";
-      const tParts = [];
-      tParts.push(localizeElementLabel(f.element));
-      tParts.push(`+${f.levelGain} Lv`);
+
+      const parts = [];
+      parts.push(localizeElementLabel(f.element));
+      parts.push(`+${f.levelGain} Lv`);
+
       const boosts = Object.entries(f.traits || {})
-        .filter(([_, v]) => v > 0)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 3)
-        .map(([k, v]) => `${k.slice(0,3)}+${v}`);
-      if (boosts.length) tParts.push(boosts.join(" · "));
-      tags.textContent = tParts.join("  •  ");
+        .filter(([_, v]) => v !== 0)
+        .map(([k, v]) => {
+          const sign = v > 0 ? "+" : "";
+          return `${getTraitLabel(k).slice(0,3)}${sign}${v}`;
+        })
+        .slice(0, 4);
+
+      if (boosts.length) parts.push(boosts.join(" · "));
+      tags.textContent = parts.join("  •  ");
 
       left.appendChild(nm);
       left.appendChild(tags);
@@ -980,7 +1022,7 @@
     head.innerHTML = `<h3>${t.plan_targets_title}</h3>`;
     const p = document.createElement("p");
     p.innerHTML = Object.entries(targets)
-      .map(([tr, v]) => `<strong>${tr}</strong> ≥ ${v}`)
+      .map(([tr, v]) => `<strong>${getTraitLabel(tr)}</strong> ≥ ${v}`)
       .join(" &nbsp;•&nbsp; ");
     head.appendChild(p);
     planOutput.appendChild(head);
@@ -1009,7 +1051,7 @@
 
       left.innerHTML =
         `<strong>${i + 1}.</strong> ` +
-        `${currentLang === "fr" ? "Donnez" : "Feed"} ` +
+        `${currentLang === "fr" ? "Donne" : "Feed"} ` +
         `<strong>${fname}</strong>` +
         ` <span class="badge-soft">${localizeElementLabel(step.food.element)}</span>`;
 
@@ -1019,13 +1061,12 @@
       const deficits = Object.entries(targets)
         .map(([tr, v]) => {
           const need = v - (step.traitsAfter[tr] || 0);
-          return need > 0 ? `${tr.slice(0,3)}: -${need}` : null;
+          return need > 0 ? `${getTraitLabel(tr).slice(0,3)}:${need}` : null;
         })
         .filter(Boolean);
 
       if (deficits.length) {
-        meta.textContent =
-          `${t.plan_still_need}: ${deficits.slice(0, 3).join(" • ")}`;
+        meta.textContent = `${t.plan_still_need}: ${deficits.slice(0, 3).join(" • ")}`;
       } else {
         meta.textContent = t.plan_done;
       }
@@ -1109,20 +1150,20 @@
       opt.textContent = localizeElementLabel(opt.value);
     });
 
+    initTraitsInputs();
     renderSkills();
     renderFoods();
     renderPlan(true);
   }
 
+  // Toggles / events
   document.getElementById("edit-skills-toggle").onclick = () => {
     const ed = document.getElementById("skills-editor");
     ed.style.display = ed.style.display === "none" ? "block" : "none";
   };
   document.getElementById("skills-apply").onclick = () => {
     try {
-      const parsed = JSON.parse(
-        document.getElementById("skills-json").value
-      );
+      const parsed = JSON.parse(document.getElementById("skills-json").value);
       if (!Array.isArray(parsed)) throw new Error("Skills JSON must be an array.");
       CORE_SKILLS = parsed;
       renderSkills();
@@ -1137,9 +1178,7 @@
   };
   document.getElementById("foods-apply").onclick = () => {
     try {
-      const parsed = JSON.parse(
-        document.getElementById("foods-json").value
-      );
+      const parsed = JSON.parse(document.getElementById("foods-json").value);
       if (!Array.isArray(parsed)) throw new Error("Foods JSON must be an array.");
       FOODS = parsed;
       renderFoods();
@@ -1164,7 +1203,7 @@
     });
   });
 
-  initTraitsInputs();
+  // Init
   applyLanguage();
 </script>
 </body>
