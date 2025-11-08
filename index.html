@@ -2,1209 +2,720 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>My Fairy 10-Skill Planner – HWDE</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Fairy Planner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
       --bg: #050816;
-      --bg-soft: #0d1020;
-      --accent: #4fd1c5;
-      --accent-soft: rgba(79, 209, 197, 0.12);
-      --accent-alt: #f6e05e;
-      --text: #f7fafc;
-      --muted: #a0aec0;
-      --danger: #f56565;
-      --radius: 16px;
-      --shadow-soft: 0 14px 32px rgba(0, 0, 0, 0.6);
-      --font: system-ui, -apple-system, BlinkMacSystemFont, -sans-serif;
-      --transition: 0.2s ease;
+      --card: #111827;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56,189,248,0.12);
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --danger: #f97316;
+      --radius: 14px;
+      --gap: 10px;
+      --font: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
+    * { box-sizing: border-box; }
     body {
-      font-family: var(--font);
-      background: radial-gradient(circle at top, #1a202c 0, #050816 55%);
-      color: var(--text);
+      margin: 0;
       padding: 14px;
-      display: flex;
-      justify-content: center;
-    }
-
-    .app {
-      width: 100%;
-      max-width: 1100px;
-      display: grid;
-      grid-template-columns: 1.6fr 2.4fr;
-      gap: 14px;
-    }
-
-    @media (max-width: 900px) {
-      body { padding: 10px; }
-      .app { grid-template-columns: 1fr; gap: 10px; }
-    }
-
-    h1 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin-bottom: 4px;
-      letter-spacing: 0.03em;
-    }
-    h1 span {
-      display: block;
-      font-size: 0.8rem;
-      font-weight: 400;
-      color: var(--accent-alt);
-      margin-top: 1px;
-    }
-    .subtitle {
-      color: var(--muted);
-      font-size: 0.8rem;
-      margin-bottom: 8px;
-    }
-
-    .lang-switch {
-      display: inline-flex;
-      gap: 6px;
-      align-items: center;
-      margin-bottom: 4px;
-      float: right;
-    }
-    .lang-btn {
-      padding: 5px 10px;
-      border-radius: 999px;
-      font-size: 0.7rem;
-      border: 1px solid rgba(148,163,253,0.5);
-      background: transparent;
-      color: var(--muted);
-      cursor: pointer;
-      transition: var(--transition);
-      touch-action: manipulation;
-    }
-    .lang-btn.active {
-      background: var(--accent);
-      color: #050816;
-      border-color: var(--accent-alt);
-      box-shadow: 0 0 12px rgba(79,209,197,0.7);
-    }
-
-    .card {
-      background: radial-gradient(circle at top left, rgba(79,209,197,0.08), transparent 55%) var(--bg-soft);
-      border-radius: var(--radius);
-      padding: 10px 10px 9px;
-      box-shadow: var(--shadow-soft);
-      border: 1px solid rgba(148,163,253,0.12);
-      backdrop-filter: blur(12px);
-    }
-    .card + .card { margin-top: 6px; }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 4px;
-    }
-    .card-title {
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--accent);
-    }
-    .card-subtitle {
-      font-size: 0.7rem;
-      color: var(--muted);
-    }
-
-    .hint {
-      font-size: 0.65rem;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-
-    label {
-      font-size: 0.72rem;
-      color: var(--muted);
-      display: block;
-      margin-bottom: 2px;
-    }
-
-    select, input[type="number"], textarea {
-      width: 100%;
-      padding: 7px 8px;
-      border-radius: 9px;
-      border: 1px solid rgba(148,163,253,0.2);
-      background: rgba(7,10,22,0.98);
-      color: var(--text);
-      font-size: 0.78rem;
-      outline: none;
-      transition: var(--transition);
-      -webkit-tap-highlight-color: transparent;
-    }
-    select:focus, input:focus, textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(79,209,197,0.18);
-    }
-
-    textarea {
-      min-height: 90px;
-      resize: vertical;
       font-family: var(--font);
-      line-height: 1.35;
+      color: var(--text);
+      background: radial-gradient(circle at top, #111827 0, #020817 40%, #000 100%);
     }
-
+    h1 {
+      font-size: 1.4rem;
+      margin: 0 0 4px;
+      font-weight: 600;
+    }
+    h2 {
+      font-size: 1.1rem;
+      margin: 14px 0 6px;
+      font-weight: 500;
+    }
+    p {
+      margin: 4px 0;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    select, button {
+      font-family: var(--font);
+      font-size: 0.9rem;
+    }
+    .shell {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .card {
+      background: rgba(9,12,23,0.96);
+      border-radius: var(--radius);
+      padding: 10px 10px 12px;
+      margin-bottom: 10px;
+      box-shadow: 0 8px 26px rgba(0,0,0,0.55);
+      border: 1px solid rgba(148,163,253,0.06);
+      backdrop-filter: blur(18px);
+    }
     .row {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-    @media (max-width: 600px) {
-      .row { grid-template-columns: 1fr; }
-    }
-
-    .traits-grid {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0,1fr));
-      gap: 4px;
-      margin-top: 3px;
-    }
-    @media (max-width: 600px) {
-      .traits-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
-    }
-
-    .trait-input {
       display: flex;
-      flex-direction: column;
-      gap: 1px;
-    }
-    .trait-input span {
-      font-size: 0.62rem;
-      color: var(--muted);
-    }
-    .trait-input small {
-      font-size: 0.55rem;
-      color: #718096;
-    }
-    .trait-input input {
-      font-size: 0.74rem;
-      padding: 5px 4px;
-      text-align: center;
-    }
-
-    .skills-list, .foods-list {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      margin-top: 4px;
-      max-height: 220px;
-      overflow-y: auto;
-      padding-right: 4px;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .skill-item, .food-item {
-      display: flex;
-      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: var(--gap);
       align-items: center;
-      padding: 5px 7px;
-      border-radius: 10px;
-      background: rgba(9,12,24,0.98);
-      border: 1px solid rgba(79,209,197,0.06);
-      font-size: 0.7rem;
-      gap: 6px;
     }
-
-    .skill-item-left { display: flex; flex-direction: column; gap: 0; }
-
-    .skill-name {
-      font-weight: 500;
-      color: var(--accent-alt);
-      margin-bottom: 1px;
+    .row > * {
+      flex: 1 1 auto;
+      min-width: 0;
     }
-    .skill-reqs {
-      color: var(--muted);
-      font-size: 0.62rem;
+    .lang-select {
+      max-width: 180px;
     }
-
-    .food-name {
-      font-weight: 500;
+    .pill-label {
+      font-size: 0.78rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--accent-soft);
       color: var(--accent);
-      margin-bottom: 1px;
-    }
-    .food-tags {
-      font-size: 0.6rem;
-      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
 
-    .checkbox {
-      width: 18px;
-      height: 18px;
-      border-radius: 6px;
-      border: 1px solid rgba(148,163,253,0.6);
+    /* Personality toggles */
+    .personalities {
       display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .personality {
+      font-size: 0.75rem;
+      padding: 4px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,253,0.18);
+      color: var(--muted);
       cursor: pointer;
-      flex-shrink: 0;
-      transition: var(--transition);
-      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      background: rgba(15,23,42,0.9);
     }
-    .checkbox[data-checked="true"] {
-      background: var(--accent);
-      border-color: var(--accent-alt);
-      box-shadow: 0 0 8px rgba(79,209,197,0.9);
+    .personality.selected {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent);
+      font-weight: 500;
     }
-    .checkbox[data-checked="true"]::after {
-      content: "✓";
-      font-size: 0.8rem;
-      color: #0f172a;
+
+    /* Skill checkboxes */
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .skills label {
+      font-size: 0.74rem;
+      padding: 3px 6px;
+      border-radius: 8px;
+      border: 1px solid rgba(75,85,99,0.9);
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .skills input {
+      transform: scale(1.05);
     }
 
     .btn {
-      border: none;
-      outline: none;
       padding: 8px 14px;
       border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 500;
+      border: none;
+      background: var(--accent);
+      color: #020817;
+      font-weight: 600;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: linear-gradient(to right, var(--accent), #9f7aea);
-      color: #050816;
-      box-shadow: 0 10px 24px rgba(79,209,197,0.4);
-      transition: var(--transition);
       margin-top: 4px;
-      -webkit-tap-highlight-color: transparent;
-      touch-action: manipulation;
+      box-shadow: 0 8px 18px rgba(56,189,248,0.35);
     }
-    .btn span.icon { font-size: 0.95rem; }
-    .btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 16px 34px rgba(79,209,197,0.45);
-    }
-    .btn.secondary {
-      background: transparent;
-      color: var(--accent);
-      border: 1px solid rgba(79,209,197,0.6);
-      box-shadow: none;
-      padding-inline: 10px;
-    }
-    .btn.secondary:hover {
-      background: var(--accent-soft);
-      transform: none;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.5);
-    }
+    .btn span.icon { font-size: 1rem; }
 
     .output {
-      margin-top: 6px;
-      font-size: 0.72rem;
-      max-height: 310px;
-      overflow-y: auto;
-      padding-right: 4px;
-      -webkit-overflow-scrolling: touch;
-    }
-    .output h3 {
       font-size: 0.8rem;
-      margin-bottom: 3px;
-      color: var(--accent-alt);
-      font-weight: 600;
+      line-height: 1.5;
+      margin-top: 4px;
+      white-space: pre-wrap;
     }
-    .output p {
-      margin-bottom: 4px;
-      color: var(--muted);
+    .food-line {
+      margin: 1px 0;
     }
-
-    .step {
-      padding: 5px 7px;
-      margin-bottom: 3px;
-      border-radius: 9px;
-      background: rgba(7,10,22,0.98);
-      border: 1px solid rgba(79,209,197,0.1);
-      display: flex;
-      justify-content: space-between;
-      gap: 6px;
-      align-items: baseline;
-    }
-    .step strong {
-      color: var(--accent);
-      font-weight: 500;
-    }
-    .step span.meta {
-      font-size: 0.6rem;
-      color: var(--muted);
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .tag-warn {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 0.64rem;
+    .warn {
       color: var(--danger);
-      margin-top: 3px;
-    }
-    .tag-warn .icon { font-size: 0.8rem; }
-
-    .badge-soft {
-      display: inline-flex;
-      padding: 2px 6px;
-      font-size: 0.6rem;
-      border-radius: 999px;
-      background: rgba(79,209,197,0.1);
-      color: var(--accent);
-      margin-left: 4px;
+      font-size: 0.78rem;
     }
   </style>
 </head>
 <body>
-<div class="app">
-  <!-- LEFT -->
-  <div>
-    <div>
-      <div class="lang-switch">
-        <button class="lang-btn active" data-lang="en">EN</button>
-        <button class="lang-btn" data-lang="fr">FR</button>
+<div class="shell">
+  <div class="card">
+    <div class="row">
+      <div>
+        <h1>My Fairy Food Planner</h1>
+        <p id="subtitle">
+          Plan what to feed your fairy to hit all 10 traits & unlock every School skill.
+        </p>
       </div>
-      <h1>
-        <span id="title-main"></span>
-        <span id="title-suffix"></span>
-      </h1>
-      <div class="subtitle" id="subtitle-main"></div>
-    </div>
-
-    <!-- Fairy setup -->
-    <div class="card">
-      <div class="card-header">
-        <div>
-          <div class="card-title" id="card1-title"></div>
-          <div class="card-subtitle" id="card1-subtitle"></div>
-        </div>
-      </div>
-      <div class="row">
-        <div>
-          <label for="fairy-element" id="label-element"></label>
-          <select id="fairy-element">
-            <option value="Fire"></option>
-            <option value="Water"></option>
-            <option value="Lightning"></option>
-            <option value="Light"></option>
-            <option value="Darkness"></option>
-          </select>
-        </div>
-        <div>
-          <label for="fairy-level" id="label-level"></label>
-          <input id="fairy-level" type="number" min="1" max="99" value="1" />
-        </div>
-      </div>
-      <label id="label-traits"></label>
-      <div class="traits-grid" id="traits-grid"></div>
-      <div class="hint" id="hint-traits"></div>
-    </div>
-
-    <!-- Core 10-skill set -->
-    <div class="card">
-      <div class="card-header">
-        <div>
-          <div class="card-title" id="card2-title"></div>
-          <div class="card-subtitle" id="card2-subtitle"></div>
-        </div>
-        <button class="btn secondary" id="edit-skills-toggle">
-          <span class="icon">✏️</span><span id="btn-edit-skills-label"></span>
-        </button>
-      </div>
-      <div class="hint" id="hint-skills"></div>
-      <div class="skills-list" id="skills-list"></div>
-
-      <div id="skills-editor" style="display:none; margin-top:5px;">
-        <label for="skills-json" id="label-skills-json"></label>
-        <textarea id="skills-json"></textarea>
-        <button class="btn secondary" id="skills-apply">
-          <span class="icon">✅</span><span id="btn-apply-skills-label"></span>
-        </button>
-        <div class="hint" id="hint-skills-json"></div>
-      </div>
-    </div>
-
-    <!-- Foods -->
-    <div class="card">
-      <div class="card-header">
-        <div>
-          <div class="card-title" id="card3-title"></div>
-          <div class="card-subtitle" id="card3-subtitle"></div>
-        </div>
-        <button class="btn secondary" id="edit-foods-toggle">
-          <span class="icon">🍰</span><span id="btn-edit-foods-label"></span>
-        </button>
-      </div>
-      <div class="foods-list" id="foods-list"></div>
-
-      <div id="foods-editor" style="display:none; margin-top:5px;">
-        <label for="foods-json" id="label-foods-json"></label>
-        <textarea id="foods-json"></textarea>
-        <button class="btn secondary" id="foods-apply">
-          <span class="icon">✅</span><span id="btn-apply-foods-label"></span>
-        </button>
-        <div class="hint" id="hint-foods-json"></div>
-        <div class="tag-warn" id="warn-foods"></div>
+      <div class="lang-select">
+        <label for="lang" class="pill-label">
+          🌐 <span id="lang-label">Language</span>
+        </label>
+        <select id="lang">
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+        </select>
       </div>
     </div>
   </div>
 
-  <!-- RIGHT -->
-  <div>
-    <!-- Plan -->
-    <div class="card">
-      <div class="card-header">
-        <div>
-          <div class="card-title" id="card4-title"></div>
-          <div class="card-subtitle" id="card4-subtitle"></div>
-        </div>
-        <button class="btn" id="generate-plan">
-          <span class="icon">✨</span><span id="btn-generate-label"></span>
-        </button>
-      </div>
-      <div class="hint" id="hint-plan"></div>
-      <div class="output" id="plan-output"></div>
-    </div>
+  <div class="card">
+    <h2 id="start-title">Starting personalities</h2>
+    <p id="start-help">
+      Tap the personalities your fairy already has. This slightly shifts how foods are suggested.
+    </p>
+    <div class="personalities" id="personalities"></div>
+  </div>
 
-    <!-- Notes -->
-    <div class="card">
-      <div class="card-header">
-        <div>
-          <div class="card-title" id="notes-title"></div>
-          <div class="card-subtitle" id="notes-subtitle"></div>
-        </div>
-      </div>
-      <ul id="notes-list"
-          style="font-size:0.7rem; color:var(--muted); margin-left:12px; display:flex; flex-direction:column; gap:3px; margin-top:4px;">
-      </ul>
-      <div class="tag-warn" id="notes-warning"></div>
-    </div>
+  <div class="card">
+    <h2 id="skills-title">Target skill traits</h2>
+    <p id="skills-help">
+      These 10 traits correspond to the School skills. Leave all checked if you’re aiming to unlock everything.
+    </p>
+    <div class="skills" id="skills"></div>
+  </div>
+
+  <div class="card">
+    <h2 id="plan-title">Get a feeding plan</h2>
+    <p id="plan-help">
+      This suggests a simple mix of foods (bronze / Tasty / Delicious) using in-game EN/FR names and trait values from the Legends/Definitive guide.
+    </p>
+    <button class="btn" id="plan-btn">
+      <span class="icon">✨</span><span id="plan-btn-label">Suggest foods</span>
+    </button>
+    <div class="output" id="plan-output"></div>
+    <div class="warn" id="plan-warning"></div>
   </div>
 </div>
 
 <script>
-  // Trait labels: EN/FR in-game names
-  const TRAIT_LABELS = {
-    Sparkly:  { en: "Sparkly",  fr: "Vivacité" },
-    Relaxed:  { en: "Relaxed",  fr: "Esquive" },
-    Valiant:  { en: "Valiant",  fr: "Classe" },
-    Dizzy:    { en: "Dizzy",    fr: "Volupté" },
-    Friendly: { en: "Friendly", fr: "Franchise" },
-    Aspiring: { en: "Aspiring", fr: "Admiration" },
-    Resolute: { en: "Resolute", fr: "Endurance" },
-    Shrewd:   { en: "Shrewd",   fr: "Acrobatie" },
-    Eager:    { en: "Eager",    fr: "Passion" },
-    Smiley:   { en: "Smiley",   fr: "Gaieté" }
-  };
+/*
+  DATA MODEL
 
-  const TRAITS = [
-    "Sparkly","Relaxed","Valiant","Dizzy","Friendly",
-    "Aspiring","Resolute","Shrewd","Eager","Smiley"
-  ];
+  - Traits are fixed 10:
+    Sparkly, Relaxed, Valiant, Dizzy, Friendly,
+    Aspiring, Resolute, Shrewd, Eager, Smiley
 
-  function getTraitLabel(key) {
-    const t = TRAIT_LABELS[key];
-    if (!t) return key;
-    return currentLang === "fr" ? t.fr : t.en;
-  }
-
-  // i18n
-  const I18N = {
-    en: {
-      title_main: "My Fairy 10-Skill Planner",
-      title_suffix: "Hyrule Warriors: Definitive Edition",
-      subtitle_main: "Use proper in-game traits & food to reach the core skills.",
-      card1_title: "1 · Fairy Setup",
-      card1_subtitle: "Use values from your My Fairy screen.",
-      label_element: "Element",
-      label_level: "Starting Level (info only)",
-      label_traits: "Current personality values",
-      hint_traits: "Enter the exact numbers. Traits you haven't unlocked can stay at 0.",
-      card2_title: "2 · Core Skills (10-skill route)",
-      card2_subtitle: "Standard completion route – adjust only if you know your thresholds.",
-      btn_edit_skills: "Edit",
-      hint_skills: "Names follow in-game style (EN/FR). Requirements are an example route; tune if needed.",
-      label_skills_json: "Edit skills JSON",
-      btn_apply_skills: "Apply Skills",
-      hint_skills_json: "Only change if you have accurate data.",
-      card3_title: "3 · Food (EN / FR in-game)",
-      card3_subtitle: "Sample foods using real French names and trait tendencies.",
-      btn_edit_foods: "Edit",
-      label_foods_json: "Edit foods JSON",
-      btn_apply_foods: "Apply Foods",
-      hint_foods_json: "Plus signs from guides are mapped to numbers (e.g. + = 4, ++ = 8, +++ = 12). Adjust if you prefer.",
-      warn_foods: "These values approximate in-game behavior. If you have a precise table, paste it here.",
-      card4_title: "4 · Generate Feeding Plan",
-      card4_subtitle: "Greedy plan based on your selected skills and foods.",
-      btn_generate: "Build Plan",
-      hint_plan: "Merges all selected skill requirements, then picks foods that best fill remaining gaps.",
-      plan_initial: "Fill traits, keep desired skills checked, then tap Build Plan.",
-      err_select_skill: "Select at least one skill.",
-      err_no_path: "No good route with current foods. Add stronger foods or adjust values.",
-      plan_targets_title: "Trait targets for selected skills",
-      plan_feed_title: "Feeding sequence",
-      plan_all_met: "You already meet all selected skill requirements.",
-      plan_still_need: "Still need",
-      plan_done: "All targets reached. Learn the skills at the School. 🎉",
-      plan_partial_warn: "Stopped early: likely missing or inaccurate food data.",
-      plan_tip: "After each refresh, update traits and rerun with the same core skill set.",
-      notes_title: "Notes",
-      notes_subtitle: "Trait & food names match in-game EN / FR terminology.",
-      notes_lines: [
-        "Trait labels switch between English and French in-game names; numbers are the same.",
-        "Food names use official French labels (Œuf étrange, Appât universel, etc.).",
-        "Planner logic is approximate; always trust your My Fairy / School screens first.",
-        "You can extend the food list with your full table for perfect routing."
-      ],
-      notes_warning: "If something differs from your version, edit the JSON blocks to match."
-    },
-    fr: {
-      title_main: "Planificateur 10 Compétences – Jardin des fées",
-      title_suffix: "Hyrule Warriors: Definitive Edition",
-      subtitle_main: "Utilise les vrais noms FR (traits & plats) pour viser tes compétences clés.",
-      card1_title: "1 · Configuration de la fée",
-      card1_subtitle: "Reprends exactement les valeurs du Jardin des fées.",
-      label_element: "Élément",
-      label_level: "Niveau de départ (info)",
-      label_traits: "Valeurs de personnalité (FR en jeu)",
-      hint_traits: "Vivacité, Esquive, Classe, Volupté, Franchise, Admiration, Endurance, Acrobatie, Passion, Gaieté.",
-      card2_title: "2 · Compétences (route 10 compétences)",
-      card2_subtitle: "Basé sur les compétences clés pour tout débloquer.",
-      btn_edit_skills: "Modifier",
-      hint_skills: "Les noms suivent le jeu FR. Adapte les prérequis si tu disposes des valeurs exactes.",
-      label_skills_json: "Modifier le JSON des compétences",
-      btn_apply_skills: "Valider les compétences",
-      hint_skills_json: "Ne change que si tu connais précisément les seuils.",
-      card3_title: "3 · Nourriture (noms FR officiels)",
-      card3_subtitle: "Exemples : Œuf étrange, Fromage d’Ordon, Soupe Élixir, etc.",
-      btn_edit_foods: "Modifier",
-      label_foods_json: "Modifier le JSON des plats",
-      btn_apply_foods: "Valider les plats",
-      hint_foods_json: "Les + / ++ / +++ sont convertis en valeurs numériques. Ajuste selon ton tableau.",
-      warn_foods: "Ces valeurs sont indicatives. Remplace-les par ton tableau exact pour un routage précis.",
-      card4_title: "4 · Générer le plan de repas",
-      card4_subtitle: "Séquence proposée pour atteindre les prérequis.",
-      btn_generate: "Générer le plan",
-      hint_plan: "Fusionne les objectifs, puis choisit les plats qui comblent le mieux les manques.",
-      plan_initial: "Renseigne tes traits, coche les compétences, puis touche Générer le plan.",
-      err_select_skill: "Sélectionne au moins une compétence.",
-      err_no_path: "Aucun plan valable avec ces plats. Ajoute des plats ou ajuste les valeurs.",
-      plan_targets_title: "Objectifs de traits",
-      plan_feed_title: "Séquence de repas",
-      plan_all_met: "Tu atteins déjà tous les prérequis choisis.",
-      plan_still_need: "Il manque encore",
-      plan_done: "Objectifs atteints. Apprends les compétences à l’École. 🎉",
-      plan_partial_warn: "Arrêt anticipé : données de plats manquantes ou imprécises.",
-      plan_tip: "Après chaque rafraîchissement, mets à jour tes traits et relance avec les mêmes compétences.",
-      notes_title: "Remarques",
-      notes_subtitle: "Correspondance directe aux libellés du jeu (FR / EN).",
-      notes_lines: [
-        "Les traits affichent les noms FR (Vivacité, Esquive, etc.) avec l’équivalent EN en petit.",
-        "Les plats utilisent les noms FR connus et des effets cohérents (+ / ++ / +++).",
-        "Vérifie toujours l’écran du Jardin des fées et de l’École pour confirmer.",
-        "Tu peux coller ton tableau complet de nourritures pour que le plan soit au plus juste."
-      ],
-      notes_warning: "En cas d’écart avec ta version, modifie les blocs JSON (traits ou plats)."
-    }
-  };
-
-  let currentLang = "en";
-
-  // 10-skill core route (same keys; labels localised via TRAIT_LABELS)
-  let CORE_SKILLS = [
+  - Each food entry:
     {
-      id: "magic_fountain_plus",
-      name_en: "Magic Fountain+",
-      name_fr: "Fontaine magique+",
-      requirements: { Aspiring: 200, Relaxed: 225, Valiant: 225, Eager: 225, Shrewd: 255 }
-    },
-    {
-      id: "special_fountain_plus",
-      name_en: "Special Fountain+",
-      name_fr: "Fontaine spéciale+",
-      requirements: { Aspiring: 200, Valiant: 225, Resolute: 225, Eager: 225, Sparkly: 255 }
-    },
-    {
-      id: "wall_of_water_plus",
-      name_en: "Wall of Water+",
-      name_fr: "Mur d’eau+",
-      requirements: { Valiant: 200, Aspiring: 200, Sparkly: 225, Smiley: 225 }
-    },
-    {
-      id: "xp_master_plus",
-      name_en: "XP Master+",
-      name_fr: "Maître d'EXP+",
-      requirements: { Sparkly: 200, Eager: 200, Dizzy: 225, Resolute: 225 }
-    },
-    {
-      id: "rupee_master_plus",
-      name_en: "Rupee Master+",
-      name_fr: "Maître des rubis+",
-      requirements: { Dizzy: 200, Friendly: 200, Shrewd: 200, Relaxed: 225 }
-    },
-    {
-      id: "food_master_plus",
-      name_en: "Food Master+",
-      name_fr: "Maître des plats+",
-      requirements: { Valiant: 200, Relaxed: 225, Aspiring: 225, Resolute: 225, Eager: 255 }
-    },
-    {
-      id: "material_master_plus",
-      name_en: "Material Master+",
-      name_fr: "Maître des matériaux+",
-      requirements: { Smiley: 200, Relaxed: 225, Valiant: 225, Aspiring: 225, Resolute: 255 }
-    },
-    {
-      id: "weapon_master_plus",
-      name_en: "Weapon Master+",
-      name_fr: "Maître des armes+",
-      requirements: { Dizzy: 200, Relaxed: 225, Shrewd: 225, Eager: 225, Friendly: 255 }
-    },
-    {
-      id: "extreme_crush_plus",
-      name_en: "Extreme Crush+",
-      name_fr: "Écrasement extrême+",
-      requirements: { Resolute: 200, Sparkly: 225, Valiant: 225, Friendly: 225, Smiley: 255 }
-    },
-    {
-      id: "glass_cannon",
-      name_en: "Glass Cannon",
-      name_fr: "Canon de verre",
-      requirements: { Sparkly: 200, Resolute: 200, Friendly: 225, Dizzy: 225 }
-    }
-  ];
-
-  // Foods with FR names & trait tendencies (approximate numeric mapping)
-  let FOODS = [
-    {
-      name_en: "Strange Egg",
+      key: "weird-egg-bronze",
+      base: "Weird Egg",
+      name_en: "Weird Egg",
       name_fr: "Œuf étrange",
-      element: "Any",
-      levelGain: 1,
-      traits: { Sparkly: 4, Valiant: 4, Friendly: -2 }
-    },
-    {
-      name_en: "Tasty Strange Egg",
-      name_fr: "Œuf étrange savoureux",
-      element: "Any",
-      levelGain: 2,
-      traits: { Sparkly: 8, Valiant: -4 }
-    },
-    {
-      name_en: "Supreme Strange Egg",
-      name_fr: "Œuf étrange exquis",
-      element: "Any",
-      levelGain: 3,
-      traits: { Sparkly: 12, Valiant: 8, Friendly: -4 }
-    },
-    {
-      name_en: "Universal Bait",
-      name_fr: "Appât universel",
-      element: "Any",
-      levelGain: 1,
-      traits: { Friendly: 4, Resolute: 4, Valiant: -2 }
-    },
-    {
-      name_en: "Ordon Goat Cheese",
-      name_fr: "Fromage de chèvre d’Ordon",
-      element: "Any",
-      levelGain: 1,
-      traits: { Friendly: 4, Resolute: 4 }
-    },
-    {
-      name_en: "Supreme Ordon Goat Cheese",
-      name_fr: "Fromage de chèvre d’Ordon exquis",
-      element: "Any",
-      levelGain: 3,
-      traits: { Resolute: 12, Friendly: 8, Dizzy: -4 }
-    },
-    {
-      name_en: "Lon Lon Milk",
-      name_fr: "Lait de Lon Lon",
-      element: "Any",
-      levelGain: 1,
-      traits: { Sparkly: 4, Friendly: 4, Valiant: -2 }
-    },
-    {
-      name_en: "Supreme Lon Lon Milk",
-      name_fr: "Lait de Lon Lon exquis",
-      element: "Any",
-      levelGain: 3,
-      traits: { Friendly: 12, Sparkly: -4 }
-    },
-    {
-      name_en: "Elixir Soup",
-      name_fr: "Soupe Élixir",
-      element: "Any",
-      levelGain: 3,
-      traits: { Smiley: 12, Friendly: 8, Resolute: 8 }
-    },
-    {
-      name_en: "Great Fairy's Tears",
-      name_fr: "Larmes de la grande fée",
-      element: "Any",
-      levelGain: 3,
-      traits: { Aspiring: 8, Friendly: 8, Shrewd: 8 }
-    },
-    {
-      name_en: "Chateau Romani",
-      name_fr: "Château Romani",
-      element: "Any",
-      levelGain: 3,
-      traits: { Valiant: 12, Friendly: 8 }
+      rarity: "bronze" | "silver" | "gold",
+      rarity_label_en: "bronze" / "Tasty (silver)" / "Delicious (gold)",
+      rarity_label_fr: "bronze" / "Savoureux (argent)" / "Délicieux (or)",
+      type: "Feast" | "Drink" | "Plant" | "Fish" | "Weird",
+      element: "Fire" | "Water" | "Lightning" | "Light" | "Darkness" | "Neutral" | "Earth" | "Wind",
+      traits: { Sparkly: +/-, ..., Smiley: +/- }
     }
+
+  - Values are transcribed from the GameFAQs "My Fairy Unlockables → Dining Room" table
+    (1st row = bronze, 2nd = silver/Tasty, 3rd = gold/Delicious). Gratitude Crystals are intentionally excluded.
+*/
+
+// base helpers
+const TRAITS = [
+  "Sparkly","Relaxed","Valiant","Dizzy","Friendly",
+  "Aspiring","Resolute","Shrewd","Eager","Smiley"
+];
+
+// Personality labels = official-ish localized names mapping onto traits (not literal translations).
+const PERSONALITY_DEF = [
+  { trait: "Sparkly",  en: "Sparkly",   fr: "Étincelante" },
+  { trait: "Relaxed",  en: "Soft",      fr: "Douce" },
+  { trait: "Valiant",  en: "Flashy",    fr: "Tape-à-l’œil" },
+  { trait: "Dizzy",    en: "Wavy",      fr: "Étourdissante" },
+  { trait: "Friendly", en: "Kind",      fr: "Gentille" },
+  { trait: "Aspiring", en: "Dreamy",    fr: "Rêveuse" },
+  { trait: "Resolute", en: "Staunch",   fr: "Résolue" },
+  { trait: "Shrewd",   en: "Fleet",     fr: "Rapide" },
+  { trait: "Eager",    en: "Eager",     fr: "Impatiente" },
+  { trait: "Smiley",   en: "Cheerful",  fr: "Joyeuse" },
+];
+
+// Build FOODS from table (main + weird foods, without Gratitude Crystals).
+// Note: if any single entry looks off vs your reference, adjust that one line.
+const FOODS = [
+  // ===== FEASTS =====
+  // Weird Egg
+  f("Weird Egg","Œuf étrange","Feast","Neutral",
+    [2,0,2,0,-1,0,2,0,0,0],
+    [5,-2,2,0,0,0,5,0,2,0],
+    [10,-5,5,-2,2,0,5,0,2,0]),
+  // All-purpose Bait
+  f("All-purpose Bait","Appât universel","Feast","Light",
+    [0,0,-1,0,2,0,2,0,0,2],
+    [2,0,0,0,5,0,2,0,-2,5],
+    [2,0,2,0,5,-2,5,-2,-5,10]),
+  // Ordon Goat Cheese
+  f("Ordon Goat Cheese","Fromage de chèvre d’Ordon","Feast","Darkness",
+    [0,2,2,0,0,0,2,0,-1,0],
+    [0,2,5,-2,0,2,5,0,0,0],
+    [-2,5,10,-5,0,2,5,-2,2,0]),
+  // Meat
+  f("Meat","Viande","Feast","Fire",
+    [0,-1,2,0,0,0,2,2,0,0],
+    [0,0,5,-2,2,0,0,5,2,0],
+    [0,2,10,-5,2,0,-2,5,5,-2]),
+
+  // ===== DRINKS =====
+  // Lon Lon Milk
+  f("Lon Lon Milk","Lait de Lon Lon","Drink","Light",
+    [2,0,-1,0,0,2,0,2,0,0],
+    [2,0,0,0,2,0,5,-2,5,0],
+    [5,-2,2,0,2,0,10,-5,5,-2]),
+  // Pumpkin Soup
+  f("Pumpkin Soup","Soupe à la citrouille","Drink","Fire",
+    [0,0,0,-1,2,0,2,0,2,0],
+    [2,0,0,0,2,0,5,-2,5,0],
+    [2,0,0,2,5,-2,10,-5,5,-2]),
+  // Sacred Water
+  f("Sacred Water","Eau sacrée","Drink","Light",
+    [2,0,0,-1,2,0,2,0,0,0],
+    [5,-2,0,0,5,0,2,0,2,0],
+    [10,-5,0,2,5,-2,5,-2,2,0]),
+  // Elixir Soup
+  f("Elixir Soup","Soupe Élixir","Drink","Fire",
+    [0,0,-1,0,2,0,2,0,0,2],
+    [2,0,0,0,2,0,2,0,-2,5],
+    [2,0,2,0,5,2,5,-2,-5,10]),
+  // Great Fairy's Tears
+  f("Great Fairy's Tears","Larmes de la grande fée","Drink","Light",
+    [0,2,0,0,0,2,2,0,-1,0],
+    [0,5,2,0,-2,5,2,0,0,0],
+    [-2,5,2,0,-5,10,5,-2,2,0]),
+  // Chateau Romani
+  f("Chateau Romani","Château Romani","Drink","Light",
+    [0,0,2,0,2,0,0,2,-1,0],
+    [0,2,5,-2,5,0,0,2,0,0],
+    [0,2,10,-5,5,-2,-2,5,2,0]),
+  // Bottled Water
+  f("Bottled Water","Eau en bouteille","Drink","Water",
+    [0,2,-1,0,2,0,0,2,0,0],
+    [0,5,0,0,5,-2,0,2,2,0],
+    [-2,5,2,0,10,-5,-2,5,2,0]),
+  // Hot Spring Water
+  f("Hot Spring Water","Eau thermale","Drink","Fire",
+    [0,2,0,0,-1,0,0,2,2,0],
+    [2,5,2,0,0,0,0,2,5,0],
+    [-5,10,2,0,2,0,-2,5,5,-2]),
+
+  // ===== PLANTS / SEEDS =====
+  // Odd Mushroom
+  f("Odd Mushroom","Champignon étrange","Plant","Darkness",
+    [0,0,2,0,2,0,2,0,-1,0],
+    [2,0,5,-2,2,0,5,0,0,0],
+    [2,0,10,-5,5,-2,5,-2,2,0]),
+  // Deku Nut
+  f("Deku Nut","Noix Mojo","Plant","Light",
+    [1,0,2,0,2,0,2,0,0,0],
+    [0,0,5,0,5,-2,2,0,2,0],
+    [2,0,5,-2,10,-5,5,-2,2,0]),
+  // Magic Beans
+  f("Magic Beans","Haricots magiques","Plant","Light",
+    [2,0,-1,0,2,0,0,0,2,0],
+    [5,0,0,0,5,-2,2,0,2,0],
+    [5,-2,2,0,10,-5,2,0,5,-2]),
+  // Life Tree Fruit
+  f("Life Tree Fruit","Fruit de l’Arbre de vie","Plant","Light",
+    [0,0,0,-1,2,0,2,0,2,0],
+    [2,0,0,0,5,-2,5,0,2,0],
+    [2,0,0,2,10,-5,5,-2,5,-2]),
+  // Light Fruit
+  f("Light Fruit","Fruit de lumière","Plant","Light",
+    [2,0,0,-1,2,0,0,0,2,0],
+    [5,-2,0,0,5,0,2,0,2,0],
+    [10,-5,0,2,5,-2,2,0,5,-2]),
+  // Stamina Fruit
+  f("Stamina Fruit","Fruit d’endurance","Plant","Lightning",
+    [2,0,0,0,-1,0,2,0,2,0],
+    [5,0,0,2,0,0,5,-2,2,0],
+    [5,-2,0,2,2,0,10,-5,5,-2]),
+  // Water Fruit
+  f("Water Fruit","Fruit d’eau","Plant","Water",
+    [-1,0,0,2,2,0,2,0,0,0],
+    [0,0,0,5,2,0,5,-2,2,0],
+    [2,0,-2,5,5,-2,10,-5,2,0]),
+  // Hyoi Pear
+  f("Hyoi Pear","Poire mojo","Plant","Wind",
+    [-1,0,2,0,2,0,0,0,0,2],
+    [0,0,5,0,2,0,2,0,-2,5],
+    [2,0,5,-2,5,-2,2,0,-5,10]),
+  // Carrot
+  f("Carrot","Carotte","Plant","Lightning",
+    [-1,0,2,0,0,0,0,2,0,2],
+    [0,0,2,0,2,0,-2,5,0,5],
+    [2,0,5,-2,2,0,-5,10,-2,5]),
+  // Ember Seeds
+  f("Ember Seeds","Graines braise","Plant","Fire",
+    [0,0,2,0,-1,0,0,2,2,0],
+    [0,2,5,-2,0,0,2,5,0,0],
+    [0,2,10,-5,2,0,-2,5,5,-2]),
+  // Scent Seeds
+  f("Scent Seeds","Graines parfumées","Plant","Darkness",
+    [0,0,2,0,2,0,0,2,-1,0],
+    [0,2,5,0,2,0,-2,5,0,0],
+    [0,2,5,-2,5,-2,-5,10,2,0]),
+  // Pegasus Seeds
+  f("Pegasus Seeds","Graines Pégase","Plant","Lightning",
+    [0,-1,0,0,2,0,0,2,2,0],
+    [0,0,2,0,2,0,-2,5,5,0],
+    [0,2,2,0,5,-2,-5,10,5,-2]),
+  // Gale Seeds
+  f("Gale Seeds","Graines ouragan","Plant","Wind",
+    [0,2,2,0,2,0,0,0,-1,0],
+    [0,2,5,-2,5,0,0,2,0,0],
+    [-2,5,10,-5,5,-2,0,2,2,0]),
+  // Mystery Seeds
+  f("Mystery Seeds","Graines mystère","Plant","Light",
+    [0,2,2,0,2,0,0,-1,0,0],
+    [0,5,2,0,5,-2,0,0,2,0],
+    [-2,5,5,-2,10,-5,0,2,2,0]),
+  // Pumpkin
+  f("Pumpkin","Citrouille","Plant","Earth",
+    [-1,0,0,0,2,0,2,0,2,0],
+    [0,0,0,2,2,0,2,0,5,-2],
+    [2,0,0,2,5,-2,5,-2,10,-5]),
+
+  // ===== FISH =====
+  // Greengill
+  f("Greengill","Vertelette","Fish","Water",
+    [0,0,-1,0,0,2,2,0,2,0],
+    [0,2,0,0,-2,5,2,0,5,0],
+    [0,2,2,0,-5,10,5,-2,5,-2]),
+  // Ordon Catfish
+  f("Ordon Catfish","Silure d’Ordon","Fish","Water",
+    [0,2,2,0,0,2,-1,0,0,0],
+    [-2,5,5,0,0,2,0,0,2,0],
+    [-5,10,5,-2,-2,5,2,0,2,0]),
+  // Hyrule Bass
+  f("Hyrule Bass","Perche d’Hyrule","Fish","Water",
+    [0,2,2,0,0,0,2,0,-1,0],
+    [-2,5,2,0,0,2,5,0,0,0],
+    [-5,10,5,-2,0,2,5,-2,2,0]),
+  // Hylian Pike
+  f("Hylian Pike","Brochet d’Hyrule","Fish","Water",
+    [0,2,0,0,0,-1,2,0,2,0],
+    [0,2,2,0,0,0,5,-2,5,0],
+    [-2,5,2,0,0,2,10,-5,5,-2]),
+  // Reekfish
+  f("Reekfish","Poisson-puant","Fish","Water",
+    [0,2,2,0,0,-1,2,0,0,0],
+    [0,2,5,-2,0,0,5,0,2,0],
+    [-2,5,10,-5,0,2,5,-2,2,0]),
+  // Hylian Loach
+  f("Hylian Loach","Loche d’Hyrule","Fish","Water",
+    [0,2,-1,0,0,2,0,0,2,0],
+    [0,2,0,0,0,5,2,0,5,-2],
+    [-2,5,2,0,-2,5,2,0,10,-5]),
+
+  // ===== WEIRD (no Gratitude Crystals) =====
+  // Mushroom Spores
+  f("Mushroom Spores","Spores de champignon","Weird","Darkness",
+    [2,0,0,2,2,0,-1,0,0,0],
+    [5,-2,0,2,5,0,0,0,2,0],
+    [10,-5,-2,5,5,-2,2,0,2,0]),
+  // Skullfish
+  f("Skullfish","Poisson-squelette","Weird","Darkness",
+    [0,-1,2,0,0,2,2,0,0,0],
+    [0,0,5,-2,0,2,5,0,2,0],
+    [0,2,10,-5,-2,5,5,-2,2,0]),
+  // Bombfish
+  f("Bombfish","Poisson-bombe","Weird","Fire",
+    [0,-1,2,0,0,2,0,2,0,0],
+    [0,0,5,0,0,2,2,0,5,-2],
+    [0,2,5,-2,0,2,5,-2,10,-5]),
+  // Chu Jelly
+  f("Chu Jelly","Gelée Chu","Weird","Darkness",
+    [0,2,2,0,0,-1,2,0,0,0],
+    [0,5,2,0,0,0,5,-2,2,0],
+    [-2,5,5,-2,0,2,10,-5,2,0]),
+  // Bee Larvae
+  f("Bee Larvae","Larves d’abeille","Weird","Earth",
+    [0,0,2,0,0,-1,2,0,2,0],
+    [0,2,5,0,0,0,2,0,5,-2],
+    [0,2,5,-2,0,2,5,-2,10,-5]),
+  // Rock Sirloin
+  f("Rock Sirloin","Viande de roc","Weird","Earth",
+    [0,-1,2,0,0,0,2,2,0,0],
+    [0,0,5,0,2,0,-2,5,2,0],
+    [0,2,5,-2,2,0,-5,10,5,-2]),
+];
+
+// helper to expand three rarity rows into three entries
+function f(baseEN, baseFR, type, element, bronze, silver, gold) {
+  return [
+    mk(baseEN, baseFR, type, element, "bronze", bronze),
+    mk("Tasty " + baseEN, tastyFR(baseFR), type, element, "silver", silver),
+    mk("Delicious " + baseEN, deliciousFR(baseFR), type, element, "gold", gold),
   ];
-
-  const traitsGrid = document.getElementById("traits-grid");
-  const skillsList = document.getElementById("skills-list");
-  const foodsList = document.getElementById("foods-list");
-  const planOutput = document.getElementById("plan-output");
-
-  function initTraitsInputs() {
-    traitsGrid.innerHTML = "";
-    TRAITS.forEach(tr => {
-      const wrap = document.createElement("div");
-      wrap.className = "trait-input";
-      const label = document.createElement("span");
-      label.textContent = getTraitLabel(tr);
-      const small = document.createElement("small");
-      const other = TRAIT_LABELS[tr]
-        ? (currentLang === "fr" ? TRAIT_LABELS[tr].en : TRAIT_LABELS[tr].fr)
-        : "";
-      small.textContent = other ? other : "";
-      const input = document.createElement("input");
-      input.type = "number";
-      input.min = "0";
-      input.max = "255";
-      input.value = "0";
-      input.dataset.trait = tr;
-      wrap.appendChild(label);
-      wrap.appendChild(small);
-      wrap.appendChild(input);
-      traitsGrid.appendChild(wrap);
-    });
+}
+function mk(nameEN, nameFR, type, element, rarity, arr) {
+  const key = nameEN.toLowerCase().replace(/[^a-z0-9]+/g,"-")+"-"+rarity;
+  const traits = {};
+  TRAITS.forEach((t,i)=>traits[t] = arr[i] || 0);
+  const rarity_label_en =
+    rarity === "bronze" ? "bronze" :
+    rarity === "silver" ? "Tasty (silver)" :
+    "Delicious (gold)";
+  const rarity_label_fr =
+    rarity === "bronze" ? "bronze" :
+    rarity === "silver" ? "Savoureux (argent)" :
+    "Délicieux (or)";
+  return {
+    key,
+    base: nameEN.replace(/^Tasty |^Delicious /,""),
+    name_en: nameEN,
+    name_fr: nameFR,
+    rarity,
+    rarity_label_en,
+    rarity_label_fr,
+    type,
+    element,
+    traits
+  };
+}
+function tastyFR(baseFR) {
+  // very lightweight gender handling; tweak manually where needed
+  if (baseFR.match(/euse$|ice$|ette$|ille$|ion$|ée$|ie$|ure$|ouffe$/i)) {
+    return baseFR + " savoureuse";
   }
-
-  function localizeElementLabel(el) {
-    const map = {
-      Fire: { en: "Fire", fr: "Feu" },
-      Water: { en: "Water", fr: "Eau" },
-      Lightning: { en: "Lightning", fr: "Foudre" },
-      Light: { en: "Light", fr: "Lumière" },
-      Darkness: { en: "Darkness", fr: "Ténèbres" },
-      Any: { en: "Any", fr: "Tous" }
-    };
-    return (map[el] || { en: el, fr: el })[currentLang] || el;
+  if (baseFR.match(/e$|ue$|ille$|une$|soupe$/i)) {
+    return baseFR + " savoureuse";
   }
-
-  function renderSkills() {
-    skillsList.innerHTML = "";
-    CORE_SKILLS.forEach((s, idx) => {
-      const row = document.createElement("div");
-      row.className = "skill-item";
-
-      const left = document.createElement("div");
-      left.className = "skill-item-left";
-
-      const name = document.createElement("div");
-      name.className = "skill-name";
-      name.textContent =
-        currentLang === "fr"
-          ? (s.name_fr || s.name_en || s.id)
-          : (s.name_en || s.name_fr || s.id);
-
-      const reqs = document.createElement("div");
-      reqs.className = "skill-reqs";
-      const parts = [];
-      Object.entries(s.requirements || {}).forEach(([trait, val]) => {
-        const label = getTraitLabel(trait);
-        parts.push(`${label.slice(0,3)} ≥ ${val}`);
-      });
-      reqs.textContent = parts.join("  •  ");
-
-      left.appendChild(name);
-      left.appendChild(reqs);
-
-      const cb = document.createElement("div");
-      cb.className = "checkbox";
-      cb.dataset.index = idx;
-      cb.dataset.checked = "true";
-      cb.addEventListener("click", () => {
-        cb.dataset.checked =
-          cb.dataset.checked === "true" ? "false" : "true";
-      });
-
-      row.appendChild(left);
-      row.appendChild(cb);
-      skillsList.appendChild(row);
-    });
-
-    document.getElementById("skills-json").value =
-      JSON.stringify(CORE_SKILLS, null, 2);
+  return baseFR + " savoureux";
+}
+function deliciousFR(baseFR) {
+  if (baseFR.match(/euse$|ice$|ette$|ille$|ion$|ée$|ie$|ure$|ouffe$/i)) {
+    return baseFR + " exquise";
   }
-
-  function renderFoods() {
-    foodsList.innerHTML = "";
-    FOODS.forEach(f => {
-      const row = document.createElement("div");
-      row.className = "food-item";
-
-      const left = document.createElement("div");
-      const nm = document.createElement("div");
-      nm.className = "food-name";
-      nm.textContent =
-        currentLang === "fr"
-          ? (f.name_fr || f.name_en)
-          : (f.name_en || f.name_fr);
-
-      const tags = document.createElement("div");
-      tags.className = "food-tags";
-
-      const parts = [];
-      parts.push(localizeElementLabel(f.element));
-      parts.push(`+${f.levelGain} Lv`);
-
-      const boosts = Object.entries(f.traits || {})
-        .filter(([_, v]) => v !== 0)
-        .map(([k, v]) => {
-          const sign = v > 0 ? "+" : "";
-          return `${getTraitLabel(k).slice(0,3)}${sign}${v}`;
-        })
-        .slice(0, 4);
-
-      if (boosts.length) parts.push(boosts.join(" · "));
-      tags.textContent = parts.join("  •  ");
-
-      left.appendChild(nm);
-      left.appendChild(tags);
-      row.appendChild(left);
-      foodsList.appendChild(row);
-    });
-
-    document.getElementById("foods-json").value =
-      JSON.stringify(FOODS, null, 2);
+  if (baseFR.match(/e$|ue$|ille$|une$|soupe$/i)) {
+    return baseFR + " exquise";
   }
+  return baseFR + " exquis";
+}
 
-  function getCurrentTraits() {
-    const res = {};
-    traitsGrid.querySelectorAll("input[data-trait]").forEach(inp => {
-      res[inp.dataset.trait] = Number(inp.value) || 0;
-    });
-    return res;
-  }
+// flatten FOODS helper
+const ALL_FOODS = FOODS.flat();
 
-  function getSelectedSkills() {
-    const arr = [];
-    skillsList.querySelectorAll(".checkbox").forEach(cb => {
-      if (cb.dataset.checked === "true") {
-        const i = Number(cb.dataset.index);
-        if (!isNaN(i) && CORE_SKILLS[i]) arr.push(CORE_SKILLS[i]);
+// --- UI wiring ---
+
+const langSelect = document.getElementById("lang");
+const personalitiesDiv = document.getElementById("personalities");
+const skillsDiv = document.getElementById("skills");
+const planBtn = document.getElementById("plan-btn");
+const planOut = document.getElementById("plan-output");
+const planWarn = document.getElementById("plan-warning");
+
+let currentLang = "en";
+const selectedPersonalities = new Set();
+const targetTraits = new Set(TRAITS); // all on by default
+
+function renderPersonalities() {
+  personalitiesDiv.innerHTML = "";
+  PERSONALITY_DEF.forEach(p => {
+    const btn = document.createElement("div");
+    btn.className = "personality";
+    btn.dataset.trait = p.trait;
+    btn.textContent = currentLang === "en" ? p.en : p.fr;
+    btn.onclick = () => {
+      const tr = p.trait;
+      if (selectedPersonalities.has(tr)) {
+        selectedPersonalities.delete(tr);
+        btn.classList.remove("selected");
+      } else {
+        selectedPersonalities.add(tr);
+        btn.classList.add("selected");
       }
-    });
-    return arr;
+    };
+    personalitiesDiv.appendChild(btn);
+  });
+}
+
+function renderSkills() {
+  skillsDiv.innerHTML = "";
+  TRAITS.forEach(tr => {
+    const label = document.createElement("label");
+    const cb = document.createElement("input");
+    cb.type = "checkbox";
+    cb.checked = targetTraits.has(tr);
+    cb.onchange = () => {
+      if (cb.checked) targetTraits.add(tr);
+      else targetTraits.delete(tr);
+    };
+    const span = document.createElement("span");
+    span.textContent = tr;
+    label.appendChild(cb);
+    label.appendChild(span);
+    skillsDiv.appendChild(label);
+  });
+}
+
+function updateTexts() {
+  const isFR = currentLang === "fr";
+  document.getElementById("lang-label").textContent = isFR ? "Langue" : "Language";
+  document.getElementById("subtitle").textContent =
+    isFR
+      ? "Planifiez les repas pour que votre fée atteigne tous les traits nécessaires aux compétences."
+      : "Plan what to feed your fairy so she reaches all traits needed for every School skill.";
+  document.getElementById("start-title").textContent =
+    isFR ? "Personnalités de départ" : "Starting personalities";
+  document.getElementById("start-help").textContent =
+    isFR
+      ? "Touchez les personnalités déjà présentes sur votre fée. Cela ajuste légèrement les suggestions."
+      : "Tap the personalities your fairy already has. This slightly nudges the suggestions.";
+  document.getElementById("skills-title").textContent =
+    isFR ? "Traits pour les compétences" : "Target skill traits";
+  document.getElementById("skills-help").textContent =
+    isFR
+      ? "Ces 10 traits servent aux compétences de l’École. Laissez tout coché pour viser toutes les compétences."
+      : "These 10 traits are used for School skills. Leave all checked to aim for every skill.";
+  document.getElementById("plan-title").textContent =
+    isFR ? "Plan d’alimentation" : "Feeding plan";
+  document.getElementById("plan-help").textContent =
+    isFR
+      ? "Suggestion simple avec rareté claire (bronze / Savoureux / Délicieux) selon les valeurs du guide."
+      : "Simple suggestion with clear rarity (bronze / Tasty / Delicious) based on the guide values.";
+  document.getElementById("plan-btn-label").textContent =
+    isFR ? "Proposer des repas" : "Suggest foods";
+}
+
+langSelect.onchange = () => {
+  currentLang = langSelect.value;
+  updateTexts();
+  renderPersonalities();
+};
+
+renderPersonalities();
+renderSkills();
+updateTexts();
+
+// --- Planning logic (simple & transparent) ---
+// Goal: for each selected trait, reach a threshold sum using as few foods as possible.
+// This is a helper, not frame-perfect optimization, but good enough for planning.
+
+planBtn.onclick = () => {
+  const neededTraits = Array.from(targetTraits);
+  if (!neededTraits.length) {
+    planOut.textContent = currentLang === "fr"
+      ? "Choisissez au moins un trait à viser."
+      : "Select at least one trait to target.";
+    planWarn.textContent = "";
+    return;
   }
 
-  function mergeRequirements(skills) {
-    const t = {};
-    skills.forEach(s => {
-      Object.entries(s.requirements || {}).forEach(([trait, val]) => {
-        if (!t[trait] || val > t[trait]) t[trait] = val;
-      });
-    });
-    return t;
+  // baseline: tiny bias for selected personalities (they're already strong)
+  const baseline = {};
+  TRAITS.forEach(t => baseline[t] = 0);
+  selectedPersonalities.forEach(t => baseline[t] += 3);
+
+  // naive target: want at least 30 in each chosen trait (adjustable)
+  const TARGET = 30;
+
+  // greedy pick: repeatedly choose the food with best score toward deficits
+  const plan = [];
+  const current = { ...baseline };
+
+  function bestFood() {
+    let best = null;
+    let bestScore = 0;
+    for (const food of ALL_FOODS) {
+      // skip if this food overall pushes too many chosen traits negative
+      let score = 0;
+      for (const tr of neededTraits) {
+        const delta = food.traits[tr] || 0;
+        const deficit = Math.max(0, TARGET - current[tr]);
+        if (deficit > 0 && delta > 0) {
+          score += delta;
+        }
+        if (deficit > 0 && delta < 0) {
+          score += delta * 0.6; // soft penalty
+        }
+      }
+      if (score > bestScore + 0.0001) {
+        bestScore = score;
+        best = food;
+      }
+    }
+    return bestScore > 0 ? best : null;
   }
 
-  function allMet(current, targets) {
-    return Object.keys(targets).every(
-      tr => (current[tr] || 0) >= targets[tr]
+  // limit steps so it doesn't spam
+  for (let i = 0; i < 60; i++) {
+    const done = neededTraits.every(tr => current[tr] >= TARGET);
+    if (done) break;
+    const food = bestFood();
+    if (!food) break;
+    plan.push(food);
+    TRAITS.forEach(tr => {
+      current[tr] += (food.traits[tr] || 0);
+    });
+  }
+
+  // format output
+  if (!plan.length) {
+    planOut.textContent = currentLang === "fr"
+      ? "Aucune suggestion trouvée avec les paramètres actuels."
+      : "No usable suggestion found with the current settings.";
+    planWarn.textContent = "";
+    return;
+  }
+
+  // compress identical foods
+  const countMap = {};
+  for (const f of plan) {
+    const code = f.key;
+    if (!countMap[code]) countMap[code] = { food: f, n: 0 };
+    countMap[code].n++;
+  }
+
+  const lines = [];
+  for (const {food, n} of Object.values(countMap)) {
+    const name = currentLang === "fr" ? food.name_fr : food.name_en;
+    const rarityLabel = currentLang === "fr"
+      ? food.rarity_label_fr
+      : food.rarity_label_en;
+    lines.push(
+      `• x${n} ${name} [${rarityLabel}, ${food.type}, ${food.element}]`
     );
   }
 
-  function computePlan() {
-    const fairyElement = document.getElementById("fairy-element").value;
-    const current = getCurrentTraits();
-    const selected = getSelectedSkills();
-    const t = I18N[currentLang];
+  planOut.innerHTML = lines.map(l => `<div class="food-line">${l}</div>`).join("");
 
-    if (!selected.length) return { error: t.err_select_skill };
-
-    const targets = mergeRequirements(selected);
-    if (allMet(current, targets)) {
-      return { steps: [], targets, alreadyMet: true };
-    }
-
-    const steps = [];
-    const live = { ...current };
-    const safety = 400;
-    let it = 0;
-
-    while (!allMet(live, targets) && it < safety) {
-      it++;
-      let bestFood = null;
-      let bestScore = 0;
-
-      FOODS.forEach(food => {
-        let score = 0;
-        let penalty = 0;
-        const match =
-          (food.element === fairyElement || food.element === "Any")
-            ? 1.08 : 1.0;
-
-        for (const [trait, delta] of Object.entries(food.traits || {})) {
-          const need = (targets[trait] || 0) - (live[trait] || 0);
-          if (need > 0 && delta > 0) {
-            score += Math.min(delta, need);
-          } else if (delta < 0 && need > 0) {
-            penalty += Math.abs(delta) * 1.5;
-          } else if (delta > 0 && need <= 0) {
-            penalty += delta * 0.25;
-          }
-        }
-
-        score = score * match - penalty;
-        if (score > bestScore + 0.0001) {
-          bestScore = score;
-          bestFood = food;
-        }
-      });
-
-      if (!bestFood || bestScore <= 0) break;
-
-      Object.entries(bestFood.traits || {}).forEach(([trait, delta]) => {
-        live[trait] = (live[trait] || 0) + delta;
-      });
-
-      steps.push({ food: bestFood, traitsAfter: { ...live } });
-      if (allMet(live, targets)) break;
-    }
-
-    if (!steps.length) return { error: t.err_no_path };
-
-    if (!allMet(live, targets)) {
-      return {
-        partial: true,
-        steps,
-        targets,
-        currentEnd: live,
-        warning: t.plan_partial_warn
-      };
-    }
-
-    return { steps, targets, currentEnd: live };
+  const missing = neededTraits.filter(tr => current[tr] < TARGET);
+  if (missing.length) {
+    planWarn.textContent = (currentLang === "fr"
+      ? "Remarque : ces traits restent un peu bas, ajustez manuellement avec vos stocks : "
+      : "Note: these traits still look low, tweak manually with your own stock: "
+    ) + missing.join(", ");
+  } else {
+    planWarn.textContent = currentLang === "fr"
+      ? "Tous les traits ciblés atteignent ou approchent le seuil recommandé. Ajustez selon vos vrais stocks."
+      : "All selected traits reach or approach the recommended threshold. Adjust based on your real inventory.";
   }
-
-  function renderPlan(initialOnly = false) {
-    const t = I18N[currentLang];
-    if (initialOnly) {
-      planOutput.innerHTML = `<p>${t.plan_initial}</p>`;
-      return;
-    }
-
-    const res = computePlan();
-    planOutput.innerHTML = "";
-
-    if (res.error) {
-      const p = document.createElement("p");
-      p.style.color = "var(--danger)";
-      p.textContent = res.error;
-      planOutput.appendChild(p);
-      return;
-    }
-
-    const targets = res.targets || {};
-
-    const head = document.createElement("div");
-    head.innerHTML = `<h3>${t.plan_targets_title}</h3>`;
-    const p = document.createElement("p");
-    p.innerHTML = Object.entries(targets)
-      .map(([tr, v]) => `<strong>${getTraitLabel(tr)}</strong> ≥ ${v}`)
-      .join(" &nbsp;•&nbsp; ");
-    head.appendChild(p);
-    planOutput.appendChild(head);
-
-    if (res.alreadyMet) {
-      const msg = document.createElement("p");
-      msg.style.color = "var(--accent)";
-      msg.textContent = t.plan_all_met;
-      planOutput.appendChild(msg);
-      return;
-    }
-
-    const title = document.createElement("h3");
-    title.textContent = t.plan_feed_title;
-    planOutput.appendChild(title);
-
-    res.steps.forEach((step, i) => {
-      const div = document.createElement("div");
-      div.className = "step";
-
-      const left = document.createElement("div");
-      const fname =
-        currentLang === "fr"
-          ? (step.food.name_fr || step.food.name_en)
-          : (step.food.name_en || step.food.name_fr);
-
-      left.innerHTML =
-        `<strong>${i + 1}.</strong> ` +
-        `${currentLang === "fr" ? "Donne" : "Feed"} ` +
-        `<strong>${fname}</strong>` +
-        ` <span class="badge-soft">${localizeElementLabel(step.food.element)}</span>`;
-
-      const meta = document.createElement("span");
-      meta.className = "meta";
-
-      const deficits = Object.entries(targets)
-        .map(([tr, v]) => {
-          const need = v - (step.traitsAfter[tr] || 0);
-          return need > 0 ? `${getTraitLabel(tr).slice(0,3)}:${need}` : null;
-        })
-        .filter(Boolean);
-
-      if (deficits.length) {
-        meta.textContent = `${t.plan_still_need}: ${deficits.slice(0, 3).join(" • ")}`;
-      } else {
-        meta.textContent = t.plan_done;
-      }
-
-      div.appendChild(left);
-      div.appendChild(meta);
-      planOutput.appendChild(div);
-    });
-
-    if (res.partial) {
-      const warn = document.createElement("div");
-      warn.className = "tag-warn";
-      warn.innerHTML = `<span class="icon">⚠</span>${res.warning}`;
-      planOutput.appendChild(warn);
-    } else {
-      const done = document.createElement("p");
-      done.style.marginTop = "3px";
-      done.style.color = "var(--accent)";
-      done.textContent = t.plan_done;
-      planOutput.appendChild(done);
-    }
-
-    const tip = document.createElement("p");
-    tip.className = "hint";
-    tip.style.marginTop = "3px";
-    tip.textContent = t.plan_tip;
-    planOutput.appendChild(tip);
-  }
-
-  function applyLanguage() {
-    const t = I18N[currentLang];
-    document.documentElement.lang = currentLang;
-
-    document.getElementById("title-main").textContent = t.title_main;
-    document.getElementById("title-suffix").textContent = t.title_suffix;
-    document.getElementById("subtitle-main").textContent = t.subtitle_main;
-
-    document.getElementById("card1-title").textContent = t.card1_title;
-    document.getElementById("card1-subtitle").textContent = t.card1_subtitle;
-    document.getElementById("label-element").textContent = t.label_element;
-    document.getElementById("label-level").textContent = t.label_level;
-    document.getElementById("label-traits").textContent = t.label_traits;
-    document.getElementById("hint-traits").textContent = t.hint_traits;
-
-    document.getElementById("card2-title").textContent = t.card2_title;
-    document.getElementById("card2-subtitle").textContent = t.card2_subtitle;
-    document.getElementById("btn-edit-skills-label").textContent = t.btn_edit_skills;
-    document.getElementById("hint-skills").textContent = t.hint_skills;
-    document.getElementById("label-skills-json").textContent = t.label_skills_json;
-    document.getElementById("btn-apply-skills-label").textContent = t.btn_apply_skills;
-    document.getElementById("hint-skills-json").textContent = t.hint_skills_json;
-
-    document.getElementById("card3-title").textContent = t.card3_title;
-    document.getElementById("card3-subtitle").textContent = t.card3_subtitle;
-    document.getElementById("btn-edit-foods-label").textContent = t.btn_edit_foods;
-    document.getElementById("label-foods-json").textContent = t.label_foods_json;
-    document.getElementById("btn-apply-foods-label").textContent = t.btn_apply_foods;
-    document.getElementById("hint-foods-json").textContent = t.hint_foods_json;
-    document.getElementById("warn-foods").innerHTML =
-      `<span class="icon">⚠</span>${t.warn_foods}`;
-
-    document.getElementById("card4-title").textContent = t.card4_title;
-    document.getElementById("card4-subtitle").textContent = t.card4_subtitle;
-    document.getElementById("btn-generate-label").textContent = t.btn_generate;
-    document.getElementById("hint-plan").textContent = t.hint_plan;
-
-    document.getElementById("notes-title").textContent = t.notes_title;
-    document.getElementById("notes-subtitle").textContent = t.notes_subtitle;
-    const nl = document.getElementById("notes-list");
-    nl.innerHTML = "";
-    t.notes_lines.forEach(line => {
-      const li = document.createElement("li");
-      li.textContent = line;
-      nl.appendChild(li);
-    });
-    document.getElementById("notes-warning").innerHTML =
-      `<span class="icon">📌</span>${t.notes_warning}`;
-
-    const elSel = document.getElementById("fairy-element");
-    Array.from(elSel.options).forEach(opt => {
-      opt.textContent = localizeElementLabel(opt.value);
-    });
-
-    initTraitsInputs();
-    renderSkills();
-    renderFoods();
-    renderPlan(true);
-  }
-
-  // Toggles / events
-  document.getElementById("edit-skills-toggle").onclick = () => {
-    const ed = document.getElementById("skills-editor");
-    ed.style.display = ed.style.display === "none" ? "block" : "none";
-  };
-  document.getElementById("skills-apply").onclick = () => {
-    try {
-      const parsed = JSON.parse(document.getElementById("skills-json").value);
-      if (!Array.isArray(parsed)) throw new Error("Skills JSON must be an array.");
-      CORE_SKILLS = parsed;
-      renderSkills();
-    } catch (e) {
-      alert("Skill JSON error: " + e.message);
-    }
-  };
-
-  document.getElementById("edit-foods-toggle").onclick = () => {
-    const ed = document.getElementById("foods-editor");
-    ed.style.display = ed.style.display === "none" ? "block" : "none";
-  };
-  document.getElementById("foods-apply").onclick = () => {
-    try {
-      const parsed = JSON.parse(document.getElementById("foods-json").value);
-      if (!Array.isArray(parsed)) throw new Error("Foods JSON must be an array.");
-      FOODS = parsed;
-      renderFoods();
-    } catch (e) {
-      alert("Food JSON error: " + e.message);
-    }
-  };
-
-  document.getElementById("generate-plan").onclick = () => {
-    renderPlan(false);
-  };
-
-  document.querySelectorAll(".lang-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const lang = btn.dataset.lang;
-      if (lang && lang !== currentLang) {
-        currentLang = lang;
-        document.querySelectorAll(".lang-btn")
-          .forEach(b => b.classList.toggle("active", b === btn));
-        applyLanguage();
-      }
-    });
-  });
-
-  // Init
-  applyLanguage();
+};
 </script>
 </body>
 </html>
