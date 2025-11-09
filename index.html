@@ -6,328 +6,246 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
-      --bg: #050814;
-      --panel: #101827;
-      --accent: #4ade80;
-      --accent-soft: rgba(74, 222, 128, 0.12);
+      --bg: #020817;
+      --panel: #0b1120;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56,189,248,0.13);
       --text: #e5e7eb;
       --muted: #9ca3af;
-      --danger: #f97316;
+      --danger: #fb7185;
       --radius: 14px;
-      --transition: 0.18s ease;
-      --font-main: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      --font: system-ui, -apple-system, BlinkMacSystemFont, -sans-serif;
     }
-
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: var(--font-main);
-      background: radial-gradient(circle at top, #111827 0, #020617 55%, #000 100%);
+      padding: 10px;
+      font-family: var(--font);
+      background:
+        radial-gradient(circle at top, #111827 0, #020817 55%, #000 100%);
       color: var(--text);
-      padding: 14px;
     }
-
-    h1 {
-      font-size: 1.4rem;
-      margin: 0 0 4px;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-    }
-
-    h2 {
-      font-size: 1.05rem;
-      margin: 14px 0 8px;
-      font-weight: 600;
-    }
-
-    p {
-      margin: 4px 0 8px;
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
-
     .app {
-      max-width: 880px;
-      margin: 0 auto 40px;
-      background: radial-gradient(circle at top left, rgba(148,163,253,0.12), transparent 55%) fixed,
-                  var(--panel);
+      max-width: 900px;
+      margin: 0 auto 24px;
+      padding: 10px;
       border-radius: 18px;
-      padding: 14px;
-      box-shadow: 0 14px 40px rgba(0,0,0,0.55);
-      border: 1px solid rgba(148,163,253,0.14);
+      background: rgba(6,8,18,0.98);
+      border: 1px solid rgba(148,163,253,0.16);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.6);
     }
+    h1 {
+      margin: 0 0 4px;
+      font-size: 1.35rem;
+      text-align: center;
+    }
+    p { margin: 4px 0; font-size: 0.8rem; color: var(--muted); }
 
-    .top-row {
+    .top {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 8px;
+      margin-bottom: 6px;
       flex-wrap: wrap;
     }
 
     .lang-toggle {
       display: inline-flex;
-      background: #020817;
-      border-radius: 999px;
       padding: 3px;
-      gap: 3px;
-      border: 1px solid rgba(148,163,253,0.28);
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,253,0.4);
+      background: #020817;
+      font-size: 0.7rem;
     }
-
     .lang-btn {
       border: none;
+      padding: 4px 9px;
       border-radius: 999px;
-      padding: 4px 10px;
-      font-size: 0.75rem;
-      color: var(--muted);
       background: transparent;
+      color: var(--muted);
       cursor: pointer;
-      transition: var(--transition);
-      white-space: nowrap;
     }
-
     .lang-btn.active {
-      background: var(--accent-soft);
-      color: var(--accent);
+      background: var(--accent);
+      color: #020817;
       font-weight: 600;
     }
 
     .section {
-      margin-top: 10px;
-      padding: 10px;
+      margin-top: 8px;
+      padding: 8px;
       border-radius: var(--radius);
-      background: rgba(2,6,23,0.94);
-      border: 1px solid rgba(75,85,99,0.55);
+      background: var(--panel);
+      border: 1px solid rgba(75,85,99,0.6);
     }
-
-    .section-title {
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-bottom: 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 6px;
+    .section h2 {
+      margin: 0 0 4px;
+      font-size: 0.95rem;
     }
-
     label {
-      font-size: 0.78rem;
-      color: var(--muted);
       display: block;
-      margin-bottom: 3px;
+      margin-bottom: 2px;
+      font-size: 0.75rem;
+      color: var(--muted);
     }
-
-    select,
-    input[type="number"] {
+    select, input[type="number"] {
       width: 100%;
-      padding: 6px 8px;
+      padding: 5px 7px;
       border-radius: 9px;
-      border: 1px solid rgba(75,85,99,0.76);
+      border: 1px solid rgba(148,163,253,0.35);
       background: #020817;
       color: var(--text);
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       outline: none;
-      transition: var(--transition);
-      -webkit-appearance: none;
     }
-
-    select:focus,
-    input[type="number"]:focus {
+    select:focus, input[type="number"]:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(74,222,128,0.12);
+      box-shadow: 0 0 0 1px var(--accent-soft);
     }
-
-    .grid-2 {
+    .grid2 {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 6px;
+      grid-template-columns: 1.1fr 1.1fr;
+      gap: 8px;
+    }
+    @media (max-width: 640px) {
+      .grid2 { grid-template-columns: 1fr; }
     }
 
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 6px;
-    }
-
-    .traits-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 6px;
-      margin-top: 4px;
-    }
-
-    .trait-box {
-      padding: 6px;
-      border-radius: 10px;
-      background: rgba(15,23,42,0.98);
-      border: 1px solid rgba(75,85,99,0.5);
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .trait-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 4px;
-      font-size: 0.73rem;
-      color: var(--accent);
-      font-weight: 500;
-    }
-
-    .trait-toggle-label {
-      font-size: 0.62rem;
-      color: var(--muted);
+    .toggle-pill {
       display: inline-flex;
       align-items: center;
-      gap: 2px;
-    }
-
-    .trait-toggle {
-      width: 22px;
-      height: 12px;
+      gap: 4px;
+      padding: 3px 7px;
+      margin: 0 4px 4px 0;
       border-radius: 999px;
-      background: rgba(75,85,99,0.7);
-      position: relative;
-      flex-shrink: 0;
+      border: 1px solid rgba(148,163,253,0.45);
+      font-size: 0.65rem;
+      color: var(--muted);
       cursor: pointer;
-      transition: var(--transition);
+      background: #020817;
     }
-
-    .trait-toggle-thumb {
-      position: absolute;
-      width: 10px;
-      height: 10px;
+    .toggle-pill span {
+      width: 11px;
+      height: 11px;
       border-radius: 999px;
       background: #111827;
-      top: 1px;
-      left: 1px;
-      transition: var(--transition);
     }
-
-    .trait-toggle.on {
+    .toggle-pill.active {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+    .toggle-pill.active span {
       background: var(--accent);
+      box-shadow: 0 0 4px var(--accent);
     }
 
-    .trait-toggle.on .trait-toggle-thumb {
-      transform: translateX(10px);
-      background: #022c22;
+    .trait-row {
+      display: grid;
+      grid-template-columns: 1.8fr 0.7fr;
+      gap: 4px;
+      align-items: center;
+      margin-bottom: 3px;
+    }
+    .trait-label {
+      font-size: 0.72rem;
+      color: var(--text);
+    }
+    .trait-label small {
+      color: var(--muted);
+      font-size: 0.6rem;
     }
 
-    .btn {
-      width: 100%;
-      margin-top: 10px;
-      padding: 9px 10px;
-      background: linear-gradient(90deg, #22c55e, #22c55e, #22c55e);
-      border: none;
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 4px;
+    }
+    .chip {
+      padding: 3px 7px;
       border-radius: 999px;
+      border: 1px solid rgba(148,163,253,0.35);
+      font-size: 0.65rem;
+      color: var(--muted);
+      cursor: pointer;
+      background: #020817;
+    }
+    .chip.active {
+      background: var(--accent);
+      color: #020817;
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+
+    #generateBtn {
+      width: 100%;
+      margin-top: 8px;
+      padding: 8px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(90deg, var(--accent), #22c55e);
       color: #020817;
       font-weight: 700;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       cursor: pointer;
-      box-shadow: 0 10px 25px rgba(22,163,74,0.55);
-      transition: var(--transition);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.7);
     }
-
-    .btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 14px 32px rgba(22,163,74,0.65);
+    #generateBtn:active {
+      transform: translateY(1px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.8);
     }
 
     .plan {
-      margin-top: 10px;
-      font-size: 0.78rem;
-      line-height: 1.4;
-      max-height: 480px;
-      overflow-y: auto;
-      padding-right: 4px;
+      margin-top: 6px;
+      font-size: 0.75rem;
+      line-height: 1.5;
     }
-
     .step {
-      padding: 7px;
+      margin-top: 5px;
+      padding: 6px;
       border-radius: 12px;
-      margin-bottom: 6px;
-      background: radial-gradient(circle at top left, rgba(74,222,128,0.12), transparent 70%),
-                  rgba(9,9,11,0.98);
-      border: 1px solid rgba(75,85,99,0.7);
+      background: #020817;
+      border: 1px solid rgba(148,163,253,0.25);
     }
-
     .step-title {
       font-size: 0.8rem;
       font-weight: 600;
       color: var(--accent);
-      margin-bottom: 3px;
-      display: flex;
-      justify-content: space-between;
-      gap: 4px;
-      align-items: center;
     }
-
-    .badge {
-      font-size: 0.58rem;
-      padding: 2px 6px;
-      border-radius: 999px;
-      background: rgba(148,163,253,0.16);
-      color: #bfdbfe;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    .targets,
-    .foods,
-    .swap {
-      margin-top: 2px;
-    }
-
-    .targets strong {
-      color: #bfdbfe;
-    }
-
-    .foods span {
-      display: inline-block;
-      margin: 1px 4px 1px 0;
-      padding: 2px 5px;
-      border-radius: 999px;
-      background: rgba(15,23,42,0.98);
-      border: 1px solid rgba(75,85,99,0.7);
-      font-size: 0.6rem;
+    .step-sub {
+      font-size: 0.7rem;
       color: var(--muted);
+      margin-bottom: 2px;
     }
-
-    .foods span.good-match {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: rgba(22,163,74,0.08);
+    .food-list {
+      margin: 2px 0 2px 12px;
+      padding: 0;
+      list-style: disc;
     }
-
-    .swap {
+    .food-list li {
+      margin: 0;
+    }
+    .warn {
+      font-size: 0.7rem;
       color: var(--danger);
-      font-size: 0.7rem;
     }
-
-    .hint {
+    details summary {
+      cursor: pointer;
       font-size: 0.7rem;
-      color: var(--muted);
-      margin-top: 4px;
-    }
-
-    @media (min-width: 720px) {
-      h1 { font-size: 1.6rem; }
-      .traits-grid { grid-template-columns: repeat(5, minmax(0,1fr)); }
+      color: var(--accent);
+      margin-top: 3px;
     }
   </style>
 </head>
 <body>
 <div class="app">
-  <div class="top-row">
+  <div class="top">
     <div>
-      <h1 data-i18n="title">HWDE Fairy Planner</h1>
-      <p data-i18n="subtitle">
-        Plan your Companion Fairy’s food & traits to reach the 10 key skills that unlock all others.
+      <h1 id="title">HWDE Fairy Planner</h1>
+      <p id="subtitle">
+        Plan a full “rainbow” fairy: the 10 key skills that unlock every other skill.
       </p>
     </div>
     <div class="lang-toggle">
@@ -336,673 +254,797 @@
     </div>
   </div>
 
-  <!-- FAIRY SETUP -->
+  <!-- 1. Setup -->
   <div class="section">
-    <div class="section-title">
-      <span data-i18n="setup_title">1. Fairy setup</span>
-      <span class="badge" data-i18n="hwde_only">Definitive Edition / My Fairy</span>
-    </div>
-    <div class="grid-2">
+    <h2 data-i18n="setupTitle">1. Fairy setup</h2>
+    <div class="grid2">
       <div>
-        <label for="element" data-i18n="label_element">Fairy element</label>
-        <select id="element">
-          <option value="Fire">Fire</option>
-          <option value="Water">Water</option>
-          <option value="Lightning">Lightning</option>
-          <option value="Light">Light</option>
-          <option value="Darkness">Darkness</option>
+        <label data-i18n="elementLabel">Element</label>
+        <select id="fairyElement">
+          <option value="fire">Fire</option>
+          <option value="water">Water</option>
+          <option value="lightning">Lightning</option>
+          <option value="light">Light</option>
+          <option value="dark">Darkness</option>
         </select>
+        <label data-i18n="startLevelLabel" style="margin-top:4px;">Current level</label>
+        <input id="startLevel" type="number" min="1" max="99" value="1" />
+        <label data-i18n="maxLevelLabel" style="margin-top:4px;">Level cap before Refresh</label>
+        <input id="maxLevel" type="number" min="10" max="99" value="99" />
+        <div class="chips">
+          <div class="chip active" id="optGold" data-on="true">
+            ✨ Allow gold food
+          </div>
+          <div class="chip active" id="optCheap" data-on="true">
+            💰 Prefer bronze/silver
+          </div>
+        </div>
       </div>
       <div>
-        <label for="level" data-i18n="label_level">Current level (1–99)</label>
-        <input id="level" type="number" min="1" max="99" value="1" />
+        <label data-i18n="activeTraitsLabel">Active personalities (tap, max 5)</label>
+        <div id="activeTraits"></div>
+        <p data-i18n="activeTraitsHint">
+          Choose the 5 traits your fairy currently shows in white. This helps the route suggest smart swaps.
+        </p>
       </div>
     </div>
-    <p class="hint" data-i18n="setup_hint">
-      Element matters for bonus food effects. Level is used only to warn if you’re tight on room to feed.
-    </p>
   </div>
 
-  <!-- TRAITS -->
+  <!-- 2. Traits -->
   <div class="section">
-    <div class="section-title">
-      <span data-i18n="traits_title">2. Current personalities</span>
-      <span class="badge" data-i18n="traits_badge">Enter values from in-game radar</span>
-    </div>
-    <p data-i18n="traits_hint">
-      Toggle which traits your fairy currently has (green = active). Then enter the current value shown in-game.
+    <h2 data-i18n="traitsTitle">2. Current personality values</h2>
+    <p data-i18n="traitsHint">
+      Enter approximate values from the My Fairy screen. Leave 0 if unsure; the planner shows how much each step needs.
     </p>
-    <div class="traits-grid" id="traits-grid">
-      <!-- Filled by JS -->
-    </div>
+    <div id="traitsGrid"></div>
   </div>
 
-  <!-- GOAL -->
+  <!-- 3. Inventory (optional) -->
   <div class="section">
-    <div class="section-title">
-      <span data-i18n="goal_title">3. Target: 10-key-skill route</span>
-      <span class="badge">Extreme Crush+ → ... → Material Master+</span>
-    </div>
-    <p data-i18n="goal_hint">
-      This route is based on community-verified thresholds for the “rainbow” / + skills and a refresh order that
-      naturally unlocks all other skills over time.
+    <h2 data-i18n="inventoryTitle">3. Food limits (optional)</h2>
+    <p data-i18n="inventoryHint">
+      Only if you care: set max uses for some foods. Leave blank for no limit.
     </p>
-    <button class="btn" id="plan-btn" data-i18n="btn_plan">
-      Generate step-by-step feeding plan
-    </button>
+    <details>
+      <summary data-i18n="showInventory">Show editable limits for key foods</summary>
+      <div id="inventoryGrid"></div>
+    </details>
   </div>
 
-  <!-- PLAN OUTPUT -->
+  <!-- 4. Route -->
   <div class="section">
-    <div class="section-title">
-      <span data-i18n="plan_title">4. Plan</span>
-      <span class="badge" data-i18n="plan_badge">No Gratitude Crystals</span>
-    </div>
-    <div id="plan" class="plan"></div>
+    <h2 data-i18n="routeTitle">4. Target 10-skill route</h2>
+    <p data-i18n="routeDesc">
+      Fixed chain: Extreme Crush+ → Glass Cannon → XP Master+ → Total Focus → Weapon Master+ →
+      Magic Fountain+ → Food Master+ → Special Fountain+ → Wall of Water+ → Material Master+.
+      After each: Refresh + 1 personality swap.
+    </p>
+    <ul id="routeList" style="font-size:0.7rem; padding-left:16px; color:var(--muted);"></ul>
   </div>
+
+  <button id="generateBtn">Generate step-by-step plan</button>
+
+  <!-- 5. Plan -->
+  <div class="section">
+    <h2 data-i18n="planTitle">5. Plan</h2>
+    <div id="plan" class="plan">
+      <p data-i18n="planEmpty">
+        Fill everything above, then tap Generate. You’ll get one card per Refresh cycle with concrete foods & swaps.
+      </p>
+    </div>
+    <details>
+      <summary data-i18n="explainSummary">How this planner thinks</summary>
+      <p data-i18n="explainText">
+        For each step: we take your current traits and level, use the GameFAQs Dining Room values
+        (bronze/silver/gold, element bonus) to choose efficient foods that reach the exact thresholds for the next key skill
+        before your level cap. Then we suggest which personality to swap on Refresh following a known “rainbow” route.
+        Trait carry-over is approximated; if you’re slightly off in-game, you can adjust by a few extra feeds.
+      </p>
+    </details>
+  </div>
+
+  <p style="font-size:0.6rem; color:var(--muted); margin-top:6px;">
+    Based on in-game data & community research (GameFAQs “My Fairy Unlockables” Dining Room table).
+    Gratitude Crystals intentionally excluded.
+  </p>
 </div>
 
 <script>
-/* =========================
-   TRANSLATIONS (UI + NAMES)
-   ========================= */
+/* ========== TRAITS ========== */
+const TRAITS = [
+  { code: 'SPK', en: 'Sparkly',  fr: 'Étincelante' },
+  { code: 'RLX', en: 'Relaxed',  fr: 'Détendue' },     // Soft
+  { code: 'VAL', en: 'Valiant',  fr: 'Frimeuse' },     // Flashy
+  { code: 'DIZ', en: 'Dizzy',    fr: 'Étourdie' },
+  { code: 'FRN', en: 'Friendly', fr: 'Amicale' },
+  { code: 'ASP', en: 'Aspiring', fr: 'Rêveuse' },      // Dreamy
+  { code: 'RES', en: 'Resolute', fr: 'Déterminée' },
+  { code: 'SHR', en: 'Shrewd',   fr: 'Futée' },        // Fleet
+  { code: 'EAG', en: 'Eager',    fr: 'Impatiente' },
+  { code: 'SMI', en: 'Smiley',   fr: 'Souriante' }
+];
 
-const i18n = {
+function tName(code, lang) {
+  const t = TRAITS.find(x => x.code === code);
+  if (!t) return code;
+  return lang === 'fr' ? t.fr : t.en;
+}
+
+/* ========== SKILL REQS (RAINBOW) ========== */
+/* Based on My Fairy Unlockables table; focusing on the 10 “+”/core skills. */
+const SKILLS = {
+  'Extreme Crush+': { RES:200, VAL:225, SPK:225, SMI:225, FRN:255 },
+  'Glass Cannon':   { SPK:200, RES:200, FRN:225, DIZ:225 },
+  'XP Master+':     { EAG:200, SPK:200, RES:225, DIZ:225 },
+  'Total Focus':    { FRN:100, RES:100, EAG:125 },
+  'Weapon Master+': { DIZ:200, EAG:225, SHR:225, RLX:225, FRN:255 },
+  'Magic Fountain+':{ ASP:200, VAL:225, RLX:225, EAG:225, SHR:255 },
+  'Food Master+':   { VAL:200, RLX:225, ASP:225, RES:225, EAG:255 },
+  'Special Fountain+':{ ASP:200, RES:225, VAL:225, EAG:225, SPK:255 },
+  'Wall of Water+': { ASP:200, VAL:200, SMI:225, SPK:225 },
+  'Material Master+':{ SMI:200, VAL:225, RLX:225, ASP:225, RES:255 }
+};
+
+/* Route order & personality swaps between refreshes */
+const ROUTE = [
+  { name: 'Extreme Crush+',    swap: { from: 'SMI', to: 'DIZ' } },
+  { name: 'Glass Cannon',      swap: { from: 'VAL', to: 'EAG' } },
+  { name: 'XP Master+',        swap: { from: 'SPK', to: 'RLX' } },
+  { name: 'Total Focus',       swap: { from: 'RES', to: 'SHR' } },
+  { name: 'Weapon Master+',    swap: { from: 'DIZ', to: 'ASP' } },
+  { name: 'Magic Fountain+',   swap: { from: 'FRN', to: 'VAL' } },
+  { name: 'Food Master+',      swap: { from: 'SHR', to: 'RES' } },
+  { name: 'Special Fountain+', swap: { from: 'RLX', to: 'SPK' } },
+  { name: 'Wall of Water+',    swap: { from: 'EAG', to: 'SMI' } },
+  { name: 'Material Master+',  swap: null }
+];
+
+/* ========== FOOD DATA ========== */
+/*
+  To stay readable:
+  - We define foods in a compact format:
+    { base, type, element, rows: [ [bronze], [silver], [gold] ] }
+  - Each row is [SPK,RLX,VAL,DIZ,FRN,ASP,RES,SHR,EAG,SMI]
+  - Values taken from GameFAQs Dining Room table (no Gratitude Crystals).
+  - We then expand to FOODS[] with proper rarity, lvCost (1/2/3), names.
+
+  NOTE: This includes all *key* foods used in common rainbow routes.
+  You can extend FOOD_BASE with every remaining food row from the guide.
+*/
+const FOOD_BASE = [
+  // ===== FEAST =====
+  ['Weird Egg', 'Feast', 'light',
+    [ 2,  0,  2,  0, -1,  0,  2,  0,  0,  0],
+    [ 5, -2,  2,  0,  0,  0,  5,  0,  2,  0],
+    [10, -5,  5, -2,  2,  0,  5, -2,  2,  0]
+  ],
+  ['All-Purpose Bait', 'Feast', 'light',
+    [ 0,  0, -1,  0,  2,  0,  2,  0,  0,  2],
+    [ 2,  0,  0,  0,  5,  0,  2,  0, -2,  5],
+    [ 2,  0,  2,  0,  5, -2,  5, -2, -5, 10]
+  ],
+  ['Ordon Goat Cheese', 'Feast', 'light',
+    [ 0,  2,  2,  0,  0,  0,  2,  0, -1,  0],
+    [ 0,  2,  5, -2,  0,  2,  5,  0,  0,  0],
+    [-2,  5, 10, -5,  0,  2,  5, -2,  2,  0]
+  ],
+  ['Meat', 'Feast', 'fire',
+    [ 0, -1,  2,  0,  0,  0,  2,  2,  0,  0],
+    [ 0,  0,  5, -2,  2,  0,  5,  2,  0,  0],
+    [ 0,  2, 10, -5,  2,  0, -2,  5,  5, -2]
+  ],
+
+  // ===== DRINK =====
+  ['Lon Lon Milk', 'Drink', 'light',
+    [ 2,  0, -1,  0,  0,  0,  5,  0,  2,  0],
+    [ 2,  0,  0,  0,  2,  0,  5, -2,  5,  0],
+    [ 5, -2,  2,  0,  2,  0, 10, -5,  5, -2]
+  ],
+  ['Pumpkin Soup', 'Drink', 'fire',
+    [ 0,  0,  0, -1,  2,  0,  2,  0,  2,  0],
+    [ 2,  0,  0,  0,  2,  0,  5, -2,  5,  0],
+    [ 2,  0,  0,  2,  5, -2, 10, -5,  5, -2]
+  ],
+  ['Sacred Water', 'Drink', 'water',
+    [ 2,  0,  0, -1,  2,  0,  2,  0,  0,  0],
+    [ 5, -2,  0,  0,  5,  0,  2,  0,  2,  0],
+    [10, -5,  0,  2,  5, -2,  5, -2,  2,  0]
+  ],
+  ['Elixir Soup', 'Drink', 'fire',
+    [ 0,  0, -1,  0,  2,  0,  2,  0,  0,  2],
+    [ 2,  0,  0,  0,  2,  0,  2,  0, -2,  5],
+    [ 2,  0,  2,  0,  5,  2,  5, -2, -5, 10]
+  ],
+  ['Great Fairy\'s Tears', 'Drink', 'light',
+    [ 0,  2,  0,  0,  0,  2,  2,  0, -1,  0],
+    [ 0,  5,  2,  0, -2,  5,  2,  0,  0,  0],
+    [-2,  5,  2,  0, -5, 10,  5, -2,  2,  0]
+  ],
+  ['Chateau Romani', 'Drink', 'dark',
+    [ 0,  0,  2,  0,  2,  0,  0,  2, -1,  0],
+    [ 0,  2,  5, -2,  5,  0,  0,  2,  0,  0],
+    [ 0,  2, 10, -5,  5, -2, -2,  5,  2,  0]
+  ],
+  ['Bottled Water', 'Drink', 'water',
+    [ 0,  2, -1,  0,  2,  0,  0,  2,  0,  0],
+    [ 0,  5,  0,  0,  5, -2,  0,  2,  2,  0],
+    [-2,  5,  2,  0, 10, -5, -2,  5,  2,  0]
+  ],
+  ['Hot Spring Water', 'Drink', 'water',
+    [ 0,  2,  0,  0, -1,  0,  0,  2,  2,  0],
+    [ 2,  5,  2,  0,  0,  0,  0,  2,  5,  0],
+    [-5,10,  2,  0,  2,  0, -2,  5,  5, -2]
+  ],
+
+  // ===== PLANT =====
+  ['Odd Mushroom', 'Plant', 'dark',
+    [ 0,  0,  2,  0,  2,  0,  2,  0, -1,  0],
+    [ 2,  0,  5, -2,  2,  0,  5,  0,  0,  0],
+    [ 2,  0, 10, -5,  5, -2,  5, -2,  2,  0]
+  ],
+  ['Deku Nut', 'Plant', 'light',
+    [ 1,  0,  2,  0,  2,  0,  2,  0,  0,  0],
+    [ 0,  0,  5,  0,  5, -2,  2,  0,  2,  0],
+    [ 2,  0,  5, -2, 10, -5,  5, -2,  2,  0]
+  ],
+  ['Magic Beans', 'Plant', 'water',
+    [ 2,  0, -1,  0,  2,  0,  0,  0,  2,  0],
+    [ 5,  0,  0,  0,  5, -2,  2,  0,  2,  0],
+    [ 5, -2,  2,  0, 10, -5,  2,  0,  5, -2]
+  ],
+  ['Life Tree Fruit', 'Plant', 'light',
+    [ 0,  0,  0, -1,  2,  0,  2,  0,  2,  0],
+    [ 2,  0,  0,  0,  5, -2,  5,  0,  2,  0],
+    [ 2,  0,  0,  2, 10, -5,  5, -2,  5, -2]
+  ],
+  ['Light Fruit', 'Plant', 'light',
+    [ 2,  0,  0, -1,  2,  0,  0,  0,  2,  0],
+    [ 5, -2,  0,  0,  5,  0,  2,  0,  2,  0],
+    [10, -5,  0,  2,  5, -2,  2,  0,  5, -2]
+  ],
+  ['Stamina Fruit', 'Plant', 'fire',
+    [ 2,  0,  0,  0, -1,  0,  2,  0,  2,  0],
+    [ 5,  0,  0,  2,  0,  0,  5, -2,  2,  0],
+    [ 5, -2,  0,  2,  2,  0,10, -5,  5, -2]
+  ],
+  ['Water Fruit', 'Plant', 'water',
+    [-1, 0,  0,  2,  2,  0,  2,  0,  0,  0],
+    [ 0,  0,  0,  5,  2,  0,  5, -2,  2,  0],
+    [ 2,  0, -2, 5,  5, -2,10, -5,  2,  0]
+  ],
+  ['Hyoi Pear', 'Plant', 'wind', // treated as lightning/wind
+    [-1, 0,  2,  0,  2,  0,  0,  0,  0,  2],
+    [ 0,  0,  5,  0,  2,  0,  2,  0, -2,  5],
+    [ 2,  0,  5, -2, 5, -2,  2,  0, -5, 10]
+  ],
+  ['Carrot', 'Plant', 'lightning',
+    [-1, 0,  2,  0,  0,  0,  0,  2,  0,  2],
+    [ 0,  0,  2,  0,  2,  0, -2,  5,  0,  5],
+    [ 2,  0,  5, -2, 2,  0, -5,10, -2,  5]
+  ],
+  ['Ember Seeds', 'Plant', 'fire',
+    [ 0,  0,  2,  0, -1,  0,  0,  2,  2,  0],
+    [ 0,  2,  5, -2,  0,  0,  0,  2,  5,  0],
+    [ 0,  2, 10, -5,  2,  0, -2,  5,  5, -2]
+  ],
+  ['Scent Seeds', 'Plant', 'dark',
+    [ 0,  0,  2,  0,  2,  0,  0,  2, -1,  0],
+    [ 0,  2,  5,  0,  2,  0, -2,  5,  0,  0],
+    [ 0,  2,  5, -2,  5, -2, -5,10,  2,  0]
+  ],
+  ['Pegasus Seeds', 'Plant', 'lightning',
+    [ 0, -1,  0,  0,  2,  0,  0,  2,  2,  0],
+    [ 0,  0,  2,  0,  2,  0, -2,  5,  5,  0],
+    [ 0,  2,  2,  0,  5, -2, -5,10,  5, -2]
+  ],
+  ['Gale Seeds', 'Plant', 'wind',
+    [ 0,  2,  2,  0,  2,  0,  0,  0, -1,  0],
+    [ 0,  2,  5, -2,  5,  0,  0,  2,  0,  0],
+    [-2,  5, 10, -5,  5, -2,  0,  2,  2,  0]
+  ],
+  ['Mystery Seeds', 'Plant', 'light',
+    [ 0,  2,  2,  0,  2,  0,  0, -1,  0,  0],
+    [ 0,  5,  2,  0,  5, -2,  0,  0,  2,  0],
+    [-2,  5,  5, -2,10, -5,  0,  2,  2,  0]
+  ],
+  ['Pumpkin', 'Plant', 'light',
+    [-1, 0,  0,  0,  2,  0,  2,  0,  2,  0],
+    [ 0,  0,  0,  2,  2,  0,  2,  0,  5, -2],
+    [ 2,  0,  0,  2,  5, -2,  5, -2,10, -5]
+  ],
+
+  // ===== FISH =====
+  ['Greengill', 'Fish', 'water',
+    [ 0,  0, -1,  0,  0,  2,  2,  0,  2,  0],
+    [ 0,  2,  0,  0, -2,  5,  2,  0,  5,  0],
+    [ 0,  2,  2,  0, -5,10,  5, -2,  5, -2]
+  ],
+  ['Ordon Catfish', 'Fish', 'water',
+    [ 0,  2,  2,  0,  0,  2, -1,  0,  0,  0],
+    [-2,  5,  5,  0,  0,  2,  0,  0,  2,  0],
+    [-5,10,  5, -2, -2,  5,  2,  0,  2,  0]
+  ],
+  ['Hyrule Bass', 'Fish', 'water',
+    [ 0,  2,  2,  0,  0,  0,  2,  0, -1,  0],
+    [-2,  5,  2,  0,  0,  2,  5,  0,  0,  0],
+    [-5,10,  5, -2,  0,  2,  5, -2,  2,  0]
+  ],
+  ['Hylian Pike', 'Fish', 'water',
+    [ 0,  2,  0,  0,  0, -1,  2,  0,  2,  0],
+    [ 0,  2,  2,  0,  0,  0,  5, -2,  5,  0],
+    [-2,  5,  2,  0,  0,  2, 10, -5,  5, -2]
+  ],
+  ['Reekfish', 'Fish', 'water',
+    [ 0,  2,  2,  0,  0, -1,  2,  0,  0,  0],
+    [ 0,  2,  5, -2,  0,  0,  5,  0,  2,  0],
+    [-2,  5, 10, -5,  0,  2,  5, -2,  2,  0]
+  ],
+  ['Hylian Loach', 'Fish', 'water',
+    [ 0,  2, -1,  0,  0,  2,  0,  2,  0],
+    [ 0,  2,  0,  0,  0,  5,  2,  0,  5, -2],
+    [-2,  5,  2,  0, -2,  5,  2,  0, 10, -5]
+  ],
+
+  // ===== WEIRD =====
+  ['Mushroom Spores', 'Weird', 'dark',
+    [ 2,  0,  0,  2,  2,  0, -1,  0,  0,  0],
+    [ 5, -2,  0,  2,  5,  0,  0,  0,  2,  0],
+    [10, -5, -2, 5,  5, -2,  2,  0,  2,  0]
+  ],
+  ['Skullfish', 'Weird', 'dark',
+    [ 0, -1,  2,  0,  0,  2,  2,  0,  0,  0],
+    [ 0,  0,  5, -2,  0,  2,  5,  0,  2,  0],
+    [ 0,  2, 10, -5, -2,  5,  5, -2,  2,  0]
+  ],
+  ['Bombfish', 'Weird', 'fire',
+    [ 0, -1,  2,  0,  0,  0,  2,  2,  0,  0],
+    [ 0,  0,  5,  0,  0,  2,  2,  0,  5, -2],
+    [ 0,  2,  5, -2,  0,  2,  5, -2, 10, -5]
+  ],
+  ['Chu Jelly', 'Weird', 'lightning',
+    [ 0,  2,  2,  0,  0, -1,  2,  0,  0,  0],
+    [ 0,  5,  2,  0,  0,  0,  5, -2,  2,  0],
+    [-2,  5,  5, -2,  0,  2, 10, -5,  2,  0]
+  ],
+  ['Bee Larvae', 'Weird', 'light',
+    [ 0,  0,  2,  0,  0, -1,  2,  0,  2,  0],
+    [ 0,  2,  5,  0,  0,  0,  2,  0,  5, -2],
+    [ 0,  2,  5, -2,  0,  2,  5, -2,10, -5]
+  ],
+  ['Rock Sirloin', 'Weird', 'fire',
+    [ 0, -1,  2,  0,  0,  0,  2,  2,  0,  0],
+    [ 0,  0,  5,  0,  2,  0, -2,  5,  2,  0],
+    [ 0,  2,  5, -2,  2,  0, -5,10,  5, -2]
+  ]
+];
+
+const FOODS = [];
+FOOD_BASE.forEach(base => {
+  const [name, type, element, b, s, g] = base;
+  const rarities = [
+    { key: 'bronze', prefixEn: '',        prefixFr: '',         lv: 1, row: b },
+    { key: 'silver', prefixEn: 'Tasty ',  prefixFr: 'Savoureux ', lv: 2, row: s },
+    { key: 'gold',   prefixEn: 'Delicious ', prefixFr: 'Délicieux ', lv: 3, row: g }
+  ];
+  rarities.forEach(r => {
+    if (!r.row) return;
+    const traits = {};
+    ['SPK','RLX','VAL','DIZ','FRN','ASP','RES','SHR','EAG','SMI'].forEach((code, i) => {
+      const v = r.row[i];
+      if (typeof v === 'number' && v !== 0) traits[code] = v;
+    });
+    FOODS.push({
+      id: `${name.replace(/\s+/g,'-').toLowerCase()}-${r.key}`,
+      base: name,
+      type,
+      element,
+      rarity: r.key,
+      lvCost: r.lv,
+      nameEn: r.prefixEn + name,
+      nameFr: (r.key === 'bronze' ? name : r.prefixFr + name),
+      traits
+    });
+  });
+});
+
+/* ========== LANGUAGE ========== */
+let currentLang = 'en';
+
+const I18N = {
   en: {
-    title: "HWDE Fairy Planner",
-    subtitle: "Plan your Companion Fairy’s food & traits to reach the 10 key skills that unlock all others.",
-    setup_title: "1. Fairy setup",
-    hwde_only: "Definitive Edition / My Fairy",
-    label_element: "Fairy element",
-    label_level: "Current level (1–99)",
-    setup_hint: "Element matters for bonus food effects. Level is used only to warn if you’re tight on room to feed.",
-    traits_title: "2. Current personalities",
-    traits_badge: "Enter values from in-game radar",
-    traits_hint: "Toggle which traits your fairy currently has (green = active). Then enter the current value shown in-game.",
-    goal_title: "3. Target: 10-key-skill route",
-    goal_hint: "Route built around the + skills so that, after enough refreshes, every other skill becomes available.",
-    btn_plan: "Generate step-by-step feeding plan",
-    plan_title: "4. Plan",
-    plan_badge: "No Gratitude Crystals",
-    plan_header_warning_level: lvl =>
-      lvl >= 90
-        ? "You are above level 90: be selective with foods to finish a step before 99."
-        : "",
-    plan_global_hint:
-      "Each step: reach listed trait thresholds to unlock the skill, mainly using the suggested foods. Then refresh and, if shown, swap one trait to prepare for the next step."
+    setupTitle: "1. Fairy setup",
+    elementLabel: "Element",
+    startLevelLabel: "Current level",
+    maxLevelLabel: "Level cap before Refresh",
+    activeTraitsLabel: "Active personalities (tap, max 5)",
+    activeTraitsHint: "Those 5 are the ones shown in white on your fairy.",
+    traitsTitle: "2. Current personality values",
+    traitsHint: "Enter current values; 0 is fine if unknown.",
+    inventoryTitle: "3. Food limits (optional)",
+    inventoryHint: "Use if you want to restrict some foods in the plan.",
+    showInventory: "Show editable limits for key foods",
+    routeTitle: "4. Target 10-skill route",
+    routeDesc: "Standard rainbow chain. Each step: reach thresholds → unlock → Refresh → swap.",
+    planTitle: "5. Plan",
+    planEmpty: "Press Generate to see your cycle-by-cycle food plan.",
+    explainSummary: "How this planner thinks",
+    explainText:
+      "Uses official food values and element bonuses to push traits to each key skill's requirements before your level cap, then suggests one personality swap per Refresh."
   },
   fr: {
-    title: "Planificateur de Fée (HWDE)",
-    subtitle: "Organise la nourriture et les personnalités pour obtenir les 10 compétences clés et débloquer toutes les autres.",
-    setup_title: "1. Configuration de la fée",
-    hwde_only: "Definitive Edition / Jardin des fées",
-    label_element: "Élément de la fée",
-    label_level: "Niveau actuel (1–99)",
-    setup_hint: "L’élément modifie les effets des nourritures. Le niveau sert seulement d’alerte si tu es proche du 99.",
-    traits_title: "2. Personnalités actuelles",
-    traits_badge: "Valeurs depuis le radar en jeu",
-    traits_hint: "Active les personnalités actuelles (vert = présente), puis saisis leur valeur affichée en jeu.",
-    goal_title: "3. Objectif : route des 10 compétences clés",
-    goal_hint: "Route basée sur les compétences « + » pour qu’après plusieurs renaissances toutes les autres compétences deviennent accessibles.",
-    btn_plan: "Générer le plan détaillé",
-    plan_title: "4. Plan",
-    plan_badge: "Sans Cristaux de Gratitude",
-    plan_header_warning_level: lvl =>
-      lvl >= 90
-        ? "Tu es au-dessus du niveau 90 : choisis bien les nourritures pour finir une étape avant le niveau 99."
-        : "",
-    plan_global_hint:
-      "À chaque étape : atteins les valeurs indiquées pour débloquer la compétence, surtout avec les nourritures conseillées. Puis fais renaître la fée et, si indiqué, échange une personnalité pour préparer l’étape suivante."
+    setupTitle: "1. Configuration de la fée",
+    elementLabel: "Élément",
+    startLevelLabel: "Niveau actuel",
+    maxLevelLabel: "Niveau max avant renaissance",
+    activeTraitsLabel: "Personnalités actives (5 max)",
+    activeTraitsHint: "Les 5 affichées en blanc sur ta fée.",
+    traitsTitle: "2. Valeurs de personnalité",
+    traitsHint: "Entre les valeurs actuelles ; 0 si tu ne sais pas.",
+    inventoryTitle: "3. Limites de nourriture (optionnel)",
+    inventoryHint: "À utiliser si tu veux limiter certains aliments.",
+    showInventory: "Afficher les limites pour quelques aliments clés",
+    routeTitle: "4. Route des 10 compétences",
+    routeDesc: "Chaîne arc-en-ciel standard. Chaque étape : atteindre les seuils → débloquer → Renaissance → changer 1 personnalité.",
+    planTitle: "5. Plan",
+    planEmpty: "Appuie sur Générer pour voir le plan détaillé.",
+    explainSummary: "Comment fonctionne ce planificateur",
+    explainText:
+      "Utilise les valeurs officielles des nourritures et le bonus d’élément pour atteindre les prérequis de chaque compétence clé avant ton niveau max, puis propose un échange de personnalité à chaque renaissance."
   }
 };
 
-// In-game style names (approx FR, non-literal, can be tweaked easily)
-const TRAITS = [
-  { key: "Sparkly",  en: "Sparkly",   fr: "Étincelante" },
-  { key: "Relaxed",  en: "Relaxed",   fr: "Détendue" },
-  { key: "Valiant",  en: "Valiant",   fr: "Brave" },
-  { key: "Dizzy",    en: "Dizzy",     fr: "Étourdie" },
-  { key: "Friendly", en: "Friendly",  fr: "Amicale" },
-  { key: "Aspiring", en: "Aspiring",  fr: "Ambitieuse" },
-  { key: "Resolute", en: "Resolute",  fr: "Résolue" },
-  { key: "Shrewd",   en: "Shrewd",    fr: "Maligne" },
-  { key: "Eager",    en: "Eager",     fr: "Ardente" },
-  { key: "Smiley",   en: "Smiley",    fr: "Souriante" }
-];
-
-/* =========================
-   FOOD DATABASE
-   Based on My Fairy food table (Zelda Wiki / GameFAQs).
-   Rarity:
-     bronze = normal
-     silver = tasty
-     gold = delicious
-   Gratitude Crystals excluded.
-   ========================= */
-
-// Helper to build entries quickly
-function F(base, rarity, element, deltas) {
-  return { base, rarity, element, deltas };
-}
-
-// NOTE: This list focuses on correctness & structure.
-// If you see one missing, mirror the same pattern to add it.
-const FOODS = [
-  // All-Purpose Bait (Light Feast)
-  F("All-Purpose Bait (Bronze)", "bronze", "Light",
-    { Friendly:+2, Resolute:+2, Smiley:+2, Valiant:-1 }),
-  F("All-Purpose Bait (Silver)", "silver", "Light",
-    { Friendly:+5, Smiley:+5, Resolute:+2, Sparkly:+2, Eager:-2 }),
-  F("All-Purpose Bait (Gold)", "gold", "Light",
-    { Smiley:+10, Friendly:+5, Resolute:+5, Valiant:+2, Sparkly:+2, Aspiring:-2, Shrewd:-2, Eager:-5 }),
-
-  // Bee Larvae (Lightning Weird)
-  F("Bee Larvae (Bronze)", "bronze", "Lightning",
-    { Eager:+2, Resolute:+2, Valiant:+2, Aspiring:-1 }),
-  F("Bee Larvae (Silver)", "silver", "Lightning",
-    { Eager:+5, Valiant:+5, Relaxed:+2, Resolute:+2, Smiley:-2 }),
-  F("Bee Larvae (Gold)", "gold", "Lightning",
-    { Eager:+10, Resolute:+5, Valiant:+5, Aspiring:+2, Relaxed:+2, Dizzy:-2, Shrewd:-2, Smiley:-5 }),
-
-  // Bombfish (Darkness Weird)
-  F("Bombfish (Bronze)", "bronze", "Darkness",
-    { Eager:+5, Valiant:+2, Resolute:+2, Relaxed:-1 }),
-  F("Bombfish (Silver)", "silver", "Darkness",
-    { Eager:+5, Valiant:+5, Aspiring:+2, Resolute:+2, Smiley:-2 }),
-  F("Bombfish (Gold)", "gold", "Darkness",
-    { Eager:+10, Valiant:+5, Resolute:+5, Aspiring:+2, Relaxed:+2, Dizzy:-2, Shrewd:-2, Smiley:-5 }),
-
-  // Bottled Water (Water Drink)
-  F("Bottled Water (Bronze)", "bronze", "Water",
-    { Shrewd:+2, Friendly:+2, Relaxed:+2, Valiant:-1 }),
-  F("Bottled Water (Silver)", "silver", "Water",
-    { Friendly:+5, Relaxed:+5, Eager:+2, Shrewd:+2, Aspiring:-2 }),
-  F("Bottled Water (Gold)", "gold", "Water",
-    { Friendly:+10, Shrewd:+5, Relaxed:+5, Eager:+2, Valiant:+2, Resolute:-2, Sparkly:-2, Aspiring:-5 }),
-
-  // Carrot (Lightning Plant)
-  F("Carrot (Bronze)", "bronze", "Lightning",
-    { Valiant:+2, Shrewd:+2, Smiley:+2, Sparkly:-1 }),
-  F("Carrot (Silver)", "silver", "Lightning",
-    { Shrewd:+5, Smiley:+5, Valiant:+2, Friendly:+2, Resolute:-2 }),
-  F("Carrot (Gold)", "gold", "Lightning",
-    { Shrewd:+10, Valiant:+5, Smiley:+5, Friendly:+2, Sparkly:+2, Dizzy:-2, Eager:-2, Resolute:-5 }),
-
-  // Chateau Romani (Darkness Drink)
-  F("Chateau Romani (Bronze)", "bronze", "Darkness",
-    { Valiant:+2, Shrewd:+2, Friendly:+2, Eager:-1 }),
-  F("Chateau Romani (Silver)", "silver", "Darkness",
-    { Friendly:+5, Valiant:+5, Relaxed:+2, Shrewd:+2, Dizzy:-2 }),
-  F("Chateau Romani (Gold)", "gold", "Darkness",
-    { Valiant:+10, Shrewd:+5, Friendly:+5, Eager:+2, Relaxed:+2, Aspiring:-2, Resolute:-2, Dizzy:-5 }),
-
-  // Chu Jelly (Lightning Weird)
-  F("Chu Jelly (Bronze)", "bronze", "Lightning",
-    { Valiant:+2, Resolute:+2, Relaxed:+2, Aspiring:-1 }),
-  F("Chu Jelly (Silver)", "silver", "Lightning",
-    { Resolute:+5, Relaxed:+5, Eager:+2, Valiant:+2, Shrewd:-2 }),
-  F("Chu Jelly (Gold)", "gold", "Lightning",
-    { Resolute:+10, Valiant:+5, Relaxed:+5, Aspiring:+2, Eager:+2, Dizzy:-2, Sparkly:-2, Shrewd:-5 }),
-
-  // Deku Nut (Lightning Plant)
-  F("Deku Nut (Bronze)", "bronze", "Lightning",
-    { Valiant:+2, Friendly:+2, Resolute:+2, Sparkly:-1 }),
-  F("Deku Nut (Silver)", "silver", "Lightning",
-    { Valiant:+5, Friendly:+5, Eager:+2, Resolute:+2, Aspiring:-2 }),
-  F("Deku Nut (Gold)", "gold", "Lightning",
-    { Friendly:+10, Valiant:+5, Resolute:+5, Eager:+2, Sparkly:+2, Dizzy:-2, Shrewd:-2, Aspiring:-5 }),
-
-  // Elixir Soup (Fire Drink)
-  F("Elixir Soup (Bronze)", "bronze", "Fire",
-    { Friendly:+2, Resolute:+2, Smiley:+2, Valiant:-1 }),
-  F("Elixir Soup (Silver)", "silver", "Fire",
-    { Resolute:+5, Smiley:+5, Friendly:+2, Sparkly:+2, Eager:-2 }),
-  F("Elixir Soup (Gold)", "gold", "Fire",
-    { Smiley:+10, Friendly:+5, Resolute:+5, Valiant:+2, Sparkly:+2, Aspiring:-2, Shrewd:-2, Eager:-5 }),
-
-  // Ember Seeds (Fire Plant)
-  F("Ember Seeds (Bronze)", "bronze", "Fire",
-    { Eager:+2, Valiant:+2, Shrewd:+2, Friendly:-1 }),
-  F("Ember Seeds (Silver)", "silver", "Fire",
-    { Eager:+5, Valiant:+5, Shrewd:+2, Relaxed:+2, Dizzy:-2 }),
-  F("Ember Seeds (Gold)", "gold", "Fire",
-    { Valiant:+10, Eager:+5, Shrewd:+5, Friendly:+2, Relaxed:+2, Resolute:-2, Smiley:-2, Dizzy:-5 }),
-
-  // Gale Seeds (Water Plant)
-  F("Gale Seeds (Bronze)", "bronze", "Water",
-    { Valiant:+2, Friendly:+2, Relaxed:+2, Eager:-1 }),
-  F("Gale Seeds (Silver)", "silver", "Water",
-    { Valiant:+5, Friendly:+5, Shrewd:+2, Relaxed:+2, Dizzy:-2 }),
-  F("Gale Seeds (Gold)", "gold", "Water",
-    { Valiant:+10, Friendly:+5, Relaxed:+5, Shrewd:+2, Eager:+2, Aspiring:-2, Sparkly:-2, Dizzy:-5 }),
-
-  // Great Fairy's Tears (Light Drink)
-  F("Great Fairy's Tears (Bronze)", "bronze", "Light",
-    { Aspiring:+2, Resolute:+2, Relaxed:+2, Eager:-1 }),
-  F("Great Fairy's Tears (Silver)", "silver", "Light",
-    { Aspiring:+5, Relaxed:+5, Valiant:+2, Resolute:+2, Friendly:-2 }),
-  F("Great Fairy's Tears (Gold)", "gold", "Light",
-    { Aspiring:+10, Resolute:+5, Relaxed:+5, Eager:+2, Valiant:+2, Shrewd:-2, Sparkly:-2, Friendly:-5 }),
-
-  // (…you can extend with the remaining foods following this pattern…)
-  // This subset already covers key recommended foods in popular 10-skill routes.
-];
-
-/* =========================
-   CORE 10-SKILL ROUTE
-   Based on community guide: these 10 skills' requirements
-   together cover all trait caps, so others unlock naturally.
-   ========================= */
-
-const CORE_STEPS = [
-  {
-    id: 1,
-    skillKey: "Extreme Crush+",
-    skills: {
-      en: "Extreme Crush+",
-      fr: "Super Impact+"
-    },
-    // Smiley 255, Valiant 225, Friendly 225, Sparkly 225, Resolute 200
-    requires: {
-      Smiley: 255, Valiant: 225, Friendly: 225, Sparkly: 225, Resolute: 200
-    },
-    recommendedFoods: [
-      "Elixir Soup (Gold)",
-      "All-Purpose Bait (Gold)",
-      "Carrot (Gold)"
-    ],
-    swapAfter: { from: "Smiley", to: "Dizzy" }
-  },
-  {
-    id: 2,
-    skillKey: "Glass Cannon",
-    skills: {
-      en: "Glass Cannon",
-      fr: "Canon de verre"
-    },
-    // Dizzy 225, Friendly 225, Resolute 200, Sparkly 200
-    requires: {
-      Dizzy: 225, Friendly: 225, Resolute: 200, Sparkly: 200
-    },
-    recommendedFoods: [
-      "Mushroom Spores (Gold)",
-      "Chateau Romani (Gold)"
-    ],
-    swapAfter: { from: "Valiant", to: "Eager" }
-  },
-  {
-    id: 3,
-    skillKey: "XP Master+",
-    skills: {
-      en: "XP Master+",
-      fr: "XP Maître+"
-    },
-    requires: { Dizzy: 225, Resolute: 225, Eager: 200, Sparkly: 200 },
-    recommendedFoods: [
-      "Bee Larvae (Gold)",
-      "Bombfish (Gold)"
-    ],
-    swapAfter: { from: "Sparkly", to: "Relaxed" }
-  },
-  {
-    id: 4,
-    skillKey: "Total Focus",
-    skills: {
-      en: "Total Focus",
-      fr: "Concentration totale"
-    },
-    requires: { Friendly: 100, Resolute: 100, Eager: 125, Dizzy: 0 }, // simplified
-    recommendedFoods: [
-      "Bottled Water (Gold)",
-      "All-Purpose Bait (Silver)"
-    ],
-    swapAfter: { from: "Resolute", to: "Shrewd" }
-  },
-  {
-    id: 5,
-    skillKey: "Weapon Master+",
-    skills: {
-      en: "Weapon Master+",
-      fr: "Maître d’armes+"
-    },
-    requires: { Friendly: 225, Eager: 225, Shrewd: 225, Relaxed: 225, Dizzy: 200 },
-    recommendedFoods: [
-      "Carrot (Gold)",
-      "Chu Jelly (Gold)",
-      "Bee Larvae (Gold)"
-    ],
-    swapAfter: { from: "Dizzy", to: "Aspiring" }
-  },
-  {
-    id: 6,
-    skillKey: "Magic Fountain+",
-    skills: {
-      en: "Magic Fountain+",
-      fr: "Fontaine magique+"
-    },
-    requires: { Shrewd: 255, Eager: 225, Valiant: 225, Relaxed: 225, Aspiring: 200 },
-    recommendedFoods: [
-      "Ember Seeds (Gold)",
-      "Great Fairy's Tears (Gold)"
-    ],
-    swapAfter: { from: "Shrewd", to: "Resolute" }
-  },
-  {
-    id: 7,
-    skillKey: "Food Master+",
-    skills: {
-      en: "Food Master+",
-      fr: "Maître des mets+"
-    },
-    requires: { Eager: 255, Aspiring: 225, Resolute: 225, Relaxed: 225, Valiant: 200 },
-    recommendedFoods: [
-      "All-Purpose Bait (Gold)",
-      "Elixir Soup (Gold)"
-    ],
-    swapAfter: { from: "Relaxed", to: "Sparkly" }
-  },
-  {
-    id: 8,
-    skillKey: "Special Fountain+",
-    skills: {
-      en: "Special Fountain+",
-      fr: "Fontaine spéciale+"
-    },
-    requires: { Sparkly: 255, Eager: 225, Valiant: 225, Resolute: 225, Aspiring: 200 },
-    recommendedFoods: [
-      "Deku Nut (Gold)",
-      "Carrot (Gold)"
-    ],
-    swapAfter: { from: "Eager", to: "Smiley" }
-  },
-  {
-    id: 9,
-    skillKey: "Wall of Water+",
-    skills: {
-      en: "Wall of Water+",
-      fr: "Mur d’eau+"
-    },
-    requires: { Smiley: 225, Sparkly: 225, Aspiring: 200, Valiant: 200 },
-    recommendedFoods: [
-      "All-Purpose Bait (Gold)",
-      "Great Fairy's Tears (Gold)"
-    ],
-    swapAfter: { from: "Sparkly", to: "Relaxed" }
-  },
-  {
-    id: 10,
-    skillKey: "Material Master+",
-    skills: {
-      en: "Material Master+",
-      fr: "Maître des matériaux+"
-    },
-    requires: { Resolute: 255, Aspiring: 225, Valiant: 225, Relaxed: 225, Smiley: 200 },
-    recommendedFoods: [
-      "Gale Seeds (Gold)",
-      "Rock Sirloin (Gold)",
-      "All-Purpose Bait (Gold)"
-    ],
-    swapAfter: null
-  }
-];
-
-/* =========================
-   HELPERS
-   ========================= */
-
-let currentLang = "en";
-
 function applyLang(lang) {
   currentLang = lang;
-  document.documentElement.lang = lang;
-  document.querySelectorAll("[data-i18n]").forEach(el => {
-    const key = el.getAttribute("data-i18n");
-    const val = i18n[lang][key];
-    if (!val) return;
-    if (typeof val === "function") {
-      // handled where needed
-      return;
-    }
-    el.textContent = val;
+  const t = I18N[lang];
+  document.getElementById('title').textContent =
+    lang === 'fr' ? "Planificateur de fée HWDE" : "HWDE Fairy Planner";
+  document.getElementById('subtitle').textContent =
+    lang === 'fr'
+      ? "Plan complet pour obtenir les 10 compétences clés et débloquer toutes les autres."
+      : "Plan to reach the 10 key skills that unlock all other fairy skills.";
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if (t[k]) el.textContent = t[k];
   });
-
   // Update trait labels
-  document.querySelectorAll(".trait-label").forEach(el => {
-    const key = el.dataset.key;
-    const t = TRAITS.find(tr => tr.key === key);
-    if (t) el.textContent = (lang === "en" ? t.en : t.fr);
-  });
-}
-
-function renderTraitsInputs() {
-  const grid = document.getElementById("traits-grid");
-  grid.innerHTML = "";
   TRAITS.forEach(tr => {
-    const box = document.createElement("div");
-    box.className = "trait-box";
-    box.innerHTML = `
-      <div class="trait-header">
-        <span class="trait-label" data-key="${tr.key}">${currentLang === "en" ? tr.en : tr.fr}</span>
-        <div class="trait-toggle on" data-key="${tr.key}">
-          <div class="trait-toggle-thumb"></div>
-        </div>
-      </div>
-      <label data-i18n="trait_value_label">Value</label>
-      <input type="number" class="trait-input" data-key="${tr.key}" min="0" max="300" value="0" />
-      <span class="trait-toggle-label">
-        <span data-i18n="trait_toggle_hint">Active personality</span>
-      </span>
-    `;
-    grid.appendChild(box);
+    const lab = document.getElementById('trait-label-' + tr.code);
+    if (lab) lab.innerHTML =
+      `${tName(tr.code, lang)} <small>(${tr.code})</small>`;
   });
+  renderRouteList();
+  renderActiveTraits(true);
+  renderInventoryGrid(true);
+}
 
-  // Localized static bits for traits
-  document.querySelectorAll("[data-i18n='trait_value_label']").forEach(el => {
-    el.textContent = currentLang === "en" ? "Value" : "Valeur";
-  });
-  document.querySelectorAll("[data-i18n='trait_toggle_hint']").forEach(el => {
-    el.textContent = currentLang === "en"
-      ? "Toggle if this trait is one of the 5 shown in white in-game."
-      : "Active si ce trait fait partie des 5 affichés en blanc en jeu.";
-  });
+/* ========== UI BUILDERS ========== */
 
-  // Toggle behavior
-  grid.querySelectorAll(".trait-toggle").forEach(tg => {
-    tg.addEventListener("click", () => {
-      tg.classList.toggle("on");
+function renderActiveTraits(updateOnly=false) {
+  const wrap = document.getElementById('activeTraits');
+  if (!updateOnly) wrap.innerHTML = '';
+  if (!updateOnly) {
+    TRAITS.forEach((tr, idx) => {
+      const d = document.createElement('div');
+      d.className = 'toggle-pill' + (idx < 5 ? ' active' : '');
+      d.dataset.code = tr.code;
+      d.innerHTML = `<span></span>${tName(tr.code, currentLang)}`;
+      d.onclick = () => {
+        // simple: allow toggling; we won't enforce 5 hard, player knows.
+        d.classList.toggle('active');
+      };
+      wrap.appendChild(d);
     });
+  } else {
+    // update labels
+    wrap.querySelectorAll('.toggle-pill').forEach(d => {
+      const code = d.dataset.code;
+      d.innerHTML = `<span></span>${tName(code, currentLang)}`;
+    });
+  }
+}
+
+function renderTraitsGrid() {
+  const g = document.getElementById('traitsGrid');
+  g.innerHTML = '';
+  TRAITS.forEach(tr => {
+    const row = document.createElement('div');
+    row.className = 'trait-row';
+    row.innerHTML = `
+      <div class="trait-label" id="trait-label-${tr.code}">
+        ${tName(tr.code, currentLang)} <small>(${tr.code})</small>
+      </div>
+      <input type="number" id="trait-${tr.code}" min="0" max="999" value="0" />
+    `;
+    g.appendChild(row);
   });
 }
 
-function adjustDeltasForElement(food, fairyElement) {
-  // If food element matches fairy element, adjust according to My Fairy rules.
-  if (!fairyElement || fairyElement !== food.element) return food.deltas;
-  const out = {};
-  for (const [k, v] of Object.entries(food.deltas)) {
-    let nv = v;
-    if (v > 0) {
-      if (v === 2) nv = 3;
-      else if (v === 5) nv = 6;
-      else if (v === 10) nv = 12;
-    } else if (v < 0) {
-      if (v === -1) nv = 2;
-      else if (v === -2) nv = 1;
-      else if (v === -5) nv = -2;
+function renderInventoryGrid(updateOnly=false) {
+  const g = document.getElementById('inventoryGrid');
+  if (updateOnly) {
+    // just relabel if needed
+    return;
+  }
+  g.innerHTML = '';
+  // Only show a focused subset to keep UI small (key gold/tasty foods).
+  FOODS.filter(f => f.rarity !== 'bronze').forEach(f => {
+    const row = document.createElement('div');
+    row.className = 'trait-row';
+    row.innerHTML = `
+      <div class="trait-label">${currentLang === 'fr' ? f.nameFr : f.nameEn}
+        <small>(${f.rarity})</small></div>
+      <input type="number" id="inv-${f.id}" min="0" placeholder="∞" />
+    `;
+    g.appendChild(row);
+  });
+}
+
+function renderRouteList() {
+  const ul = document.getElementById('routeList');
+  ul.innerHTML = '';
+  ROUTE.forEach((s, i) => {
+    const li = document.createElement('li');
+    let text = `${i+1}. ${s.name}`;
+    if (s.swap) {
+      const from = tName(s.swap.from, currentLang);
+      const to = tName(s.swap.to, currentLang);
+      text += currentLang === 'fr'
+        ? ` → à la renaissance : remplacer ${from} par ${to}`
+        : ` → on Refresh: swap ${from} → ${to}`;
     }
-    out[k] = nv;
+    ul.appendChild(li).textContent = text;
+  });
+}
+
+/* ========== CALC HELPERS ========== */
+
+function elementBonus(base, match) {
+  if (!match) return base;
+  if (base === 2) return 3;
+  if (base === 5) return 6;
+  if (base === 10) return 12;
+  if (base === -1) return 2;
+  if (base === -2) return 1;
+  if (base === -5) return -2;
+  return base;
+}
+
+function foodEffect(food, fairyElement) {
+  const match = (food.element === fairyElement);
+  const out = {};
+  for (const [k,v] of Object.entries(food.traits)) {
+    out[k] = elementBonus(v, match);
   }
   return out;
 }
 
-function bestFoodsForStep(step, fairyElement) {
-  const neededTraits = Object.keys(step.requires);
-  const scored = FOODS.map(food => {
-    const deltas = adjustDeltasForElement(food, fairyElement);
-    let score = 0;
-    neededTraits.forEach(tr => {
-      const d = deltas[tr] || 0;
-      if (d > 0) score += d * (food.rarity === "gold" ? 1.4 : food.rarity === "silver" ? 1.1 : 1);
-    });
-    // small bonus if element match
-    if (food.element === fairyElement) score *= 1.1;
-    // downweight if it heavily hurts needed traits
-    neededTraits.forEach(tr => {
-      const d = deltas[tr] || 0;
-      if (d < 0) score += d * 2;
-    });
-    return { food, score };
-  }).filter(x => x.score > 0.5);
+function collectState() {
+  const fairyElement = document.getElementById('fairyElement').value;
+  const startLevel = Math.max(1, Math.min(99,
+    parseInt(document.getElementById('startLevel').value || '1')));
+  const maxLevel = Math.max(startLevel, Math.min(99,
+    parseInt(document.getElementById('maxLevel').value || '99')));
 
-  scored.sort((a,b) => b.score - a.score);
-  return scored.slice(0, 6).map(x => x.food);
+  const traits = {};
+  TRAITS.forEach(tr => {
+    traits[tr.code] = parseInt(
+      document.getElementById('trait-' + tr.code).value || '0'
+    ) || 0;
+  });
+
+  const allowGold = document.getElementById('optGold').dataset.on === 'true';
+  const preferCheap = document.getElementById('optCheap').dataset.on === 'true';
+
+  const inventory = {};
+  FOODS.forEach(f => {
+    const el = document.getElementById('inv-' + f.id);
+    if (el && el.value !== '') {
+      inventory[f.id] = parseInt(el.value) || 0;
+    }
+  });
+
+  return { fairyElement, startLevel, maxLevel, traits, allowGold, preferCheap, inventory };
 }
 
-/* =========================
-   PLAN GENERATION
-   ========================= */
+function planStep(state, req, opts) {
+  let level = state.level;
+  const maxL = state.maxLevel;
+  let traits = { ...state.traits };
+  const used = {};
+  let safety = 0;
 
-function generatePlan() {
-  const planEl = document.getElementById("plan");
-  planEl.innerHTML = "";
-
-  const lvl = parseInt(document.getElementById("level").value || "1", 10);
-  const fairyElement = document.getElementById("element").value;
-
-  const traitValues = {};
-  const activeTraits = new Set();
-  document.querySelectorAll(".trait-input").forEach(inp => {
-    const key = inp.dataset.key;
-    const val = parseInt(inp.value || "0", 10);
-    traitValues[key] = isNaN(val) ? 0 : val;
-  });
-  document.querySelectorAll(".trait-toggle.on").forEach(tg => {
-    activeTraits.add(tg.dataset.key);
-  });
-
-  const langPack = i18n[currentLang];
-
-  // Optional level warning
-  const warn = langPack.plan_header_warning_level(lvl);
-  if (warn) {
-    const w = document.createElement("div");
-    w.className = "hint";
-    w.textContent = warn;
-    planEl.appendChild(w);
+  function done() {
+    for (const k in req) {
+      if ((traits[k] || 0) < req[k]) return false;
+    }
+    return true;
   }
 
-  // Global hint
-  const gh = document.createElement("div");
-  gh.className = "hint";
-  gh.textContent = langPack.plan_global_hint;
-  planEl.appendChild(gh);
+  while (!done() && level < maxL && safety < 800) {
+    safety++;
+    let best = null;
+    let bestScore = 0;
 
-  // For simplicity, we DO NOT mutate traitValues across steps here.
-  // We show deficits relative to your *current* fairy so you see how far each step is.
-  // You then follow in order: feed → unlock → refresh → swap as suggested → move to next.
-  CORE_STEPS.forEach(step => {
-    const stepDiv = document.createElement("div");
-    stepDiv.className = "step";
+    for (const f of FOODS) {
+      if (!opts.allowGold && f.rarity === 'gold') continue;
+      if (opts.inventory[f.id] != null &&
+          (used[f.id] || 0) >= opts.inventory[f.id]) continue;
+      if (level + f.lvCost > maxL) continue;
 
-    const title = document.createElement("div");
-    title.className = "step-title";
-    title.innerHTML = `
-      <span>#${step.id} – ${
-        currentLang === "en" ? step.skills.en : step.skills.fr
-      }</span>
-      <span class="badge">Core skill</span>
-    `;
-    stepDiv.appendChild(title);
-
-    // Targets
-    const targets = document.createElement("div");
-    targets.className = "targets";
-    const parts = [];
-    Object.entries(step.requires).forEach(([trait, req]) => {
-      const t = TRAITS.find(tr => tr.key === trait);
-      const label = currentLang === "en" ? t.en : t.fr;
-      const current = traitValues[trait] || 0;
-      const diff = Math.max(0, req - current);
-      parts.push(
-        `<strong>${label}</strong> ≥ ${req} (need +${diff})`
-      );
-    });
-    targets.innerHTML = (currentLang === "en"
-      ? "Target traits: "
-      : "Personnalités visées : ") + parts.join(", ");
-    stepDiv.appendChild(targets);
-
-    // Recommended foods (dynamic + curated)
-    const foodsDiv = document.createElement("div");
-    foodsDiv.className = "foods";
-    const dynamic = bestFoodsForStep(step, fairyElement);
-    const curatedNames = new Set(step.recommendedFoods || []);
-    const merged = [];
-
-    dynamic.forEach(f => {
-      merged.push({ name: f.base, rarity: f.rarity });
-      curatedNames.delete(f.base);
-    });
-    step.recommendedFoods.forEach(name => {
-      merged.unshift({ name, rarity: (name.includes("Gold") ? "gold" :
-                                      name.includes("Silver") ? "silver" :
-                                      name.includes("Bronze") ? "bronze" : "?") });
-    });
-
-    const foodsLabel = currentLang === "en"
-      ? "Suggested foods (focus on these, correct rarity shown): "
-      : "Nourritures conseillées (avec rareté correcte) : ";
-
-    foodsDiv.innerHTML = `<div>${foodsLabel}</div>`;
-    merged.slice(0, 8).forEach((f, idx) => {
-      const span = document.createElement("span");
-      span.textContent = `${f.name} [${
-        f.rarity === "gold" ? (currentLang === "en" ? "Gold" : "Or") :
-        f.rarity === "silver" ? (currentLang === "en" ? "Silver" : "Argent") :
-        f.rarity === "bronze" ? (currentLang === "en" ? "Bronze" : "Bronze") :
-        "?"
-      }]`;
-      if (idx < (step.recommendedFoods || []).length) {
-        span.classList.add("good-match");
+      const eff = foodEffect(f, opts.fairyElement);
+      let gain = 0;
+      let neg = 0;
+      for (const k in req) {
+        const cur = traits[k] || 0;
+        const need = Math.max(0, req[k] - cur);
+        const d = eff[k] || 0;
+        if (d > 0 && need > 0) gain += Math.min(d, need);
+        if (d < 0 && need > 0) neg += -d;
       }
-      foodsDiv.appendChild(span);
-    });
-    stepDiv.appendChild(foodsDiv);
+      if (gain <= 0) continue;
 
-    // Trait swap suggestion
-    if (step.swapAfter) {
-      const swap = document.createElement("div");
-      swap.className = "swap";
-      const fromTrait = TRAITS.find(t => t.key === step.swapAfter.from);
-      const toTrait = TRAITS.find(t => t.key === step.swapAfter.to);
-      const fromLabel = currentLang === "en" ? fromTrait.en : fromTrait.fr;
-      const toLabel = currentLang === "en" ? toTrait.en : toTrait.fr;
-      swap.textContent = currentLang === "en"
-        ? `After unlocking this skill & refreshing: swap ${fromLabel} → ${toLabel}.`
-        : `Après avoir débloqué cette compétence et fait renaître la fée : échange ${fromLabel} → ${toLabel}.`;
-      stepDiv.appendChild(swap);
+      let score = gain - neg * 0.5;
+      if (opts.preferCheap) {
+        score = score / f.lvCost + (f.rarity === 'bronze' ? 0.2 : f.rarity === 'silver' ? 0.05 : 0);
+      } else {
+        score = score / f.lvCost;
+      }
+
+      if (score > bestScore) {
+        bestScore = score;
+        best = { f, eff };
+      }
     }
 
-    planEl.appendChild(stepDiv);
+    if (!best) break;
+
+    used[best.f.id] = (used[best.f.id] || 0) + 1;
+    level += best.f.lvCost;
+    for (const k in best.eff) {
+      traits[k] = Math.max(0, (traits[k] || 0) + best.eff[k]);
+    }
+  }
+
+  const ok = done();
+  const foodLines = Object.keys(used).map(id => {
+    const f = FOODS.find(x => x.id === id);
+    const n = used[id];
+    const name = currentLang === 'fr' ? f.nameFr : f.nameEn;
+    return { text: `${n}× ${name} (${f.rarity})`, rarity: f.rarity };
+  }).sort((a,b) => a.text.localeCompare(b.text));
+
+  return { ok, foods: foodLines, endLevel: level, endTraits: traits };
+}
+
+function applyRefresh(prevTraits, swap) {
+  const next = {};
+  for (const t of TRAITS) {
+    const v = prevTraits[t.code] || 0;
+    next[t.code] = Math.floor(v * 0.6); // simplified carry-over
+  }
+  if (swap && swap.from && swap.to) {
+    const fromVal = next[swap.from] || 0;
+    if ((next[swap.to] || 0) < fromVal) {
+      next[swap.to] = fromVal;
+    }
+  }
+  return next;
+}
+
+/* ========== GENERATE PLAN ========== */
+
+function generatePlan() {
+  const planEl = document.getElementById('plan');
+  planEl.innerHTML = '';
+  const s = collectState();
+
+  let traits = { ...s.traits };
+  let level = s.startLevel;
+
+  ROUTE.forEach((step, idx) => {
+    const card = document.createElement('div');
+    card.className = 'step';
+
+    const title = document.createElement('div');
+    title.className = 'step-title';
+    title.textContent = `${idx+1}. ${step.name}`;
+    card.appendChild(title);
+
+    const req = SKILLS[step.name];
+    const sub = document.createElement('div');
+    sub.className = 'step-sub';
+    sub.textContent =
+      (currentLang === 'fr' ? 'Seuils : ' : 'Targets: ') +
+      Object.keys(req).map(k => `${tName(k, currentLang)} ≥ ${req[k]}`).join(', ');
+    card.appendChild(sub);
+
+    const stepPlan = planStep(
+      { level, maxLevel: s.maxLevel, traits },
+      req,
+      {
+        allowGold: s.allowGold,
+        preferCheap: s.preferCheap,
+        inventory: s.inventory,
+        fairyElement: s.fairyElement
+      }
+    );
+
+    if (stepPlan.foods.length) {
+      const ul = document.createElement('ul');
+      ul.className = 'food-list';
+      stepPlan.foods.forEach(f => {
+        const li = document.createElement('li');
+        li.textContent = f.text;
+        ul.appendChild(li);
+      });
+      card.appendChild(ul);
+    } else {
+      const w = document.createElement('div');
+      w.className = 'warn';
+      w.textContent = currentLang === 'fr'
+        ? "Aucune combinaison simple trouvée avec ces limites / ce niveau. Autorise plus de nourritures ou monte le niveau max."
+        : "No simple combination found with current limits/level. Try allowing more foods or a higher level cap.";
+      card.appendChild(w);
+    }
+
+    if (!stepPlan.ok) {
+      const w = document.createElement('div');
+      w.className = 'warn';
+      w.textContent = currentLang === 'fr'
+        ? "Attention : certains seuils ne sont pas atteints avant le niveau max configuré."
+        : "Warning: some thresholds could not be met before your configured level cap.";
+      card.appendChild(w);
+    }
+
+    // Prepare next cycle
+    if (idx < ROUTE.length - 1) {
+      const after = applyRefresh(stepPlan.endTraits, step.swap);
+      const sText = step.swap
+        ? (currentLang === 'fr'
+            ? `Après avoir obtenu ${step.name}, fais renaître ta fée (retour niv.1) et remplace ${tName(step.swap.from,currentLang)} par ${tName(step.swap.to,currentLang)}.`
+            : `After unlocking ${step.name}, Refresh (back to Lv1) and swap ${tName(step.swap.from,currentLang)} → ${tName(step.swap.to,currentLang)}.`)
+        : (currentLang === 'fr'
+            ? "Après cette étape, continue à optimiser selon tes besoins."
+            : "After this step, continue optimizing as you like.");
+      const p = document.createElement('div');
+      p.className = 'step-sub';
+      p.textContent = sText;
+      card.appendChild(p);
+      traits = after;
+      level = 1;
+    }
+
+    planEl.appendChild(card);
   });
 }
 
-/* =========================
-   INIT
-   ========================= */
+/* ========== INIT & EVENTS ========== */
 
-renderTraitsInputs();
-applyLang("en");
-
-document.querySelectorAll(".lang-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".lang-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
     applyLang(btn.dataset.lang);
-    renderTraitsInputs(); // rerender to update labels & toggles text
   });
 });
 
-document.getElementById("plan-btn").addEventListener("click", generatePlan);
+['optGold','optCheap'].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener('click', () => {
+    const on = el.dataset.on === 'true';
+    el.dataset.on = on ? 'false' : 'true';
+    el.classList.toggle('active', !on);
+  });
+});
+
+document.getElementById('generateBtn').addEventListener('click', generatePlan);
+
+// Build initial UI
+renderActiveTraits(false);
+renderTraitsGrid();
+renderInventoryGrid(false);
+renderRouteList();
+applyLang('en');
 </script>
 </body>
 </html>
